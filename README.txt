@@ -1,0 +1,3 @@
+I decided to make a second variation of my qt.pi script. The qt.pi [L] is the one that was oribinally uploaded to this git hub page. It is layout based with 4 different layouts and tons of customization in the config.txt file. 
+The second folder contains qt.pi [G]. This one instead of being layout based is grid based. This is the script I now use though it is still very much in development and contains a numerous number of bugs. 
+Both scripts offer control over 3 monitors worth of windows. They also both have their own config.txt files for added customization and flexibility. 

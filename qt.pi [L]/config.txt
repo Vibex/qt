@@ -1,0 +1,176 @@
+***Don't mess up the line numbers otherwise the script will no longer work.***
+	
+Main Monitor, Horizontal.
+1920
+
+Main Monitor, Vertical.
+1080
+
+Main Monitor, Default Layout. This is not the layout number, this is the number of the layout you want the tiler to start at in the array below. For example if you have [1, 1, 1, 1, 2], layout 2 would be a value of 5.
+1
+
+Main Monitor, Extra Layouts. Seperate the numbers with "," and no spaces.
+Currently Unavaliable the default for now is 1,2,3,4. You can edit it manually in the .ahk file.
+
+Main Monitor, Secondary window position. Change the value to 0 if you want it on the left or 1 if you want it on the right.
+0
+
+
+
+Second Monitor, Horizontal.
+1920
+
+Second Monitor, Vertical.
+1080
+
+Second monitor offset, If your monitor is not aligned at the top, set the number of pixels that it is off by to this value (Up is negative, Down is positive).
+0
+
+Secondary Monitor, Default Layout. If you don't have a second monitor to the left of your main monitor set this to 0. This is not the layout number, this is the number of the layout you want the tiler to start at in the array below. For example if you have [1, 1, 1, 1, 2], layout 2 would be a value of 5.
+3
+
+Secondary Monitor, Extra Layouts. Seperate the numbers with "," and no spaces.
+Currently Unavaliable the default for now is 1,2,3,4. You can edit it manually in the .ahk file.
+
+Secondary Monitor, Secondary window position. Change the value to 0 if you want it on the left or 1 if you want it on the right.
+0
+
+
+
+Third Monitor, Horizontal.
+1440
+	
+Third Monitor, Vertical.
+900
+
+Third monitor offset, If your monitor is not aligned at the top, set the number of pixels that it is off by to this value (Up is negative, Down is positive).
+180
+
+Third Monitor, Default Layout. If you don't have a third monitor to the right of your main monitor set this to 0. This is not the layout number, this is the number of the layout you want the tiler to start at in the array below. For example if you have [1, 1, 1, 1, 2], layout 2 would be a value of 5.
+2
+
+Third Monitor, Extra Layouts. Seperate the numbers with "," and no spaces.
+Currently Unavaliable the default for now is 1,2,3,4. You can edit it manually in the .ahk file.
+
+Third Monitor, Secondary window position. Change the value to 0 if you want it on the left or 1 if you want it on the right.
+0
+
+
+
+The border/boundary you want between all your windows, horizontal.
+6
+
+The border/boundary you want between all your windows, vertical.
+6
+
+This border value is an extra value you can add to the outer sides of your windows, horizontal.
+0
+
+This border value is an extra value you can add to the upper and lower sides of your windows, vertical.
+0
+
+
+
+The first monitors taskbar height, top.
+15
+
+The second monitors taskbar height, top.
+15
+
+The third monitors taskbar height, top.
+15
+
+The first monitors taskbar height, bottom.
+0
+
+The second monitors taskbar height, bottom.
+0
+
+The third monitors taskbar height, bottom.
+0
+
+The first monitors taskbar height, right.
+0
+	
+The second monitors taskbar height, right.
+0
+
+The third monitors taskbar height, right.
+0
+
+The first monitors taskbar height, left.
+0
+
+The second monitors taskbar height, left.
+0
+
+The third monitors taskbar height, left.
+0
+
+
+
+***Make these numbers even for the best results.***
+Width of the secondary window on monitor 1 with layout 1, 2 and 3.
+446
+
+Width of the tiered windows on monitor 1 with layout 2.
+446
+
+Height of the upper tier window on monitor 1 with layout 2.
+182
+
+
+
+Width of the secondary window on monitor 2 with layout 1, 2 and 3.
+446
+
+Width of the tiered windows on monitor 2 with layout 2.
+446
+
+Height of the upper tier window on monitor 2 with layout 2.
+182
+
+
+
+Width of the secondary window on monitor 3 with layout 1, 2 and 3.
+446
+
+Width of the tiered windows on monitor 3 with layout 2.
+334
+
+Height of the upper tier window on monitor 3 with layout 2.
+244
+
+
+
+Speed/Number of pixels the window moves when using the ctrl + alt + arrowkey commands
+Speed, Horizontal
+40
+
+Speed, Vertical
+20
+
+
+
+***For sound keys to work you have to have nircmd installed.***
+Set the value to 0 if you don't want the sound keys or 1 to enable them.
+1
+
+The quantity that the volume will change by (1000 to 2000 are reasonable numbers).
+1000
+
+
+
+Set the value to 0 if you don't want to hear a beep when changing the volume or 1 to enable it.
+0
+
+Set the frequency of the beep (between 37 and 32767).
+1000
+
+Set the duration of the beep in milliseconds.
+100
+
+
+
+Set the value of how often the script will sleep for 10ms. A value of 10ms will keep the CPU usage lower than 50% on most systems. Make sure to leave the ms ending on your value.
+15ms
