@@ -576,7 +576,35 @@
 			{
 				expand2(id, title, row, col, rcol, rrow)
 			} else {
-				WinMove, %title%,, (((w2 / col2) * (col - 1)) + (hbor * col) + lbar2) - (hres2), (((h2 / row2) * (row - 1)) + (vbor * row) + tbar2) + off2, (rcol), (rrow)
+				if ((row - 1) > 0)
+				{
+					d := row - 1
+					g := row2%d%
+				} else {
+					g := 0
+				}
+				if ((row - 2) > 0)
+				{
+					d := row - 2
+					f := row2%d%
+				} else {
+					f := 0
+				}
+				if ((col - 1) > 0)
+				{
+					d := col - 1
+					v := col2%d%
+				} else {
+					v := 0
+				}
+				if ((col - 2) > 0)
+				{
+					d := col - 2
+					b := col2%d%
+				} else {
+					b := 0
+				}
+				WinMove, %title%,, (v + b + (hbor * col) + lbar2 - hres2), (g + f + (vbor * row) + tbar2 + off2), (rcol),  (rrow)
 			}
 		return
 		}
@@ -589,7 +617,35 @@
 			{
 				expand3(id, title, row, col, rcol, rrow)
 			} else {
-				WinMove, %title%,, (((w3 / col3) * (col - 1)) + (hbor * col) + lbar3) + hres1, (((h3 / row3) * (row - 1)) + (vbor * row) + tbar3) + off3, (rcol), (rrow)
+				if ((row - 1) > 0)
+				{
+					d := row - 1
+					g := row3%d%
+				} else {
+					g := 0
+				}
+				if ((row - 2) > 0)
+				{
+					d := row - 2
+					f := row3%d%
+				} else {
+					f := 0
+				}
+				if ((col - 1) > 0)
+				{
+					d := col - 1
+					v := col3%d%
+				} else {
+					v := 0
+				}
+				if ((col - 2) > 0)
+				{
+					d := col - 2
+					b := col3%d%
+				} else {
+					b := 0
+				}
+				WinMove, %title%,, (v + b + (hbor * col) + lbar3 + hres1), (g + f + (vbor * row) + tbar3 + off3), (rcol),  (rrow)
 			}
 		return
 		}
@@ -602,7 +658,35 @@
 			{
 				expand1(id, title, row, col, rcol, rrow)
 			} else {
-				WinMove, %title%,, (((w1 / col1) * (col - 1)) + (hbor * col) + lbar1), (((h1 / row1) * (row - 1)) + (vbor * row) + tbar1), (rcol), (rrow)				
+				if ((row - 1) > 0)
+				{
+					d := row - 1
+					g := row1%d%
+				} else {
+					g := 0
+				}
+				if ((row - 2) > 0)
+				{
+					d := row - 2
+					f := row1%d%
+				} else {
+					f := 0
+				}
+				if ((col - 1) > 0)
+				{
+					d := col - 1
+					v := col1%d%
+				} else {
+					v := 0
+				}
+				if ((col - 2) > 0)
+				{
+					d := col - 2
+					b := col1%d%
+				} else {
+					b := 0
+				}
+				WinMove, %title%,, (v + b + (hbor * col) + lbar1), (g + f + (vbor * row) + tbar1), (rcol),  (rrow)		
 			}
 		return
 		}
