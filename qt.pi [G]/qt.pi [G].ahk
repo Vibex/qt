@@ -70,7 +70,7 @@
 	return
 	}
 	
-	!^NumpadPgDn::
+	+^NumpadPgDn::
 	^NumpadPgDn::
 	{
 		idtemp := WinExist("A")
@@ -78,56 +78,56 @@
 	return
 	}
 	
-	!^NumpadHome::
+	+^NumpadHome::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 1, 1, 0)
 	return
 	}
 	
-	!^NumpadUp::
+	+^NumpadUp::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 1, 2, 0)
 	return
 	}
 	
-	!^NumpadPgUp::
+	+^NumpadPgUp::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 1, 3, 0)
 	return
 	}
 	
-	!^NumpadLeft::
+	+^NumpadLeft::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 2, 1, 0)
 	return
 	}
 
-	!^NumpadClear::
+	+^NumpadClear::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 2, 2, 0)
 	return
 	}
 	
-	!^NumpadRight::
+	+^NumpadRight::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 2, 3, 0)
 	return
 	}
 
-	!^NumpadEnd::
+	+^NumpadEnd::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 3, 1, 0)
 	return
 	}
 
-	!^NumpadDown::
+	+^NumpadDown::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 3, 2, 0)
@@ -201,7 +201,7 @@
 	
 	
 	
-	+^NumpadHome::
+	!^NumpadHome::
 	{
 		idtemp := WinExist("A")
 		remove(idtemp)
@@ -209,7 +209,7 @@
 	return
 	}
 	
-	+^NumpadUp::
+	!^NumpadUp::
 	{
 		idtemp := WinExist("A")
 		remove(idtemp)
@@ -217,7 +217,7 @@
 	return
 	}
 	
-	+^NumpadPgUp::
+	!^NumpadPgUp::
 	{
 		idtemp := WinExist("A")
 		remove(idtemp)
@@ -227,7 +227,7 @@
 	
 	
 	
-	+^NumpadClear::
+	!^NumpadClear::
 	{
 		WinSet, Style, -0x800000, A
 		WinSet, Style, ^0xC00000, A  
