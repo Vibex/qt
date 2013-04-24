@@ -54,3 +54,4 @@ Other Keys
 Ctrl + Alt + Numpad Clear: Remove the titlebar from the current window.
 Ctrl + Alt + F: Remove the active window from the current stored window information.
 Ctrl + Alt + R: Reread the config.txt and configAdvanced.txt file.
+Ctrl + Alt + W: Removes all stored window data.

@@ -204,24 +204,21 @@
 	!^NumpadHome::
 	{
 		idtemp := WinExist("A")
-		remove(idtemp)
-		WinMove, A,, (hbor + (-1 * hres2) + hborex + lbar2), (tbar2 + vbor + off2 + vborex), (hres2 - hbor - hbor - hborex - hborex - lbar2 - rbar2), (vres2 - tbar2 - vbor - vbor - bbar2 - vborex - vborex)
+		screenFill(2, idtemp)
 	return
 	}
 	
 	!^NumpadUp::
 	{
 		idtemp := WinExist("A")
-		remove(idtemp)
-		WinMove, A,, (hbor + hborex + lbar1), (tbar1 + vbor + vborex), (hres1 - hbor - hbor - hborex - hborex - lbar1 - rbar1), (vres1 - tbar1 - vbor - vbor - bbar1 - vborex - vborex)
+		screenFill(1, idtemp)
 	return
 	}
 	
 	!^NumpadPgUp::
 	{
 		idtemp := WinExist("A")
-		remove(idtemp)
-		WinMove, A,, (hbor + hres1 + hborex + lbar3), (tbar3 + vbor + off3 + vborex), (hres3 - hbor - hbor - hborex - hborex - lbar3 - rbar3), (vres3 - tbar3 - vbor - vbor - bbar3 - vborex - vborex)  
+		screenFill(3, idtemp)
 	return
 	}
 	
@@ -1023,3 +1020,21 @@
 	return
 	}
 	
+	screenFill(mon, id)
+	{
+		global
+		remove(id)
+		if (mon = 2)
+		{
+			WinMove, ahk_id %id%,, (hbor + (-1 * hres2) + hborex + lbar2), (tbar2 + vbor + off2 + vborex), (hres2 - hbor - hbor - hborex - hborex - lbar2 - rbar2), (vres2 - tbar2 - vbor - vbor - bbar2 - vborex - vborex)
+		}
+		if (mon = 3)
+		{
+			WinMove, ahk_id %id%,, (hbor + hres1 + hborex + lbar3), (tbar3 + vbor + off3 + vborex), (hres3 - hbor - hbor - hborex - hborex - lbar3 - rbar3), (vres3 - tbar3 - vbor - vbor - bbar3 - vborex - vborex)
+		}
+		if (mon = 1)
+		{
+			WinMove, ahk_id %id%,, (hbor + hborex + lbar1), (tbar1 + vbor + vborex), (hres1 - hbor - hbor - hborex - hborex - lbar1 - rbar1), (vres1 - tbar1 - vbor - vbor - bbar1 - vborex - vborex)
+		}
+	return
+	}
