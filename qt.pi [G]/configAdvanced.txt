@@ -1,3 +1,9 @@
 This is a more advanced config with more options and some test features. Please read about the beta features in beta.txt before enabling anythin below.
 
-NOTHING AVALIABLE RIGHT NOW!
+Enable advanced config settings by setting this to 1. Otherwise set it to 0.
+1
+
+Set this to 1 if you encounter a black bar beneath your windows when removing the titlebar. Otherwise set this to 0. This will cause the window to flash. This is intentional, don't worry.
+1
+
+NOTHING BETAS AVALIABLE RIGHT NOW!
