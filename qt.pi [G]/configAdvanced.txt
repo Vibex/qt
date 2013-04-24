@@ -1,3 +1,9 @@
 This is a more advanced config with more options and some test features. Please read about the beta features in beta.txt before enabling anythin below.
 
-NOTHING AVALIABLE RIGHT NOW!
+Would you like to enable adavanced options. Set to 1 if you do or 0 if you don't.
+1
+
+Fix a bug with remving the titlebar from windows on certain applications. Set to 1 to turn it on or 0 to turn it off. The only side effect of this fix is that it flashes the window when removing the titlebar.
+1
+
+NO BETA'S AVALIABLE RIGHT NOW!
