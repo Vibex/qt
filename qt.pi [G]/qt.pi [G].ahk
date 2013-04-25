@@ -263,28 +263,28 @@
 	!^Up::
 	{
 		idtemp := WinExist("A")
-		moveUD(idtemp, "u")
+		shiftBorder(idtemp, "u")
 	return
 	}
 	
 	!^Down::
 	{
 		idtemp := WinExist("A")
-		moveUD(idtemp, "d")
+		shiftBorder(idtemp, "d")
 	return
 	}
 	
 	!^Left::
 	{
 		idtemp := WinExist("A")
-		moveLR(idtemp, "l")
+		shiftBorder(idtemp, "l")
 	return
 	}
 	
 	!^Right::
 	{
 		idtemp := WinExist("A")
-		moveLR(idtemp, "r")
+		shiftBorder(idtemp, "r")
 	return
 	}
 	
@@ -780,7 +780,7 @@
 	return
 	}
 	
-	moveUD(id, direc, nowin = 0, auto = 0)
+	shiftBorder(id, direc, nowin = 0, auto = 0)
 	{
 		global
 		if (nowin = 0)
@@ -808,10 +808,24 @@
 				row21 := row21 - vspeed
 				row22 := row22 + (vspeed/2)
 				row23 := row23 + (vspeed/2)
-			} else {
+			}
+			if (direc = "d")
+			{
 				row21 := row21 + vspeed
 				row22 := row22 - (vspeed/2)
 				row23 := row23 - (vspeed/2)
+			}
+			if (direc = "l")
+			{
+				col21 := col21 - hspeed
+				col22 := col22 + (hspeed/2)
+				col23 := col23 + (hspeed/2)
+			}
+			if (direc = "r")
+			{
+				col21 := col21 + hspeed
+				col22 := col22 - (hspeed/2)
+				col23 := col23 - (hspeed/2)
 			}
 			if (auto = 1) 
 			{
@@ -840,10 +854,24 @@
 				row31 := row31 - vspeed
 				row32 := row32 + (vspeed/2)
 				row33 := row33 + (vspeed/2)
-			} else {
+			}
+			if (direc = "d")
+			{
 				row31 := row31 + vspeed
 				row32 := row32 - (vspeed/2)
 				row33 := row33 - (vspeed/2)
+			}
+			if (direc = "l")
+			{
+				col31 := col31 - hspeed
+				col32 := col32 + (hspeed/2)
+				col33 := col33 + (hspeed/2)
+			}
+			if (direc = "r")
+			{
+				col31 := col31 + hspeed
+				col32 := col32 - (hspeed/2)
+				col33 := col33 - (hspeed/2)
 			}
 			if (auto = 1) 
 			{
@@ -872,127 +900,21 @@
 				row11 := row11 - vspeed
 				row12 := row12 + (vspeed/2)
 				row13 := row13 + (vspeed/2)
-			} else {
+			}
+			if (direc = "d")
+			{
 				row11 := row11 + vspeed
 				row12 := row12 - (vspeed/2)
 				row13 := row13 - (vspeed/2)
 			}
-			if (auto = 1) 
-			{
-				x := 0
-				Loop, 3
-				{
-					x += 1
-					y := 0
-					Loop, 3
-					{
-						y += 1
-						temp := mon1_%x%_%y%
-						if (temp != null)
-						{
-							move(temp, x, y)
-						}
-					}
-				}
-			}
-		return
-		}
-	return
-	}
-	
-	moveLR(id, direc, nowin = 0, auto = 0)
-	{
-		global
-		if (nowin = 0)
-		{
-			WinGetTitle, title, ahk_id %y%
-			WinGetPos, xtemp, ytemp, wtemp, htemp, %title%
-		} else {
-			if (nowin = 1)
-			{
-				xtemp := 1
-			}
-			if (nowin = 2)
-			{
-				xtemp := -1
-			}
-			if (nowin = 3)
-			{
-				xtemp := hres1 + 1
-			}
-		}
-		if (xtemp < 0 && dis2 = 1 && col <=  col2 && col <=  col2)
-		{
-			if (direc = "l")
-			{
-				col21 := col21 - hspeed
-				col22 := col22 + (hspeed/2)
-				col23 := col23 + (hspeed/2)
-			} else {
-				col21 := col21 + hspeed
-				col22 := col22 - (hspeed/2)
-				col23 := col23 - (hspeed/2)
-			}
-			if (auto = 1) 
-			{
-				x := 0
-				Loop, 3
-				{
-					x += 1
-					y := 0
-					Loop, 3
-					{
-						y += 1
-						temp := mon2_%x%_%y%
-						if (temp != null)
-						{
-							move(temp, x, y)
-						}
-					}
-				}
-			}
-		return
-		}
-		if (xtemp > hres1 && dis3 = 1 && col <=  col2 && col <=  col2)
-		{
-			if (direc = "l")
-			{
-				col31 := col31 - hspeed
-				col32 := col32 + (hspeed/2)
-				col33 := col33 + (hspeed/2)
-			} else {
-				col31 := col31 + hspeed
-				col32 := col32 - (hspeed/2)
-				col33 := col33 - (hspeed/2)
-			}
-			if (auto = 1) 
-			{
-				x := 0
-				Loop, 3
-				{
-					x += 1
-					y := 0
-					Loop, 3
-					{
-						y += 1
-						temp := mon3_%x%_%y%
-						if (temp != null)
-						{
-							move(temp, x, y)
-						}
-					}
-				}
-			}
-		return
-		}
-		if (xtemp < hres1 && xtemp > 0 && col <=  col2 && col <=  col2)
-		{
 			if (direc = "l")
 			{
 				col11 := col11 - hspeed
 				col12 := col12 + (hspeed/2)
 				col13 := col13 + (hspeed/2)
-			} else {
+			}
+			if (direc = "r")
+			{
 				col11 := col11 + hspeed
 				col12 := col12 - (hspeed/2)
 				col13 := col13 - (hspeed/2)
