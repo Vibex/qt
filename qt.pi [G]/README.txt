@@ -13,15 +13,15 @@ Ctrl + Numpad Down: Set to the cordinates in the grid 2,3. Auto expand is active
 Ctrl + Numpad PgDn: Set to the cordinates in the grid 3,3. Auto expand is active.
 
 Nonexpand Keys ***Numlock off***
-Ctrl + Shift + Numpad Home: Set to the cordinates in the grid 1,1. Auto expand is NOT active.
-Ctrl + Shift + Numpad Up: Set to the cordinates in the grid 2,1. Auto expand is NOT active.
-Ctrl + Shift + Numpad PgUp: Set to the cordinates in the grid 3,1. Auto expand is NOT active.
-Ctrl + Shift + Numpad Letf: Set to the cordinates in the grid 1,2. Auto expand is NOT active.
-Ctrl + Shift + Numpad Clear: Set to the cordinates in the grid 2,2. Auto expand is NOT active.
-Ctrl + Shift + Numpad Right: Set to the cordinates in the grid 3,2. Auto expand is NOT active.
-Ctrl + Shift + Numpad End: Set to the cordinates in the grid 1,3. Auto expand is NOT active.
-Ctrl + Shift + Numpad Down: Set to the cordinates in the grid 2,3. Auto expand is NOT active.
-Ctrl + Shift + Numpad PgDn: Set to the cordinates in the grid 3,3. Auto expand is NOT active.
+Shift + Numpad Home: Set to the cordinates in the grid 1,1. Auto expand is NOT active.
+Shift + Numpad Up: Set to the cordinates in the grid 2,1. Auto expand is NOT active.
+Shift + Numpad PgUp: Set to the cordinates in the grid 3,1. Auto expand is NOT active.
+Shift + Numpad Letf: Set to the cordinates in the grid 1,2. Auto expand is NOT active.
+Shift + Numpad Clear: Set to the cordinates in the grid 2,2. Auto expand is NOT active.
+Shift + Numpad Right: Set to the cordinates in the grid 3,2. Auto expand is NOT active.
+Shift + Numpad End: Set to the cordinates in the grid 1,3. Auto expand is NOT active.
+Shift + Numpad Down: Set to the cordinates in the grid 2,3. Auto expand is NOT active.
+Shift + Numpad PgDn: Set to the cordinates in the grid 3,3. Auto expand is NOT active.
 
 Change Grid Keys ***Numlock on***
 Ctrl + Numpad 7: Set to the grid to 1,1.

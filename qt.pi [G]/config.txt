@@ -136,4 +136,4 @@ Set the duration of the beep in milliseconds.
 
 
 Set the value of how often the script will sleep for 10ms. A value of 10ms will keep the CPU usage lower than 50% on most systems. Make sure to leave the ms ending on your value.
-15ms
+10ms

@@ -6,7 +6,7 @@
 		null := ""
 		full := "This string is full and should fix all the problems I am having"
 		
-		reload(1)
+		reload()
 		arrGrid(1)
 		arrGrid(2)
 		arrGrid(3)
@@ -70,7 +70,7 @@
 	return
 	}
 	
-	+^NumpadPgDn::
+	+NumpadPgDn::
 	^NumpadPgDn::
 	{
 		idtemp := WinExist("A")
@@ -78,56 +78,56 @@
 	return
 	}
 	
-	+^NumpadHome::
+	+NumpadHome::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 1, 1, 0)
 	return
 	}
 	
-	+^NumpadUp::
+	+NumpadUp::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 1, 2, 0)
 	return
 	}
 	
-	+^NumpadPgUp::
+	+NumpadPgUp::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 1, 3, 0)
 	return
 	}
 	
-	+^NumpadLeft::
+	+NumpadLeft::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 2, 1, 0)
 	return
 	}
 
-	+^NumpadClear::
+	+NumpadClear::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 2, 2, 0)
 	return
 	}
 	
-	+^NumpadRight::
+	+NumpadRight::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 2, 3, 0)
 	return
 	}
 
-	+^NumpadEnd::
+	+NumpadEnd::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 3, 1, 0)
 	return
 	}
 
-	+^NumpadDown::
+	+NumpadDown::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 3, 2, 0)
@@ -226,14 +226,8 @@
 	
 	!^NumpadClear::
 	{
-		WinSet, Style, -0x800000, A
-		WinSet, Style, ^0xC00000, A
-		if (titleFix = 1)
-		{
-			idtemp := WinExist("A")
-			WinMinimize, ahk_id %idtemp%
-			WinRestore, ahk_id %idtemp%
-		}
+		idtemp := WinExist("A")
+		titleBeGone(idtemp)
 	return
 	}
 	
@@ -248,7 +242,7 @@
 	
 	!^R::
 	{
-		reload(1)
+		reload()
 	return
 	}
 	
@@ -292,36 +286,19 @@
 	
 	^NumpadAdd::
 	{
-		if (enablesound = 1)
-		{
-			run nircmd.exe changesysvolume %vol%
-			if (enablebeep = 1)
-			{
-				SoundBeep, %freq%, %dura%
-			}
-		}
+		sound("u")
 	return
 	}
 	
 	^NumpadSub::
 	{	
-		if (enablesound = 1)
-		{
-			run nircmd.exe changesysvolume %vold%
-			if (enablebeep = 1)
-			{
-				SoundBeep, %freq%, %dura%
-			}
-		}
+		sound("d")
 	return
 	}
 	
 	^NumpadEnter::
 	{
-		if (enablesound = 1)
-		{
-			run nircmd.exe mutesysvolume 2
-		}
+		sound("m")
 	return
 	}
 	
@@ -334,84 +311,92 @@
 	
 	
 	
-	reload(read = 0)
+	reload(math = 1)
 	{
 		global
 		remove(a, 1)
-		if (read = 1)
+	
+		FileReadLine, bspeed, config.txt, 139
+		SetBatchLines, %batchspeed%
+		
+		FileReadLine, hres1, config.txt, 4
+		FileReadLine, vres1, config.txt, 7
+		FileReadLine, row1, config.txt, 10
+		FileReadLine, col1, config.txt, 13
+		
+		FileReadLine, dis2, config.txt, 18
+		if (dis2 = 1)
 		{
-			FileReadLine, bspeed, config.txt, 139
-			SetBatchLines, %batchspeed%
+			FileReadLine, hres2, config.txt, 21
+			FileReadLine, vres2, config.txt, 24
+			FileReadLine, off2, config.txt, 27
+			FileReadLine, row2, config.txt, 30
+			FileReadLine, col2, config.txt, 33
 			
-			FileReadLine, hres1, config.txt, 4
-			FileReadLine, vres1, config.txt, 7
-			FileReadLine, row1, config.txt, 10
-			FileReadLine, col1, config.txt, 13
-			
-			FileReadLine, dis2, config.txt, 18
-			if (dis2 = 1)
-			{
-				FileReadLine, hres2, config.txt, 21
-				FileReadLine, vres2, config.txt, 24
-				FileReadLine, off2, config.txt, 27
-				FileReadLine, row2, config.txt, 30
-				FileReadLine, col2, config.txt, 33
-				
-				FileReadLine, tbar2, config.txt, 75
-				FileReadLine, bbar2, config.txt, 84
-				FileReadLine, rbar2, config.txt, 93
-				FileReadLine, lbar2, config.txt, 102
-			}
-			
-			FileReadLine, dis3, config.txt, 38
-			if (dis3 = 1)
-			{
-				FileReadLine, hres3, config.txt, 41
-				FileReadLine, vres3, config.txt, 44
-				FileReadLine, off3, config.txt, 47
-				FileReadLine, row3, config.txt, 50
-				FileReadLine, col3, config.txt, 53
-				
-				FileReadLine, tbar3, config.txt, 78
-				FileReadLine, bbar3, config.txt, 87
-				FileReadLine, rbar3, config.txt, 96
-				FileReadLine, lbar3, config.txt, 105
-			}
-			
-			FileReadLine, hbor, config.txt, 58
-			FileReadLine, vbor, config.txt, 61
-			FileReadLine, hborex, config.txt, 64
-			FileReadLine, vborex, config.txt, 67
-			
-			FileReadLine, tbar1, config.txt, 72
-			FileReadLine, bbar1, config.txt, 81
-			FileReadLine, rbar1, config.txt, 90
-			FileReadLine, lbar1, config.txt, 99
-			
-			FileReadLine, hspeed, config.txt, 111
-			FileReadLine, vspeed, config.txt, 114
-			
-			FileReadLine, enablesound, config.txt, 120
-			if (enablesound = 1)
-			{
-				FileReadLine, vol, config.txt, 123
-				vold := vol * -1
-			}	
-			
-			FileReadLine, enablebeep, config.txt, 128
-			if (enablebeep = 1)
-			{
-				FileReadLine, freq, config.txt, 131
-				FileReadLine, dura, config.txt, 134
-			}
-			
-			FileReadLine, enableadv, configAdvanced.txt, 4
-			if (enableadv = 1)
-			{
-				FileReadLine, titleFix, configAdvanced.txt, 7
-			}
+			FileReadLine, tbar2, config.txt, 75
+			FileReadLine, bbar2, config.txt, 84
+			FileReadLine, rbar2, config.txt, 93
+			FileReadLine, lbar2, config.txt, 102
 		}
 		
+		FileReadLine, dis3, config.txt, 38
+		if (dis3 = 1)
+		{
+			FileReadLine, hres3, config.txt, 41
+			FileReadLine, vres3, config.txt, 44
+			FileReadLine, off3, config.txt, 47
+			FileReadLine, row3, config.txt, 50
+			FileReadLine, col3, config.txt, 53
+			
+			FileReadLine, tbar3, config.txt, 78
+			FileReadLine, bbar3, config.txt, 87
+			FileReadLine, rbar3, config.txt, 96
+			FileReadLine, lbar3, config.txt, 105
+		}
+		
+		FileReadLine, hbor, config.txt, 58
+		FileReadLine, vbor, config.txt, 61
+		FileReadLine, hborex, config.txt, 64
+		FileReadLine, vborex, config.txt, 67
+		
+		FileReadLine, tbar1, config.txt, 72
+		FileReadLine, bbar1, config.txt, 81
+		FileReadLine, rbar1, config.txt, 90
+		FileReadLine, lbar1, config.txt, 99
+		
+		FileReadLine, hspeed, config.txt, 111
+		FileReadLine, vspeed, config.txt, 114
+		
+		FileReadLine, enablesound, config.txt, 120
+		if (enablesound = 1)
+		{
+			FileReadLine, vol, config.txt, 123
+			vold := vol * -1
+		}	
+		
+		FileReadLine, enablebeep, config.txt, 128
+		if (enablebeep = 1)
+		{
+			FileReadLine, freq, config.txt, 131
+			FileReadLine, dura, config.txt, 134
+		}
+		
+		FileReadLine, enableadv, configAdvanced.txt, 4
+		if (enableadv = 1)
+		{
+			FileReadLine, titleFix, configAdvanced.txt, 7
+		}
+		
+		if (math = 1)
+		{
+			math()
+		}
+	return
+	}
+	
+	math()
+	{
+		global
 		w1 := (hres1 - hbor - (col1 * hbor) - hborex - hborex - lbar1 - rbar1)
 		h1 := (vres1 - vbor - (row1 * vbor) - vborex - vborex - tbar1 - bbar1)
 		w2 := (hres2 - hbor - (col2 * hbor) - hborex - hborex - lbar2 - rbar2)
@@ -736,19 +721,19 @@
 		{
 			row2 := row
 			col2 := col
-			reload()
+			math()
 		return
 		}
 		if (pos > hres1 && dis3 = 1)
 		{
 			row3 := row
 			col3 := col
-			reload()
+			math()
 		return
 		}
 		row1 := row
 		col1 := col
-		reload()
+		math()
 	return
 	}
 	
@@ -957,6 +942,46 @@
 		if (mon = 1)
 		{
 			WinMove, ahk_id %id%,, (hbor + hborex + lbar1), (tbar1 + vbor + vborex), (hres1 - hbor - hbor - hborex - hborex - lbar1 - rbar1), (vres1 - tbar1 - vbor - vbor - bbar1 - vborex - vborex)
+		}
+	return
+	}
+	
+	sound(direc)
+	{
+		global
+		if (enablesound = 1)
+		{
+			if (direc = "u")
+			{
+				run nircmd.exe changesysvolume %vol%
+			}
+			if (direc = "d")
+			{
+				run nircmd.exe changesysvolume %vold%
+			}
+			if (direc = "m")
+			{
+				run nircmd.exe mutesysvolume 2
+			}
+			if (enablebeep = 1)
+			{
+				SoundBeep, %freq%, %dura%
+			return
+			}
+		return
+		}
+	return
+	}
+	
+	titleBeGone(id)
+	{
+		global
+		WinSet, Style, -0x800000, ahk_id %id%
+		WinSet, Style, ^0xC00000, ahk_id %id%
+		if (titleFix = 1)
+		{
+			WinMinimize, ahk_id %id%
+			WinRestore, ahk_id %id%
 		}
 	return
 	}
