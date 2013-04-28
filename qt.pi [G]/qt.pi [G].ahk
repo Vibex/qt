@@ -10,6 +10,44 @@
 		arrGrid(1)
 		arrGrid(2)
 		arrGrid(3)
+		
+		mon := 0
+		Loop, 3
+		{
+			mon := mon + 1
+			if (us%mon% != 0)
+			{
+				temp := us%mon%
+				Loop, %temp%
+				{
+					shiftBorder(null, "u", mon)
+				}
+			}
+			if (ds%mon% != 0)
+			{
+				temp := ds%mon%
+				Loop, %temp%
+				{
+					shiftBorder(null, "d", mon)
+				}
+			}
+			if (rs%mon% != 0)
+			{
+				temp := rs%mon%
+				Loop, %temp%
+				{
+					shiftBorder(null, "r", mon)
+				}
+			}
+			if (ls%mon% != 0)
+			{
+				temp := ls%mon%
+				Loop, %temp%
+				{
+					shiftBorder(null, "l", mon)
+				}
+			}
+		}
 	return
 	
 	
@@ -224,13 +262,42 @@
 	
 	
 	
+	^Up::
+	{
+		idtemp := WinExist("A")
+		shift(idtemp, "u")
+	return
+	}
+	
+	^Down::
+	{
+		idtemp := WinExist("A")
+		shift(idtemp, "d")
+	return
+	}
+	
+	^Left::
+	{
+		idtemp := WinExist("A")
+		shift(idtemp, "l")
+	return
+	}
+	
+	^Right::
+	{
+		idtemp := WinExist("A")
+		shift(idtemp, "r")
+	return
+	}
+	
+	
+	
 	!^NumpadClear::
 	{
 		idtemp := WinExist("A")
 		titleBeGone(idtemp)
 	return
 	}
-	
 	
 	!^F::
 	~!F4::
@@ -385,6 +452,21 @@
 		if (enableadv = 1)
 		{
 			FileReadLine, titleFix, configAdvanced.txt, 7
+			
+			FileReadLine, us1, configAdvanced.txt, 12
+			FileReadLine, ds1, configAdvanced.txt, 15
+			FileReadLine, rs1, configAdvanced.txt, 18
+			FileReadLine, ls1, configAdvanced.txt, 21
+			
+			FileReadLine, us2, configAdvanced.txt, 26
+			FileReadLine, ds2, configAdvanced.txt, 29
+			FileReadLine, rs2, configAdvanced.txt, 32
+			FileReadLine, ls2, configAdvanced.txt, 35
+			
+			FileReadLine, us3, configAdvanced.txt, 40
+			FileReadLine, ds3, configAdvanced.txt, 43
+			FileReadLine, rs3, configAdvanced.txt, 46
+			FileReadLine, ls3, configAdvanced.txt, 49
 		}
 		
 		if (math = 1)
@@ -765,7 +847,7 @@
 	return
 	}
 	
-	shiftBorder(id, direc, nowin = 0, auto = 0)
+	shiftBorder(id, direc, nowin = 0)
 	{
 		global
 		if (nowin = 0)
@@ -791,43 +873,45 @@
 			if (direc = "u")
 			{
 				row21 := row21 - vspeed
-				row22 := row22 + (vspeed/2)
-				row23 := row23 + (vspeed/2)
+				if (row2 = 3)
+				{
+					row22 := row22 + (vspeed/2)
+					row23 := row23 + (vspeed/2)
+				} else {
+					row22 := row22 + vspeed
+				}
 			}
 			if (direc = "d")
 			{
 				row21 := row21 + vspeed
-				row22 := row22 - (vspeed/2)
-				row23 := row23 - (vspeed/2)
+				if (row2 = 3)
+				{
+					row22 := row22 - (vspeed/2)
+					row23 := row23 - (vspeed/2)
+				} else {
+					row22 := row22 - vspeed
+				}
 			}
 			if (direc = "l")
 			{
 				col21 := col21 - hspeed
-				col22 := col22 + (hspeed/2)
-				col23 := col23 + (hspeed/2)
+				if (col2 = 3)
+				{
+					col22 := col22 + (hspeed/2)
+					col23 := col23 + (hspeed/2)
+				} else {
+					col22 := col22 + hspeed
+				}
 			}
 			if (direc = "r")
 			{
 				col21 := col21 + hspeed
-				col22 := col22 - (hspeed/2)
-				col23 := col23 - (hspeed/2)
-			}
-			if (auto = 1) 
-			{
-				x := 0
-				Loop, 3
+				if (col2 = 3)
 				{
-					x += 1
-					y := 0
-					Loop, 3
-					{
-						y += 1
-						temp := mon2_%x%_%y%
-						if (temp != null)
-						{
-							move(temp, x, y)
-						}
-					}
+					col22 := col22 - (hspeed/2)
+					col23 := col23 - (hspeed/2)
+				} else {
+					col22 := col22 - hspeed
 				}
 			}
 		return
@@ -837,43 +921,45 @@
 			if (direc = "u")
 			{
 				row31 := row31 - vspeed
-				row32 := row32 + (vspeed/2)
-				row33 := row33 + (vspeed/2)
+				if (row3 = 3)
+				{
+					row32 := row32 + (vspeed/2)
+					row33 := row33 + (vspeed/2)
+				} else {
+					row32 := row32 + vspeed
+				}
 			}
 			if (direc = "d")
 			{
 				row31 := row31 + vspeed
-				row32 := row32 - (vspeed/2)
-				row33 := row33 - (vspeed/2)
+				if (row3 = 3)
+				{
+					row32 := row32 - (vspeed/2)
+					row33 := row33 - (vspeed/2)
+				} else {
+					row32 := row32 - vspeed
+				}
 			}
 			if (direc = "l")
 			{
-				col31 := col31 - hspeed
-				col32 := col32 + (hspeed/2)
-				col33 := col33 + (hspeed/2)
+				col31 := col21 - hspeed
+				if (col3 = 3)
+				{
+					col32 := col32 + (hspeed/2)
+					col33 := col33 + (hspeed/2)
+				} else {
+					col32 := col32 + hspeed
+				}
 			}
 			if (direc = "r")
 			{
 				col31 := col31 + hspeed
-				col32 := col32 - (hspeed/2)
-				col33 := col33 - (hspeed/2)
-			}
-			if (auto = 1) 
-			{
-				x := 0
-				Loop, 3
+				if (col3 = 3)
 				{
-					x += 1
-					y := 0
-					Loop, 3
-					{
-						y += 1
-						temp := mon3_%x%_%y%
-						if (temp != null)
-						{
-							move(temp, x, y)
-						}
-					}
+					col32 := col32 - (hspeed/2)
+					col33 := col33 - (hspeed/2)
+				} else {
+					col32 := col32 - hspeed
 				}
 			}
 		return
@@ -883,47 +969,110 @@
 			if (direc = "u")
 			{
 				row11 := row11 - vspeed
-				row12 := row12 + (vspeed/2)
-				row13 := row13 + (vspeed/2)
+				if (row2 = 3)
+				{
+					row12 := row12 + (vspeed/2)
+					row13 := row13 + (vspeed/2)
+				} else {
+					row12 := row12 + vspeed
+				}
 			}
 			if (direc = "d")
 			{
 				row11 := row11 + vspeed
-				row12 := row12 - (vspeed/2)
-				row13 := row13 - (vspeed/2)
+				if (row1 = 3)
+				{
+					row12 := row12 - (vspeed/2)
+					row13 := row13 - (vspeed/2)
+				} else {
+					row12 := row12 - vspeed
+				}
 			}
 			if (direc = "l")
 			{
 				col11 := col11 - hspeed
-				col12 := col12 + (hspeed/2)
-				col13 := col13 + (hspeed/2)
+				if (col1 = 3)
+				{
+					col12 := col12 + (hspeed/2)
+					col13 := col13 + (hspeed/2)
+				} else {
+					col12 := col12 + hspeed
+				}
 			}
 			if (direc = "r")
 			{
 				col11 := col11 + hspeed
-				col12 := col12 - (hspeed/2)
-				col13 := col13 - (hspeed/2)
-			}
-			if (auto = 1) 
-			{
-				x := 0
-				Loop, 3
+				if (col1 = 3)
 				{
-					x += 1
-					y := 0
-					Loop, 3
-					{
-						y += 1
-						temp := mon1_%x%_%y%
-						if (temp != null)
-						{
-							move(temp, x, y)
-						}
-					}
+					col12 := col12 - (hspeed/2)
+					col13 := col13 - (hspeed/2)
+				} else {
+					col12 := col12 - hspeed
 				}
 			}
 		return
 		}
+	return
+	}
+	
+	cord(mon, id)
+	{
+		global
+		x := 0
+		Loop, 3
+		{
+			x += 1
+			y := 0
+			Loop, 3
+			{
+				y += 1
+				if (id = mon%mon%_%x%_%y%)
+				{
+					rx := x
+					ry := y
+				return
+				}
+			}
+		}
+		rx := 0
+		ry := 0
+	return
+	}
+	
+	shift(id, direc, expand = 1)
+	{
+		global
+		mon := 0
+		if (xtemp < 0 && dis2 = 1 && row <=  row2 && col <=  col2)
+		{
+			mon := 2
+		}
+		if (xtemp > hres1 && dis3 = 1 && row <=  row2 && col <=  col2)
+		{
+			mon := 3
+		}
+		if (xtemp < hres1 && xtemp > 0 && row <=  row2 && col <=  col2)
+		{
+			mon := 1
+		}
+		cord(mon, id)
+		if (direc = "u" && rx != 1)
+		{
+			rx := rx - 1
+		}
+		if (direc = "d" && rx != 3)
+		{
+			rx := rx + 1
+		}
+		if (direc = "l" && ry != 1)
+		{
+			ry := ry - 1
+		}
+		if (direc = "r" && ry != 3)
+		{
+			ry := ry + 1
+		}
+		move(id, rx, ry, expand)
 	return
 	}
 	
@@ -969,6 +1118,28 @@
 			return
 			}
 		return
+		}
+	return
+	}
+	
+	autoMove(mon)
+	{
+		global
+		x := 0
+		Loop, 3
+		{
+			x += 1
+			y := 0
+			Loop, 3
+			{
+				y += 1
+				temp := mon1_%x%_%y%
+				test := InStr(temp, full)
+				if (temp != null && test = 0)
+				{
+					move(temp, x, y)					
+				}
+			}
 		}
 	return
 	}

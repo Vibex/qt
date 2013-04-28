@@ -1,5 +1,7 @@
 qt.pi [G] is a script that is based on a 3 x 3 grid of windows. It, like qt.pi [L], is a very flexible script used for WM. It is very intuitive as each placement on the numpad is in relation to its position on the monitor. It supports up to 3 monitors placed side by side and can easily be converted to use with vertical monitors. This script is still in development, so if you come across any bugs please let me know. To contact me my Rizon IRC name is Vibex.
 
+If you want to start with fresh config files, delete the config.txt file and configAdvanced.txt file. Then rename the Defaultconfig.txt file config.txt and the DefaultconfigAdvanced.txt file configAdvanced.txt.
+
 Hotkeys
 Expand Keys ***Numlock off***
 Ctrl + Numpad Home: Set to the cordinates in the grid 1,1. Auto expand is active.

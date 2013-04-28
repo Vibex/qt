@@ -1,4 +1,4 @@
-***These are my own personal configs, you may want to delete these and rename the Defaults to this for your own use.***
+***Don't mess up the line numbers otherwise the script will no longer work. You have been warned***
 	
 Main Monitor, Horizontal.
 1920
@@ -7,10 +7,10 @@ Main Monitor, Vertical.
 1080
 
 Set the below value to the default number of rows (1 - 3) on your main monitor.
-1
+3
 
 Set the below value to the default number of columns (1 - 3) on your main monitor.
-2
+3
 
 
 
@@ -38,10 +38,10 @@ Set this value to 0 if you don't have a monitor on the right of your main monito
 1
 
 Third Monitor, Horizontal.
-1440
+1920
 	
 Third Monitor, Vertical.
-900
+1080
 
 Third monitor offset, If your monitor is not aligned at the top, set the number of pixels that it is off by to this value (Up is negative, Down is positive).
 180
@@ -55,10 +55,10 @@ Set the below value to the default number of columns (1 - 3) on your third monit
 
 
 The border/boundary you want between all your windows, horizontal.
-6
+0
 
 The border/boundary you want between all your windows, vertical.
-6
+0
 
 This border value is an extra value you can add to the outer sides of your windows, horizontal.
 0
@@ -69,16 +69,16 @@ This border value is an extra value you can add to the upper and lower sides of 
 
 
 The first monitors taskbar height, top.
-15
+0
 
 The second monitors taskbar height, top.
-15
+0
 
 The third monitors taskbar height, top.
-15
+0
 
 The first monitors taskbar height, bottom.
-0
+32
 
 The second monitors taskbar height, bottom.
 0
