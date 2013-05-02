@@ -10,47 +10,26 @@
 		arrGrid(1)
 		arrGrid(2)
 		arrGrid(3)
-		
-		mon := 0
-		Loop, 3
-		{
-			mon := mon + 1
-			if (us%mon% != 0)
-			{
-				temp := us%mon%
-				Loop, %temp%
-				{
-					shiftBorder(null, "u", mon)
-				}
-			}
-			if (ds%mon% != 0)
-			{
-				temp := ds%mon%
-				Loop, %temp%
-				{
-					shiftBorder(null, "d", mon)
-				}
-			}
-			if (rs%mon% != 0)
-			{
-				temp := rs%mon%
-				Loop, %temp%
-				{
-					shiftBorder(null, "r", mon)
-				}
-			}
-			if (ls%mon% != 0)
-			{
-				temp := ls%mon%
-				Loop, %temp%
-				{
-					shiftBorder(null, "l", mon)
-				}
-			}
-		}
+
+		Hwnd := WinExist(A_ScriptFullPath)
+
+		DllCall( "RegisterShellHookWindow", UInt,Hwnd )
+
+		MsgNum := DllCall( "RegisterWindowMessage", Str,"SHELLHOOK" )
+
+		OnMessage( MsgNum, "ShellMessage" )
 	return
 	
-	
+	ShellMessage( wParam,lParam )
+	{
+		WinGetTitle, title, ahk_id %lParam%
+		If (wParam = 2) { ;Window closed
+			remove(lParam)
+		}
+		If (wParam = 1) { ;Window created
+			
+		}
+	}
 	
 	^NumpadHome::
 	{
@@ -378,7 +357,7 @@
 	
 	
 	
-	reload(math = 1)
+	reload(math = 1, autoShift = 1)
 	{
 		global
 		remove(a, 1)
@@ -473,6 +452,10 @@
 		{
 			math()
 		}
+		if (autoshift = 1)
+		{
+			autoShift()
+		}
 	return
 	}
 	
@@ -504,6 +487,49 @@
 		col31 := w3 / col3
 		col32 := w3 / col3
 		col33 := w3 / col3
+	return
+	}
+	
+	autoShift()
+	{
+		global
+		mon := 0
+		Loop, 3
+		{
+			mon := mon + 1
+			if (us%mon% != 0)
+			{
+				temp := us%mon%
+				Loop, %temp%
+				{
+					shiftBorder(null, "u", mon)
+				}
+			}
+			if (ds%mon% != 0)
+			{
+				temp := ds%mon%
+				Loop, %temp%
+				{
+					shiftBorder(null, "d", mon)
+				}
+			}
+			if (rs%mon% != 0)
+			{
+				temp := rs%mon%
+				Loop, %temp%
+				{
+					shiftBorder(null, "r", mon)
+				}
+			}
+			if (ls%mon% != 0)
+			{
+				temp := ls%mon%
+				Loop, %temp%
+				{
+					shiftBorder(null, "l", mon)
+				}
+			}
+		}
 	return
 	}
 	
@@ -590,7 +616,7 @@
 			}
 		return
 		}
-		if (xtemp > hres1 && dis3 = 1 && row <=  row3 && col <=  col3)
+		if (xtemp >= hres1 && dis3 = 1 && row <=  row3 && col <=  col3)
 		{
 			findPos(3, row, col)
 			setId(3, id, row, col)
@@ -630,7 +656,7 @@
 			}
 		return
 		}
-		if (xtemp > 0 && xtemp < hres1 && row <= row1 && col <= col1)
+		if (xtemp >= 0 && xtemp < hres1 && row <= row1 && col <= col1)
 		{
 			findPos(1, row, col)
 			setId(1, id, row, col)
@@ -676,6 +702,8 @@
 	expand(mon, id, title, row, col, tw, th)
 	{
 		global
+		path1 := 0
+		path2 := 0
 		trow1 := row + 1
 		tcol1 := col + 1
 		trow2 := row + 2
@@ -686,6 +714,7 @@
 			{
 				tw := tw + col%mon%%tcol1% + hbor
 				mon%mon%_%row%_%tcol1% := full . id
+				path1 := 1
 				if (trow1 <= row%mon%)
 				{
 					if (mon%mon%_%trow1%_%tcol1% = null && mon%mon%_%trow1%_%col% = null)
@@ -703,6 +732,7 @@
 			{
 				tw := tw + col%mon%%tcol2% + hbor
 				mon%mon%_%row%_%tcol2% := full . id
+				path2 := 1
 				if (trow2 <= row%mon%)
 				{
 					if (mon%mon%_%trow2%_%tcol2% = null && mon%mon%_%trow2%_%col% = null)
@@ -714,7 +744,7 @@
 				}
 			}
 		}
-		if (trow1 <= row%mon%)
+		if (trow1 <= row%mon% && path1 != 1)
 		{
 			if (mon%mon%_%trow1%_%col% = null)
 			{
@@ -722,7 +752,7 @@
 				mon%mon%_%trow1%_%col% := full . id
 			}
 		}
-		if (trow2 <= row%mon%)
+		if (trow2 <= row%mon% && path2 != 1)
 		{
 			if (mon%mon%_%trow2%_%col% = null)
 			{
@@ -916,7 +946,7 @@
 			}
 		return
 		}
-		if (xtemp > hres1 && dis3 = 1 && row <=  row2 && col <=  col2)
+		if (xtemp >= hres1 && dis3 = 1 && row <=  row2 && col <=  col2)
 		{
 			if (direc = "u")
 			{
@@ -1047,7 +1077,7 @@
 		{
 			mon := 2
 		}
-		if (xtemp > hres1 && dis3 = 1 && row <=  row2 && col <=  col2)
+		if (xtemp >= hres1 && dis3 = 1 && row <=  row2 && col <=  col2)
 		{
 			mon := 3
 		}
@@ -1147,12 +1177,19 @@
 	titleBeGone(id)
 	{
 		global
-		WinSet, Style, -0x800000, ahk_id %id%
-		WinSet, Style, ^0xC00000, ahk_id %id%
+		WinSet, Style, -0x800000, A
+		WinSet, Style, ^0xC00000, A
 		if (titleFix = 1)
 		{
 			WinMinimize, ahk_id %id%
+			WinActivate, ahk_id %id%
 			WinRestore, ahk_id %id%
 		}
 	return
 	}
+	
+	class window
+	{
+		
+	}
+	
