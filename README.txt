@@ -1,3 +1,3 @@
-I decided to make a second variation of my qt.pi script. The qt.pi [L] is the one that was oribinally uploaded to this git hub page. It is layout based with 4 different layouts and tons of customization in the config.txt file. 
-The second folder contains qt.pi [G]. This one instead of being layout based is grid based. This is the script I now use though it is still very much in development and contains a numerous number of bugs. 
-Both scripts offer control over 3 monitors worth of windows. They also both have their own config.txt files for added customization and flexibility. 
+qt.pi [G] is a script that is based on a 3 x 3 grid of windows. It is a very flexible script used for WM. It is very intuitive as each placement on the numpad is in relation to its position on the monitor. It supports up to 3 monitors placed side by side and can easily be converted to use with vertical monitors. This script is still in development, so if you come across any bugs please let me know. To contact me my Rizon IRC name is Vibex.
+
+The .exe version of the script will run off of the default settings. This will probably have to be editied slightly to suit your specific needs. The Source is based of of my own personal needs and is what I use. You will have to either heavily modify my script or copy the defaults into the proper folder if you wish to use the source.

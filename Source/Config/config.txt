@@ -72,10 +72,10 @@ The first monitors taskbar height, top.
 15
 
 The second monitors taskbar height, top.
-15
+0
 
 The third monitors taskbar height, top.
-15
+0
 
 The first monitors taskbar height, bottom.
 0

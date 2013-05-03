@@ -10,13 +10,15 @@
 		arrGrid(1)
 		arrGrid(2)
 		arrGrid(3)
-
+		
+		if (baryeah = 1)
+		{
+			InitializeBar(1, hres1, 15, 0)
+		}
+		
 		Hwnd := WinExist(A_ScriptFullPath)
-
 		DllCall( "RegisterShellHookWindow", UInt,Hwnd )
-
 		MsgNum := DllCall( "RegisterWindowMessage", Str,"SHELLHOOK" )
-
 		OnMessage( MsgNum, "ShellMessage" )
 	return
 	
@@ -342,3 +344,4 @@
 	
 	
 	#Include Methods.ahk
+	#Include Bar.ahk

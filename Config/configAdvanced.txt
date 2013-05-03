@@ -1,10 +1,10 @@
-***These are my own personal configs, you may want to delete these and rename the Defaults to this for your own use.***
+***This is a more advanced config with more options and some test features. Please read about the beta features in beta.txt before enabling anythin below.***
 
 Enable advanced config settings by setting this to 1. Otherwise set it to 0.
-1
+0
 
 Set this to 1 if you encounter a black bar beneath your windows when removing the titlebar. Otherwise set this to 0. This will cause the window to flash. This is intentional, don't worry.
-1
+0
 
 
 
@@ -23,7 +23,7 @@ Auto shift horizontal on the main monitor. This will determine an amount to auto
 
 
 Auto shift vertical on the second monitor. This will determine an amount to auto shift your borders up when launching the script. It is a value in number of clicks.
-8
+0
 
 Auto shift vertical on the second monitor. This will determine an amount to auto shift your borders down when launching the script. It is a value in number of clicks.
 0
@@ -32,7 +32,7 @@ Auto shift horizontal on the second monitor. This will determine an amount to au
 0
 
 Auto shift horizontal on the second monitor. This will determine an amount to auto shift your borders left when launching the script. It is a value in number of clicks.
-5
+0
 
 
 
@@ -50,4 +50,7 @@ Auto shift horizontal on the third monitor. This will determine an amount to aut
 
 
 
-NO BETAS AVALIABLE RIGHT NOW!
+BETA
+
+Taskbar. This is a bar to be placed at the top of your main monitor (I may make position customizable in the future). It will display the current running task along with the date and mouse position. Set the value to 1 if you want the bar. Otherwise set it to 0.
+1

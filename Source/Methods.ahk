@@ -7,6 +7,11 @@
 		If (wParam = 1) { ;Window created
 			
 		}
+		If (wParam = 32774) { ;Flash Window
+			WinGetTitle, flashtitle, ahk_id %lparam%
+			MsgBox ,, %flashtitle%, %flashtitle% wants your attention.
+			WinActivate, ahk_id %lparam%
+		}
 	}
 	
 	
@@ -15,91 +20,96 @@
 	{
 		global
 		remove(a, 1)
+		
+		config := "Config\config.txt"
+		configA := "Config\configAdvanced.txt"
 	
-		FileReadLine, bspeed, config.txt, 139
+		FileReadLine, bspeed, %config%, 139
 		SetBatchLines, %batchspeed%
 		
-		FileReadLine, hres1, config.txt, 4
-		FileReadLine, vres1, config.txt, 7
-		FileReadLine, row1, config.txt, 10
-		FileReadLine, col1, config.txt, 13
+		FileReadLine, hres1, %config%, 4
+		FileReadLine, vres1, %config%, 7
+		FileReadLine, row1, %config%, 10
+		FileReadLine, col1, %config%, 13
 		
-		FileReadLine, dis2, config.txt, 18
+		FileReadLine, dis2, %config%, 18
 		if (dis2 = 1)
 		{
-			FileReadLine, hres2, config.txt, 21
-			FileReadLine, vres2, config.txt, 24
-			FileReadLine, off2, config.txt, 27
-			FileReadLine, row2, config.txt, 30
-			FileReadLine, col2, config.txt, 33
+			FileReadLine, hres2, %config%, 21
+			FileReadLine, vres2, %config%, 24
+			FileReadLine, off2, %config%, 27
+			FileReadLine, row2, %config%, 30
+			FileReadLine, col2, %config%, 33
 			
-			FileReadLine, tbar2, config.txt, 75
-			FileReadLine, bbar2, config.txt, 84
-			FileReadLine, rbar2, config.txt, 93
-			FileReadLine, lbar2, config.txt, 102
+			FileReadLine, tbar2, %config%, 75
+			FileReadLine, bbar2, %config%, 84
+			FileReadLine, rbar2, %config%, 93
+			FileReadLine, lbar2, %config%, 102
 		}
 		
-		FileReadLine, dis3, config.txt, 38
+		FileReadLine, dis3, %config%, 38
 		if (dis3 = 1)
 		{
-			FileReadLine, hres3, config.txt, 41
-			FileReadLine, vres3, config.txt, 44
-			FileReadLine, off3, config.txt, 47
-			FileReadLine, row3, config.txt, 50
-			FileReadLine, col3, config.txt, 53
+			FileReadLine, hres3, %config%, 41
+			FileReadLine, vres3, %config%, 44
+			FileReadLine, off3, %config%, 47
+			FileReadLine, row3, %config%, 50
+			FileReadLine, col3, %config%, 53
 			
-			FileReadLine, tbar3, config.txt, 78
-			FileReadLine, bbar3, config.txt, 87
-			FileReadLine, rbar3, config.txt, 96
-			FileReadLine, lbar3, config.txt, 105
+			FileReadLine, tbar3, %config%, 78
+			FileReadLine, bbar3, %config%, 87
+			FileReadLine, rbar3, %config%, 96
+			FileReadLine, lbar3, %config%, 105
 		}
 		
-		FileReadLine, hbor, config.txt, 58
-		FileReadLine, vbor, config.txt, 61
-		FileReadLine, hborex, config.txt, 64
-		FileReadLine, vborex, config.txt, 67
+		FileReadLine, hbor, %config%, 58
+		FileReadLine, vbor, %config%, 61
+		FileReadLine, hborex, %config%, 64
+		FileReadLine, vborex, %config%, 67
 		
-		FileReadLine, tbar1, config.txt, 72
-		FileReadLine, bbar1, config.txt, 81
-		FileReadLine, rbar1, config.txt, 90
-		FileReadLine, lbar1, config.txt, 99
+		FileReadLine, tbar1, %config%, 72
+		FileReadLine, bbar1, %config%, 81
+		FileReadLine, rbar1, %config%, 90
+		FileReadLine, lbar1, %config%, 99
 		
-		FileReadLine, hspeed, config.txt, 111
-		FileReadLine, vspeed, config.txt, 114
+		FileReadLine, hspeed, %config%, 111
+		FileReadLine, vspeed, %config%, 114
 		
-		FileReadLine, enablesound, config.txt, 120
+		FileReadLine, enablesound, %config%, 120
 		if (enablesound = 1)
 		{
-			FileReadLine, vol, config.txt, 123
+			FileReadLine, vol, %config%, 123
 			vold := vol * -1
 		}	
 		
-		FileReadLine, enablebeep, config.txt, 128
+		FileReadLine, enablebeep, %config%, 128
 		if (enablebeep = 1)
 		{
-			FileReadLine, freq, config.txt, 131
-			FileReadLine, dura, config.txt, 134
+			FileReadLine, freq, %config%, 131
+			FileReadLine, dura, %config%, 134
 		}
 		
-		FileReadLine, enableadv, configAdvanced.txt, 4
+		FileReadLine, enableadv, %configA%, 4
 		if (enableadv = 1)
 		{
-			FileReadLine, titleFix, configAdvanced.txt, 7
+			FileReadLine, titleFix, %configA%, 7
 			
-			FileReadLine, us1, configAdvanced.txt, 12
-			FileReadLine, ds1, configAdvanced.txt, 15
-			FileReadLine, rs1, configAdvanced.txt, 18
-			FileReadLine, ls1, configAdvanced.txt, 21
+			FileReadLine, us1, %configA%, 12
+			FileReadLine, ds1, %configA%, 15
+			FileReadLine, rs1, %configA%, 18
+			FileReadLine, ls1, %configA%, 21
 			
-			FileReadLine, us2, configAdvanced.txt, 26
-			FileReadLine, ds2, configAdvanced.txt, 29
-			FileReadLine, rs2, configAdvanced.txt, 32
-			FileReadLine, ls2, configAdvanced.txt, 35
+			FileReadLine, us2, %configA%, 26
+			FileReadLine, ds2, %configA%, 29
+			FileReadLine, rs2, %configA%, 32
+			FileReadLine, ls2, %configA%, 35
 			
-			FileReadLine, us3, configAdvanced.txt, 40
-			FileReadLine, ds3, configAdvanced.txt, 43
-			FileReadLine, rs3, configAdvanced.txt, 46
-			FileReadLine, ls3, configAdvanced.txt, 49
+			FileReadLine, us3, %configA%, 40
+			FileReadLine, ds3, %configA%, 43
+			FileReadLine, rs3, %configA%, 46
+			FileReadLine, ls3, %configA%, 49
+			
+			FileReadLine, baryeah, %configA%, 56
 		}
 		
 		if (math = 1)
