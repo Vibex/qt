@@ -879,7 +879,6 @@
 					rx := rx + 1
 				}
 			}
-			mon%mon%_%rx%_%ry%
 		}
 	return	
 	}
