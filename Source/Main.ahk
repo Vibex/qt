@@ -1,10 +1,12 @@
-	;Autorun.
+﻿	;Autorun.
 		AutoTrim, On
 		SetTitleMatchMode,Slow
 		CoordMode, Mouse, Screen
 		DetectHiddenWindows, On
 		null := ""
 		full := "This string is full and should fix all the problems I am having"
+		
+		barheight := 15
 		
 		reload()
 		arrGrid(1)
@@ -13,8 +15,15 @@
 		
 		if (baryeah = 1)
 		{
-			InitializeBar(1, hres1, 15, 0)
+			InitializeBar(1, hres1, barheight, 0)
 		}
+		
+		
+		
+		previousid := null
+		currentid := WinExist("A")
+		
+		flashNum0 := 0
 		
 		Hwnd := WinExist(A_ScriptFullPath)
 		DllCall( "RegisterShellHookWindow", UInt,Hwnd )
@@ -236,29 +245,25 @@
 	
 	^Up::
 	{
-		idtemp := WinExist("A")
-		shift(idtemp, "u")
+		
 	return
 	}
 	
 	^Down::
 	{
-		idtemp := WinExist("A")
-		shift(idtemp, "d")
+		
 	return
 	}
 	
 	^Left::
 	{
-		idtemp := WinExist("A")
-		shift(idtemp, "l")
+		
 	return
 	}
 	
 	^Right::
 	{
-		idtemp := WinExist("A")
-		shift(idtemp, "r")
+		
 	return
 	}
 	

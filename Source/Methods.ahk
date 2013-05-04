@@ -1,5 +1,7 @@
-	ShellMessage( wParam,lParam )
+﻿	ShellMessage( wParam,lParam )
 	{
+		global previousid
+		global currentid
 		WinGetTitle, title, ahk_id %lParam%
 		If (wParam = 2) { ;Window closed
 			remove(lParam)
@@ -7,14 +9,33 @@
 		If (wParam = 1) { ;Window created
 			
 		}
+		If (wParam = 4) { ;Window active
+			previousid := currentid
+			currentid := lParam
+			Gosub, UpdateTitle
+		}
 		If (wParam = 32774) { ;Flash Window
-			WinGetTitle, flashtitle, ahk_id %lparam%
-			MsgBox ,, %flashtitle%, %flashtitle% wants your attention.
-			WinActivate, ahk_id %lparam%
+			flashCheck(lparam)
 		}
 	}
 	
-	
+	flashCheck(id)
+	{
+		global
+		if (flashNum0 != 0)
+		{
+			Loop, %flashNum0%
+			{
+				if (id = flashNum%A_Index%)
+				{
+				return
+				}
+			}
+		}
+		flashNum0 += 1
+		flashNum%flashNum0% := id
+	return
+	}
 	
 	reload(math = 1, autoShift = 1)
 	{
@@ -658,7 +679,7 @@
 			}
 		return
 		}
-		if (xtemp < hres1 && xtemp > 0 && row <=  row2 && col <=  col2)
+		if (xtemp < hres1 && xtemp >= 0 && row <=  row2 && col <=  col2)
 		{
 			if (direc = "u")
 			{
@@ -730,43 +751,6 @@
 		}
 		rx := 0
 		ry := 0
-	return
-	}
-	
-	shift(id, direc, expand = 1)
-	{
-		global
-		mon := 0
-		if (xtemp < 0 && dis2 = 1 && row <=  row2 && col <=  col2)
-		{
-			mon := 2
-		}
-		if (xtemp >= hres1 && dis3 = 1 && row <=  row2 && col <=  col2)
-		{
-			mon := 3
-		}
-		if (xtemp < hres1 && xtemp > 0 && row <=  row2 && col <=  col2)
-		{
-			mon := 1
-		}
-		cord(mon, id)
-		if (direc = "u" && rx != 1)
-		{
-			rx := rx - 1
-		}
-		if (direc = "d" && rx != 3)
-		{
-			rx := rx + 1
-		}
-		if (direc = "l" && ry != 1)
-		{
-			ry := ry - 1
-		}
-		if (direc = "r" && ry != 3)
-		{
-			ry := ry + 1
-		}
-		move(id, rx, ry, expand)
 	return
 	}
 	
@@ -850,4 +834,52 @@
 			WinRestore, ahk_id %id%
 		}
 	return
+	}
+	
+	switchWin(id, direc)
+	{
+		global
+		local mon
+		WinGetPos, xtemp, ytemp, wtemp, htemp, ahk_id %id%
+		if (xtemp < 0 && dis2 = 1)
+		{
+			mon := 2
+		}
+		if (xtemp >= hres1 && dis3 = 1)
+		{
+			mon := 3
+		}
+		if (xtemp < hres1 && xtemp >= 0)
+		{
+			mon := 1
+		}
+		cord(mon, id)
+		if (rx != 0 && ry != 0)
+		{
+			if (direc := "u")
+			{
+				rx := rx - 1
+				if (rx !> 0)
+				{
+					done := 0
+					if (mon = 1)
+					{
+						mon := 2
+						done := 1
+					}
+					if (mon = 2 && done = 0)
+					{
+						mon := 3
+						done := 1
+					}
+					if (mon = 3 && done = 0)
+					{
+						mon := 1
+					}
+					rx := rx + 1
+				}
+			}
+			mon%mon%_%rx%_%ry%
+		}
+	return	
 	}
