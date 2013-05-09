@@ -53,4 +53,4 @@ Auto shift horizontal on the third monitor. This will determine an amount to aut
 BETA
 
 Taskbar. This is a bar to be placed at the top of your main monitor (I may make position customizable in the future). It will display the current running task along with the date and mouse position. Set the value to 1 if you want the bar. Otherwise set it to 0.
-1
+0

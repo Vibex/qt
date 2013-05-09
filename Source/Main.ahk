@@ -6,19 +6,17 @@
 		null := ""
 		full := "This string is full and should fix all the problems I am having"
 		
-		barheight := 15
-		
 		reload()
 		arrGrid(1)
 		arrGrid(2)
 		arrGrid(3)
 		
+		barheight := 15
+		
 		if (baryeah = 1)
 		{
 			InitializeBar(1, hres1, barheight, 0)
 		}
-		
-		
 		
 		previousid := null
 		currentid := WinExist("A")

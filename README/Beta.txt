@@ -1,5 +1,4 @@
 The current beta features are:
-*Adding a taskbar. Still in concept.
+*Adding a taskbar. This is now a valiable for beta testing. Still very much in development.
 *Adding a setup app to customize options rather than/as well as a the .txt file. Still in concept.
-*Setting a predetermined size for columns and rows per monitor. 10% complete. Not avaliable yet.
 *The auto moving of windows when changing the size of windows with the arrow keys. About 5% complete. Not avaliably for testing yet.

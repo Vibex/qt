@@ -861,24 +861,91 @@
 				rx := rx - 1
 				if (rx !> 0)
 				{
-					done := 0
-					if (mon = 1)
-					{
-						mon := 2
-						done := 1
-					}
-					if (mon = 2 && done = 0)
-					{
-						mon := 3
-						done := 1
-					}
-					if (mon = 3 && done = 0)
-					{
-						mon := 1
-					}
 					rx := rx + 1
+				}
+			}
+			if (direc := "d")
+			{
+				rx := rx + 1
+				if (rx !< 4)
+				{
+					rx := rx - 1
+				}
+			}
+			if (direc := "l")
+			{
+				ry := ry - 1
+				if (rx !> 0)
+				{
+					ry := ry + 1
+				}
+			}
+			if (direc := "r")
+			{
+				ry := ry + 1
+				if (rx !< 4)
+				{
+					ry := ry - 1
 				}
 			}
 		}
 	return	
+	}
+	
+	class Window
+	{
+		id := null
+		
+		__New(tid)
+		{
+			id := tid
+		return this
+		}
+	}
+	
+	class Monitor
+	{
+		hres := ""
+		vres := ""
+		hoff := ""
+		voff := ""
+		tbar := ""
+		bbar := ""
+		lbar := ""
+		rbar := ""
+		Data := Object()
+		
+		__New(thres, tvres, thoff, tvoff, ttbar, tbbar, tlbar, trbar)
+		{
+			hres := thres
+			vres := tvres
+			hoff := thoff
+			voff := tvoff
+			tbar := ttbar
+			bbar := tbbar
+			lbar := tlbar
+			rbar := trbar
+			Loop 3
+			{
+				i := A_Index
+				Loop 3
+				{
+					data[i, A_Index] := null
+				}
+			}
+		return this
+		}
+		
+		getWinAt(r, c)
+		{
+			
+		return
+		}
+		
+		getWinCord(tid)
+		{
+			
+			tarr := [sr, er, sc, ec]
+		return tarr
+		}
 	}
