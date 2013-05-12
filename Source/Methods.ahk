@@ -5,18 +5,26 @@
 		WinGetTitle, title, ahk_id %lParam%
 		If (wParam = 2) { ;Window closed
 			remove(lParam)
+		return
 		}
-		If (wParam = 1) { ;Window created
-			
+		If (wParam = 1 && title != "Adobe Flash Player") { ;Window created
+			;titleBeGone(lParam)
+		return
 		}
 		If (wParam = 4) { ;Window active
-			previousid := currentid
-			currentid := lParam
+			if (lParam != currentid)
+			{
+				previousid := currentid
+				currentid := lParam
+			}
 			Gosub, UpdateTitle
+		return
 		}
 		If (wParam = 32774) { ;Flash Window
 			flashCheck(lparam)
+		return
 		}
+	return
 	}
 	
 	flashCheck(id)
@@ -130,7 +138,13 @@
 			FileReadLine, rs3, %configA%, 46
 			FileReadLine, ls3, %configA%, 49
 			
-			FileReadLine, baryeah, %configA%, 56
+			FileReadLine, custran, %configA%, 54
+			
+			FileReadLine, baryeah, %configA%, 61
+		} else {
+			;Defaults
+			custran := 128
+			titlefix := 0
 		}
 		
 		if (math = 1)
@@ -629,6 +643,10 @@
 					col22 := col22 - hspeed
 				}
 			}
+			if (nowin = 0)
+			{
+				;auto(2)
+			}
 		return
 		}
 		if (xtemp >= hres1 && dis3 = 1 && row <=  row2 && col <=  col2)
@@ -676,6 +694,10 @@
 				} else {
 					col32 := col32 - hspeed
 				}
+			}
+			if (nowin = 0)
+			{
+				;auto(3)
 			}
 		return
 		}
@@ -725,7 +747,36 @@
 					col12 := col12 - hspeed
 				}
 			}
+			if (nowin = 0)
+			{
+				;auto(1)
+			}
 		return
+		}
+	return
+	}
+	
+	auto(mon)
+	{
+		global
+		local x
+		local y
+		local z
+		x := 3
+		Loop, 3
+		{
+			x -= 1
+			y := 3
+			Loop, 3
+			{
+				y -= 1
+				z := mon%mon%_%x%_%y%
+				test := InStr(z, full)
+				if (test = 0 && z != null)
+				{
+					move(z, x, y)
+				}
+			}
 		}
 	return
 	}
@@ -800,28 +851,6 @@
 	return
 	}
 	
-	autoMove(mon)
-	{
-		global
-		x := 0
-		Loop, 3
-		{
-			x += 1
-			y := 0
-			Loop, 3
-			{
-				y += 1
-				temp := mon1_%x%_%y%
-				test := InStr(temp, full)
-				if (temp != null && test = 0)
-				{
-					move(temp, x, y)					
-				}
-			}
-		}
-	return
-	}
-	
 	titleBeGone(id)
 	{
 		global
@@ -890,62 +919,4 @@
 			}
 		}
 	return	
-	}
-	
-	class Window
-	{
-		id := null
-		
-		__New(tid)
-		{
-			id := tid
-		return this
-		}
-	}
-	
-	class Monitor
-	{
-		hres := ""
-		vres := ""
-		hoff := ""
-		voff := ""
-		tbar := ""
-		bbar := ""
-		lbar := ""
-		rbar := ""
-		Data := Object()
-		
-		__New(thres, tvres, thoff, tvoff, ttbar, tbbar, tlbar, trbar)
-		{
-			hres := thres
-			vres := tvres
-			hoff := thoff
-			voff := tvoff
-			tbar := ttbar
-			bbar := tbbar
-			lbar := tlbar
-			rbar := trbar
-			Loop 3
-			{
-				i := A_Index
-				Loop 3
-				{
-					data[i, A_Index] := null
-				}
-			}
-		return this
-		}
-		
-		getWinAt(r, c)
-		{
-			
-		return
-		}
-		
-		getWinCord(tid)
-		{
-			
-			tarr := [sr, er, sc, ec]
-		return tarr
-		}
 	}

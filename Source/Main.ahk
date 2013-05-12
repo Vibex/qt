@@ -18,6 +18,8 @@
 			InitializeBar(1, hres1, barheight, 0)
 		}
 		
+		m1 := new Monitor(hres1, vres1, 0, 0, tbar1, bbar1, lbar1, rbar1)
+		
 		previousid := null
 		currentid := WinExist("A")
 		
@@ -241,32 +243,6 @@
 	
 	
 	
-	^Up::
-	{
-		
-	return
-	}
-	
-	^Down::
-	{
-		
-	return
-	}
-	
-	^Left::
-	{
-		
-	return
-	}
-	
-	^Right::
-	{
-		
-	return
-	}
-	
-	
-	
 	!^NumpadClear::
 	{
 		idtemp := WinExist("A")
@@ -291,6 +267,15 @@
 	!^W::
 	{
 		remove(a, 1)
+	return
+	}
+	
+	!^T::
+	{
+		idtemp := WinExist("A")
+		WinGetTitle, title, ahk_id %idtemp%
+		InputBox, newName, Rename - qt.pi, Rename the current window.`n(Curently custom fonts are not avaliable in AHK input boxes.),,,,,,,, %title%
+		WinSetTitle, ahk_id %idtemp%,, %newName%
 	return
 	}
 	
@@ -341,6 +326,24 @@
 	^NumpadEnter::
 	{
 		sound("m")
+	return
+	}
+	
+	
+	
+	^WheelUp::
+	{
+		WinGet, tran, Transparent, A
+		newtrans := tran + custran
+		WinSet, Transparent, %newtrans%, A
+	return
+	}
+	
+	^WheelDown::
+	{
+		WinGet, tran, Transparent, A
+		newtrans := tran - custran
+		WinSet, Transparent, %newtrans%, A
 	return
 	}
 	

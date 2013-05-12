@@ -55,10 +55,10 @@ Set the below value to the default number of columns (1 - 3) on your third monit
 
 
 The border/boundary you want between all your windows, horizontal.
-6
+0
 
 The border/boundary you want between all your windows, vertical.
-6
+0
 
 This border value is an extra value you can add to the outer sides of your windows, horizontal.
 0

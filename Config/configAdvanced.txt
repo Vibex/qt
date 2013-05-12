@@ -1,4 +1,4 @@
-***This is a more advanced config with more options and some test features. Please read about the beta features in beta.txt before enabling anythin below.***
+***These are my own personal configs, you may want to delete these and rename the Defaults to this for your own use.***
 
 Enable advanced config settings by setting this to 1. Otherwise set it to 0.
 0
@@ -50,7 +50,12 @@ Auto shift horizontal on the third monitor. This will determine an amount to aut
 
 
 
+Set the value below to the amount of opacity change you want when Ctrl + Scrolling (0 to 255).
+128
+
+
+
 BETA
 
 Taskbar. This is a bar to be placed at the top of your main monitor (I may make position customizable in the future). It will display the current running task along with the date and mouse position. Set the value to 1 if you want the bar. Otherwise set it to 0.
-1
+0

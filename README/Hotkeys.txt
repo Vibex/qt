@@ -48,8 +48,13 @@ Ctrl + Numpad Add: Increase volume.
 Ctrl + Numpad Sub: Decrease volume.
 Ctrl + Numpad Enter: Mute volume.
 
+Transparency Hotkeys
+Ctrl + Scroll Wheel Up: Increase the opacity of the selected window.
+Ctrl + Scroll Wheel Down: Decrease the opacity of the selected window.
+
 Other Keys
 Ctrl + Alt + Numpad Clear: Remove the titlebar from the current window.
 Ctrl + Alt + F: Remove the active window from the current stored window information.
 Ctrl + Alt + R: Reread the config.txt and configAdvanced.txt file.
 Ctrl + Alt + W: Removes all stored window data.
+Ctrl + Alt + T: Rename the selected window.
