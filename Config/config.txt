@@ -132,8 +132,3 @@ Set the frequency of the beep (between 37 and 32767).
 
 Set the duration of the beep in milliseconds.
 100
-
-
-
-Set the value of how often the script will sleep for 10ms. A value of 10ms will keep the CPU usage lower than 50% on most systems. Make sure to leave the ms ending on your value.
-10ms

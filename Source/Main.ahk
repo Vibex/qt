@@ -7,9 +7,8 @@
 		full := "This string is full and should fix all the problems I am having"
 		
 		reload()
-		arrGrid(1)
-		arrGrid(2)
-		arrGrid(3)
+		
+		remove(null, 1)
 		
 		barheight := 15
 		
@@ -18,17 +17,18 @@
 			InitializeBar(1, hres1, barheight, 0)
 		}
 		
-		m1 := new Monitor(hres1, vres1, 0, 0, tbar1, bbar1, lbar1, rbar1)
-		
 		previousid := null
 		currentid := WinExist("A")
 		
 		flashNum0 := 0
 		
-		Hwnd := WinExist(A_ScriptFullPath)
-		DllCall( "RegisterShellHookWindow", UInt,Hwnd )
-		MsgNum := DllCall( "RegisterWindowMessage", Str,"SHELLHOOK" )
-		OnMessage( MsgNum, "ShellMessage" )
+		if (winHook = 1)
+		{
+			Hwnd := WinExist(A_ScriptFullPath)
+			DllCall( "RegisterShellHookWindow", UInt,Hwnd )
+			MsgNum := DllCall( "RegisterWindowMessage", Str,"SHELLHOOK" )
+			OnMessage( MsgNum, "ShellMessage" )
+		}
 	return
 	
 	

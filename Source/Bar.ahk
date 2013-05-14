@@ -11,12 +11,12 @@
 		noWin := "no window selected"
 		currentWin := noWin
 		
-		transColour = EEAA99
-		barColour = C9C9C9
-		selecColour = B5B5B5
-		texColour = 2F2F2F
+		transColour := "EEAA99"
+		barColour := "C9C9C9"
+		selecColour := "B5B5B5"
+		texColour := "2F2F2F"
 		
-		font = Haxrcorp 4088
+		font := "Haxrcorp 4088"
 		fontSize := 9
 		
 		updateRate := 50
@@ -35,7 +35,7 @@
 			Gui win:+LastFound +AlwaysOnTop -Caption +ToolWindow
 			Gui, win:Color, %selecColour%
 			Gui, win:Font, s%fontSize% c%texColour%, %font%
-			size := (w - 54 - 80 - 40) / 9
+			size := (w - 44 - 80 - 40) / 9
 			if (hpos = 0)
 			{
 				shift := 4
@@ -44,7 +44,6 @@
 			}
 			Gui, win:Add, Text, vText x4 y1 w%size%, %noWin%
 			Gui, win:Show, x%shift% y0 w%size% h%h% NoActivate
-		
 		
 			Gui win2:+LastFound +AlwaysOnTop -Caption +ToolWindow
 			Gui, win2:Color, %barColour%
@@ -65,8 +64,8 @@
 			Gui, fla:Color, %selecColour%
 			Gui, fla:Font, s%fontSize% c%texColour%, %font%
 			x := shift + size
-			Gui, fla:Add, Text, vText x2 y1 h%h%, 0
-			Gui, fla:Show, x%x% y0 h%h% w12 NoActivate
+			Gui, fla:Add, Text, vText x3 y1 h%h%, 0
+			Gui, fla:Show, x%x% y0 h%h% w11 NoActivate
 		}
 		
 		if (hclock = 1) 
@@ -75,7 +74,7 @@
 			Gui, clock:Color, %barColour%
 			Gui, clock:Font, s%fontSize% c%texColour%, %font%
 			Gui, clock:Add, Text, vText x4 y1 h%h%, 00 00.00
-			shift := w - 54
+			shift := w - 44
 			Gui, clock:Show, x%shift% y0 h%h% NoActivate
 		}
 		

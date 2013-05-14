@@ -3,7 +3,10 @@
 Enable advanced config settings by setting this to 1. Otherwise set it to 0.
 1
 
-Set this to 1 if you encounter a black bar beneath your windows when removing the titlebar. Otherwise set this to 0. This will cause the window to flash. This is intentional, don't worry.
+Set the value of how often the script will sleep for 10ms. A value of 10(ms) will keep the CPU usage lower than 50% on most systems. If you leave off the "ms" ending it will specify a number of lines instead of milliseconds.
+10ms
+
+*FIX*Set this to 1 if you encounter a black bar beneath your windows when removing the titlebar. Otherwise set this to 0. This will cause the window to flash. This is intentional, don't worry.
 1
 
 
@@ -52,6 +55,11 @@ Auto shift horizontal on the third monitor. This will determine an amount to aut
 
 Set the value below to the amount of opacity change you want when Ctrl + Scrolling (0 to 255).
 128
+
+
+
+Set this value to 1 to enable window hooking. Set to 0 otherwise. If this is 0 it will break a fair number of the features avaliable to the UI (and some other features) of qt.pi. YOU HAVE BEEN WARNED!
+1
 
 
 

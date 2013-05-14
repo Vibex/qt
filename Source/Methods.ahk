@@ -2,6 +2,7 @@
 	{
 		global previousid
 		global currentid
+		
 		WinGetTitle, title, ahk_id %lParam%
 		If (wParam = 2) { ;Window closed
 			remove(lParam)
@@ -22,7 +23,6 @@
 		}
 		If (wParam = 32774) { ;Flash Window
 			flashCheck(lparam)
-		return
 		}
 	return
 	}
@@ -30,6 +30,7 @@
 	flashCheck(id)
 	{
 		global
+		
 		if (flashNum0 != 0)
 		{
 			Loop, %flashNum0%
@@ -48,13 +49,45 @@
 	reload(math = 1, autoShift = 1)
 	{
 		global
-		remove(a, 1)
 		
 		config := "Config\config.txt"
 		configA := "Config\configAdvanced.txt"
 	
-		FileReadLine, bspeed, %config%, 139
-		SetBatchLines, %batchspeed%
+		FileReadLine, enableadv, %configA%, 4
+		if (enableadv = 1)
+		{
+			FileReadLine, bspeed, %configA%, 7
+			SetBatchLines, %batchspeed%
+			
+			FileReadLine, titleFix, %configA%, 10
+			
+			FileReadLine, us1, %configA%, 15
+			FileReadLine, ds1, %configA%, 18
+			FileReadLine, rs1, %configA%, 21
+			FileReadLine, ls1, %configA%, 24
+			
+			FileReadLine, us2, %configA%, 29
+			FileReadLine, ds2, %configA%, 32
+			FileReadLine, rs2, %configA%, 35
+			FileReadLine, ls2, %configA%, 38
+			
+			FileReadLine, us3, %configA%, 43
+			FileReadLine, ds3, %configA%, 46
+			FileReadLine, rs3, %configA%, 49
+			FileReadLine, ls3, %configA%, 52
+			
+			FileReadLine, custran, %configA%, 57
+			
+			FileReadLine, winHook, %configA%, 62
+			
+			FileReadLine, baryeah, %configA%, 69
+		} else {
+			;Defaults
+			SetBatchLines, 10ms
+			custran := 128
+			titlefix := 0
+			winHook := 1
+		}
 		
 		FileReadLine, hres1, %config%, 4
 		FileReadLine, vres1, %config%, 7
@@ -118,35 +151,6 @@
 			FileReadLine, dura, %config%, 134
 		}
 		
-		FileReadLine, enableadv, %configA%, 4
-		if (enableadv = 1)
-		{
-			FileReadLine, titleFix, %configA%, 7
-			
-			FileReadLine, us1, %configA%, 12
-			FileReadLine, ds1, %configA%, 15
-			FileReadLine, rs1, %configA%, 18
-			FileReadLine, ls1, %configA%, 21
-			
-			FileReadLine, us2, %configA%, 26
-			FileReadLine, ds2, %configA%, 29
-			FileReadLine, rs2, %configA%, 32
-			FileReadLine, ls2, %configA%, 35
-			
-			FileReadLine, us3, %configA%, 40
-			FileReadLine, ds3, %configA%, 43
-			FileReadLine, rs3, %configA%, 46
-			FileReadLine, ls3, %configA%, 49
-			
-			FileReadLine, custran, %configA%, 54
-			
-			FileReadLine, baryeah, %configA%, 61
-		} else {
-			;Defaults
-			custran := 128
-			titlefix := 0
-		}
-		
 		if (math = 1)
 		{
 			math()
@@ -161,6 +165,13 @@
 	math()
 	{
 		global
+		local w1
+		local h1
+		local w2
+		local h2
+		local w3
+		local h3
+		
 		w1 := (hres1 - hbor - (col1 * hbor) - hborex - hborex - lbar1 - rbar1)
 		h1 := (vres1 - vbor - (row1 * vbor) - vborex - vborex - tbar1 - bbar1)
 		w2 := (hres2 - hbor - (col2 * hbor) - hborex - hborex - lbar2 - rbar2)
@@ -192,6 +203,8 @@
 	autoShift()
 	{
 		global
+		local mon
+		
 		mon := 0
 		Loop, 3
 		{
@@ -235,6 +248,7 @@
 	findPos(mon, x, y)
 	{
 		global
+		
 		if (x = 1)
 		{
 			rrow := row%mon%1
@@ -272,135 +286,99 @@
 	move(id, row, col, expand = 1)
 	{
 		global
-		WinGetTitle, title, ahk_id %y%
-		WinGetPos, xtemp, ytemp, wtemp, htemp, %title%
+		local xtemp
+		local d
+		local g
+		local f
+		local v
+		local b
+		local mon
+		
+		WinGetPos, xtemp,,,, ahk_id %id%
 		remove(id)
+		mon := 0
 		if (xtemp < 0 && dis2 = 1 && row <=  row2 && col <=  col2)
 		{
-			findPos(2, row, col)
-			setId(2, id, row, col)
-			if (expand = 1)
-			{
-				expand(2, id, title, row, col, rcol, rrow)
-			} else {
-				if ((row - 1) > 0)
-				{
-					d := row - 1
-					g := row2%d%
-				} else {
-					g := 0
-				}
-				if ((row - 2) > 0)
-				{
-					d := row - 2
-					f := row2%d%
-				} else {
-					f := 0
-				}
-				if ((col - 1) > 0)
-				{
-					d := col - 1
-					v := col2%d%
-				} else {
-					v := 0
-				}
-				if ((col - 2) > 0)
-				{
-					d := col - 2
-					b := col2%d%
-				} else {
-					b := 0
-				}
-				WinMove, %title%,, (v + b + (hbor * col) + lbar2 - hres2), (g + f + (vbor * row) + tbar2 + off2), (rcol),  (rrow)
-			}
-		return
+			mon := 2
 		}
 		if (xtemp >= hres1 && dis3 = 1 && row <=  row3 && col <=  col3)
 		{
-			findPos(3, row, col)
-			setId(3, id, row, col)
-			if (expand = 1)
-			{
-				expand(3, id, title, row, col, rcol, rrow)
-			} else {
-				if ((row - 1) > 0)
-				{
-					d := row - 1
-					g := row3%d%
-				} else {
-					g := 0
-				}
-				if ((row - 2) > 0)
-				{
-					d := row - 2
-					f := row3%d%
-				} else {
-					f := 0
-				}
-				if ((col - 1) > 0)
-				{
-					d := col - 1
-					v := col3%d%
-				} else {
-					v := 0
-				}
-				if ((col - 2) > 0)
-				{
-					d := col - 2
-					b := col3%d%
-				} else {
-					b := 0
-				}
-				WinMove, %title%,, (v + b + (hbor * col) + lbar3 + hres1), (g + f + (vbor * row) + tbar3 + off3), (rcol),  (rrow)
-			}
-		return
+			mon := 3
 		}
 		if (xtemp >= 0 && xtemp < hres1 && row <= row1 && col <= col1)
 		{
-			findPos(1, row, col)
-			setId(1, id, row, col)
+			mon := 1
+		}
+		if (mon != 0)
+		{
+			findPos(mon, row, col)
+			setId(mon, id, row, col)
 			if (expand = 1)
 			{
-				expand(1, id, title, row, col, rcol, rrow)
+				expand(mon, id, row, col, rcol, rrow)
 			} else {
 				if ((row - 1) > 0)
 				{
 					d := row - 1
-					g := row1%d%
+					g := row%mon%%d%
 				} else {
 					g := 0
 				}
 				if ((row - 2) > 0)
 				{
 					d := row - 2
-					f := row1%d%
+					f := row%mon%%d%
 				} else {
 					f := 0
 				}
 				if ((col - 1) > 0)
 				{
 					d := col - 1
-					v := col1%d%
+					v := col%mon%%d%
 				} else {
 					v := 0
 				}
 				if ((col - 2) > 0)
 				{
 					d := col - 2
-					b := col1%d%
+					b := col%mon%%d%
 				} else {
 					b := 0
 				}
-				WinMove, %title%,, (v + b + (hbor * col) + lbar1), (g + f + (vbor * row) + tbar1), (rcol),  (rrow)		
+				if (mon = 1)
+				{
+					WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar1), (g + f + (vbor * row) + tbar1), (rcol),  (rrow)		
+				return
+				}
+				if (mon = 2)
+				{
+					WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar2 - hres2), (g + f + (vbor * row) + tbar2 + off2), (rcol),  (rrow)
+				return
+				}
+				if (mon = 3)
+				{
+					WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar3 + hres1), (g + f + (vbor * row) + tbar3 + off3), (rcol),  (rrow)
+				}
 			}
-		return
 		}
 	return
 	}
 	
-	expand(mon, id, title, row, col, tw, th)
+	expand(mon, id, row, col, tw, th)
 	{
 		global
+		local path1
+		local path2
+		local trow1
+		local trow2
+		local tcol1
+		local tcol2
+		local d
+		local g
+		local f
+		local v
+		local b
+		
 		path1 := 0
 		path2 := 0
 		trow1 := row + 1
@@ -487,40 +465,19 @@
 		} else {
 			b := 0
 		}
+		if (mon = 1)
+		{
+			WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar1), (g + f + (vbor * row) + tbar1), (tw),  (th)
+		return
+		}
 		if (mon = 2)
 		{
-			WinMove, %title%,, (v + b + (hbor * col) + lbar2 - hres2), (g + f + (vbor * row) + tbar2 + off2), (tw),  (th)
+			WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar2 - hres2), (g + f + (vbor * row) + tbar2 + off2), (tw),  (th)
 		return
 		}
 		if (mon = 3)
 		{
-			WinMove, %title%,, (v + b + (hbor * col) + lbar3 + hres1), (g + f + (vbor * row) + tbar3 + off3), (tw),  (th)
-		return
-		}
-		if (mon = 1)
-		{
-			WinMove, %title%,, (v + b + (hbor * col) + lbar1), (g + f + (vbor * row) + tbar1), (tw),  (th)
-		return
-		}
-	return
-	}
-	
-	arrGrid(mon)
-	{
-		global
-		x := 0
-		y := 0
-		temp1 := row%mon%
-		temp2 := col%mon%
-		Loop, %temp1%
-		{
-			x += 1
-			y := 0
-			Loop, %temp2%
-			{
-				y += 1
-				mon%mon%_%x%_%y% := null
-			}
+			WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar3 + hres1), (g + f + (vbor * row) + tbar3 + off3), (tw),  (th)
 		}
 	return
 	}
@@ -535,7 +492,7 @@
 			math()
 		return
 		}
-		if (pos > hres1 && dis3 = 1)
+		if (pos >= hres1 && dis3 = 1)
 		{
 			row3 := row
 			col3 := col
@@ -551,6 +508,9 @@
 	remove(id, all = 0)
 	{
 		global
+		local x
+		local y
+		
 		x := 0
 		Loop, 3
 		{
@@ -559,15 +519,15 @@
 			Loop, 3
 			{
 				y += 1
-				if (mon1_%x%_%y% = id ||  mon1_%x%_%y% = full . id || all = 1)
+				if (mon1_%x%_%y% = id ||  mon1_%x%_%y% = full . id || all != 0)
 				{
 					mon1_%x%_%y% := null
 				}
-				if (mon2_%x%_%y% = id ||  mon2_%x%_%y% = full . id || all = 1)
+				if (mon2_%x%_%y% = id ||  mon2_%x%_%y% = full . id || all != 0)
 				{
 					mon2_%x%_%y% := null
 				}
-				if (mon3_%x%_%y% = id ||  mon3_%x%_%y% = full . id || all = 1)
+				if (mon3_%x%_%y% = id ||  mon3_%x%_%y% = full . id || all != 0)
 				{
 					mon3_%x%_%y% := null
 				}
@@ -579,179 +539,74 @@
 	shiftBorder(id, direc, nowin = 0)
 	{
 		global
-		if (nowin = 0)
+		
+		local xtemp
+		local mon
+		
+		mon := 0
+		WinGetPos, xtemp,,,, ahk_id %id%
+		if (nowin = 1 || (xtemp < hres1 && xtemp >= 0 && row <=  row2 && col <=  col2))
 		{
-			WinGetTitle, title, ahk_id %y%
-			WinGetPos, xtemp, ytemp, wtemp, htemp, %title%
-		} else {
-			if (nowin = 1)
-			{
-				xtemp := 1
-			}
-			if (nowin = 2)
-			{
-				xtemp := -1
-			}
-			if (nowin = 3)
-			{
-				xtemp := hres1 + 1
-			}
+			mon := 1
 		}
-		if (xtemp < 0 && dis2 = 1 && row <=  row2 && col <=  col2)
+		if (nowin = 2 || (xtemp < 0 && dis2 = 1 && row <=  row2 && col <=  col2))
+		{
+			mon := 2
+		}
+		if (nowin = 3 || (xtemp >= hres1 && dis3 = 1 && row <=  row2 && col <=  col2))
+		{
+			mon := 3
+		}
+		if (mon != 0)
 		{
 			if (direc = "u")
 			{
-				row21 := row21 - vspeed
-				if (row2 = 3)
+				row%mon%1 := row%mon%1 - vspeed
+				if (row%mon% = 3)
 				{
-					row22 := row22 + (vspeed/2)
-					row23 := row23 + (vspeed/2)
+					row%mon%2 := row%mon%2 + (vspeed/2)
+					row%mon%3 := row%mon%3 + (vspeed/2)
 				} else {
-					row22 := row22 + vspeed
+					row%mon%2 := row%mon%2 + vspeed
 				}
 			}
 			if (direc = "d")
 			{
-				row21 := row21 + vspeed
-				if (row2 = 3)
+				row%mon%1 := row%mon%1 + vspeed
+				if (row%mon% = 3)
 				{
-					row22 := row22 - (vspeed/2)
-					row23 := row23 - (vspeed/2)
+					row%mon%2 := row%mon%2 - (vspeed/2)
+					row%mon%3 := row%mon%3 - (vspeed/2)
 				} else {
-					row22 := row22 - vspeed
+					row%mon%2 := row%mon%2 - vspeed
 				}
 			}
 			if (direc = "l")
 			{
-				col21 := col21 - hspeed
-				if (col2 = 3)
+				col%mon%1 := col%mon%1 - hspeed
+				if (col%mon% = 3)
 				{
-					col22 := col22 + (hspeed/2)
-					col23 := col23 + (hspeed/2)
+					col%mon%2 := col%mon%2 + (hspeed/2)
+					col%mon%3 := col%mon%3 + (hspeed/2)
 				} else {
-					col22 := col22 + hspeed
+					col%mon%2 := col%mon%2 + hspeed
 				}
 			}
 			if (direc = "r")
 			{
-				col21 := col21 + hspeed
-				if (col2 = 3)
+				col%mon%1 := col%mon%1 + hspeed
+				if (col%mon% = 3)
 				{
-					col22 := col22 - (hspeed/2)
-					col23 := col23 - (hspeed/2)
+					col%mon%2 := col%mon%2 - (hspeed/2)
+					col%mon%3 := col%mon%3 - (hspeed/2)
 				} else {
-					col22 := col22 - hspeed
+					col%mon%2 := col%mon%2 - hspeed
 				}
 			}
 			if (nowin = 0)
 			{
-				;auto(2)
+				;auto(mon)
 			}
-		return
-		}
-		if (xtemp >= hres1 && dis3 = 1 && row <=  row2 && col <=  col2)
-		{
-			if (direc = "u")
-			{
-				row31 := row31 - vspeed
-				if (row3 = 3)
-				{
-					row32 := row32 + (vspeed/2)
-					row33 := row33 + (vspeed/2)
-				} else {
-					row32 := row32 + vspeed
-				}
-			}
-			if (direc = "d")
-			{
-				row31 := row31 + vspeed
-				if (row3 = 3)
-				{
-					row32 := row32 - (vspeed/2)
-					row33 := row33 - (vspeed/2)
-				} else {
-					row32 := row32 - vspeed
-				}
-			}
-			if (direc = "l")
-			{
-				col31 := col21 - hspeed
-				if (col3 = 3)
-				{
-					col32 := col32 + (hspeed/2)
-					col33 := col33 + (hspeed/2)
-				} else {
-					col32 := col32 + hspeed
-				}
-			}
-			if (direc = "r")
-			{
-				col31 := col31 + hspeed
-				if (col3 = 3)
-				{
-					col32 := col32 - (hspeed/2)
-					col33 := col33 - (hspeed/2)
-				} else {
-					col32 := col32 - hspeed
-				}
-			}
-			if (nowin = 0)
-			{
-				;auto(3)
-			}
-		return
-		}
-		if (xtemp < hres1 && xtemp >= 0 && row <=  row2 && col <=  col2)
-		{
-			if (direc = "u")
-			{
-				row11 := row11 - vspeed
-				if (row2 = 3)
-				{
-					row12 := row12 + (vspeed/2)
-					row13 := row13 + (vspeed/2)
-				} else {
-					row12 := row12 + vspeed
-				}
-			}
-			if (direc = "d")
-			{
-				row11 := row11 + vspeed
-				if (row1 = 3)
-				{
-					row12 := row12 - (vspeed/2)
-					row13 := row13 - (vspeed/2)
-				} else {
-					row12 := row12 - vspeed
-				}
-			}
-			if (direc = "l")
-			{
-				col11 := col11 - hspeed
-				if (col1 = 3)
-				{
-					col12 := col12 + (hspeed/2)
-					col13 := col13 + (hspeed/2)
-				} else {
-					col12 := col12 + hspeed
-				}
-			}
-			if (direc = "r")
-			{
-				col11 := col11 + hspeed
-				if (col1 = 3)
-				{
-					col12 := col12 - (hspeed/2)
-					col13 := col13 - (hspeed/2)
-				} else {
-					col12 := col12 - hspeed
-				}
-			}
-			if (nowin = 0)
-			{
-				;auto(1)
-			}
-		return
 		}
 	return
 	}
@@ -762,6 +617,7 @@
 		local x
 		local y
 		local z
+		
 		x := 3
 		Loop, 3
 		{
@@ -784,6 +640,9 @@
 	cord(mon, id)
 	{
 		global
+		local x
+		local y
+		
 		x := 0
 		Loop, 3
 		{
@@ -808,18 +667,21 @@
 	screenFill(mon, id)
 	{
 		global
+		
 		remove(id)
+		if (mon = 1)
+		{
+			WinMove, ahk_id %id%,, (hbor + hborex + lbar1), (tbar1 + vbor + vborex), (hres1 - hbor - hbor - hborex - hborex - lbar1 - rbar1), (vres1 - tbar1 - vbor - vbor - bbar1 - vborex - vborex)
+		return
+		}
 		if (mon = 2)
 		{
 			WinMove, ahk_id %id%,, (hbor + (-1 * hres2) + hborex + lbar2), (tbar2 + vbor + off2 + vborex), (hres2 - hbor - hbor - hborex - hborex - lbar2 - rbar2), (vres2 - tbar2 - vbor - vbor - bbar2 - vborex - vborex)
+		return
 		}
 		if (mon = 3)
 		{
 			WinMove, ahk_id %id%,, (hbor + hres1 + hborex + lbar3), (tbar3 + vbor + off3 + vborex), (hres3 - hbor - hbor - hborex - hborex - lbar3 - rbar3), (vres3 - tbar3 - vbor - vbor - bbar3 - vborex - vborex)
-		}
-		if (mon = 1)
-		{
-			WinMove, ahk_id %id%,, (hbor + hborex + lbar1), (tbar1 + vbor + vborex), (hres1 - hbor - hbor - hborex - hborex - lbar1 - rbar1), (vres1 - tbar1 - vbor - vbor - bbar1 - vborex - vborex)
 		}
 	return
 	}
@@ -827,6 +689,7 @@
 	sound(direc)
 	{
 		global
+		
 		if (enablesound = 1)
 		{
 			if (direc = "u")
@@ -844,9 +707,7 @@
 			if (enablebeep = 1)
 			{
 				SoundBeep, %freq%, %dura%
-			return
 			}
-		return
 		}
 	return
 	}
@@ -854,8 +715,9 @@
 	titleBeGone(id)
 	{
 		global
-		WinSet, Style, -0x800000, A
-		WinSet, Style, ^0xC00000, A
+		
+		WinSet, Style, -0x800000, ahk_id %id%
+		WinSet, Style, ^0xC00000, ahk_id %id%
 		if (titleFix = 1)
 		{
 			WinMinimize, ahk_id %id%
@@ -869,6 +731,7 @@
 	{
 		global
 		local mon
+		
 		WinGetPos, xtemp, ytemp, wtemp, htemp, ahk_id %id%
 		if (xtemp < 0 && dis2 = 1)
 		{
@@ -892,6 +755,7 @@
 				{
 					rx := rx + 1
 				}
+			return
 			}
 			if (direc := "d")
 			{
@@ -900,6 +764,7 @@
 				{
 					rx := rx - 1
 				}
+			return
 			}
 			if (direc := "l")
 			{
@@ -908,6 +773,7 @@
 				{
 					ry := ry + 1
 				}
+			return
 			}
 			if (direc := "r")
 			{
