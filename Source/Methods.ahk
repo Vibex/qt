@@ -81,6 +81,7 @@
 			FileReadLine, winHook, %configA%, 62
 			
 			FileReadLine, baryeah, %configA%, 69
+			FileReadLine, autorepos, %configA%, 72
 		} else {
 			;Defaults
 			SetBatchLines, 10ms
@@ -293,6 +294,12 @@
 		local v
 		local b
 		local mon
+		local trow1
+		local tcol1
+		local trow2
+		local tcol2
+		local test
+		local path1
 		
 		WinGetPos, xtemp,,,, ahk_id %id%
 		remove(id)
@@ -311,6 +318,38 @@
 		}
 		if (mon != 0)
 		{
+			if (mon%mon%_%row%_%col% != null && mon%mon%_%row%_%col% != full . id && autorepos = 1)
+			{
+				path1 := 0
+				path2 := 0
+				trow1 := row + 1
+				tcol1 := col + 1
+				trow2 := row - 1
+				tcol2 := col - 1
+				test := InStr(mon%mon%_%row%_%tcol1%, mon%mon%_%row%_%col%)
+				if (test != 0 && tcol1 <= col%mon%)
+				{
+					path1 := 1
+					move(mon%mon%_%row%_%col%, row, tcol1)
+				}
+				test := InStr(mon%mon%_%trow1%_%col%, mon%mon%_%row%_%col%)
+				if (test != 0 && path1 = 0 && trow1 <= row%mon%)
+				{
+					move(mon%mon%_%row%_%col%, trow1, col)
+				}
+				test := InStr(mon%mon%_%row%_%tcol2%, mon%mon%_%row%_%col%)
+				if (test != 0 && tcol2 >= 1)
+				{
+					path2 := 1
+					move(mon%mon%_%row%_%col%, row, tcol2)
+				}
+				test := InStr(mon%mon%_%trow2%_%col%, mon%mon%_%row%_%col%)
+				if (test != 0 && path2 = 0 && trow2 >= 1)
+				{
+					move(mon%mon%_%row%_%col%, trow2, col)
+				}
+			}
+			
 			findPos(mon, row, col)
 			setId(mon, id, row, col)
 			if (expand = 1)
@@ -392,14 +431,11 @@
 				tw := tw + col%mon%%tcol1% + hbor
 				mon%mon%_%row%_%tcol1% := full . id
 				path1 := 1
-				if (trow1 <= row%mon%)
+				if (trow1 <= row%mon% && mon%mon%_%trow1%_%tcol1% = null && mon%mon%_%trow1%_%col% = null)
 				{
-					if (mon%mon%_%trow1%_%tcol1% = null && mon%mon%_%trow1%_%col% = null)
-					{
-						th := th + row%mon%%trow1% + vbor
-						mon%mon%_%trow1%_%tcol1% := full . id
-						mon%mon%_%trow1%_%col% := full . id
-					}
+					th := th + row%mon%%trow1% + vbor
+					mon%mon%_%trow1%_%tcol1% := full . id
+					mon%mon%_%trow1%_%col% := full . id
 				}
 			}
 		}
@@ -410,32 +446,25 @@
 				tw := tw + col%mon%%tcol2% + hbor
 				mon%mon%_%row%_%tcol2% := full . id
 				path2 := 1
-				if (trow2 <= row%mon%)
+				if (trow2 <= row%mon% && mon%mon%_%trow2%_%tcol2% = null && mon%mon%_%trow2%_%col% = null)
 				{
-					if (mon%mon%_%trow2%_%tcol2% = null && mon%mon%_%trow2%_%col% = null)
-					{
-						th := th + row%mon%%trow2% + vbor
-						mon%mon%_%trow2%_%tcol2% := full . id
-						mon%mon%_%trow2%_%col% := full . id
-					}
+					th := th + row%mon%%trow2% + vbor
+					mon%mon%_%trow1%_%tcol2% := full . id
+					mon%mon%_%trow2%_%tcol1% := full . id
+					mon%mon%_%trow2%_%tcol2% := full . id
+					mon%mon%_%trow2%_%col% := full . id
 				}
 			}
 		}
-		if (trow1 <= row%mon% && path1 != 1)
+		if (trow1 <= row%mon% && path1 != 1 && mon%mon%_%trow1%_%col% = null)
 		{
-			if (mon%mon%_%trow1%_%col% = null)
-			{
-				th := th + row%mon%%trow1% + vbor
-				mon%mon%_%trow1%_%col% := full . id
-			}
+			th := th + row%mon%%trow1% + vbor
+			mon%mon%_%trow1%_%col% := full . id
 		}
-		if (trow2 <= row%mon% && path2 != 1)
+		if (trow2 <= row%mon% && path2 != 1 && mon%mon%_%trow2%_%col% = null)
 		{
-			if (mon%mon%_%trow2%_%col% = null)
-			{
-				th := th + row%mon%%trow2% + vbor
-				mon%mon%_%trow2%_%col% := full . id
-			}
+			th := th + row%mon%%trow2% + vbor
+			mon%mon%_%trow2%_%col% := full . id
 		}
 		if ((row - 1) > 0)
 		{
@@ -617,6 +646,7 @@
 		local x
 		local y
 		local z
+		local test
 		
 		x := 3
 		Loop, 3

@@ -1,4 +1,5 @@
 The current beta features are:
-*Adding a taskbar. This is now a valiable for beta testing. Still very much in development.
-*Adding a setup app to customize options rather than/as well as a the .txt file. Still in concept.
-*The auto moving of windows when changing the size of windows with the arrow keys. About 5% complete. Not avaliably for testing yet.
+*Adding a taskbar. This is now ready for beta testing. Still very much in development, only about 40% complete.
+*Adding the automatic repositioning of windows depending on were you place new windows. This is ready for testing and is about 50% - 60% complete.
+*Adding a setup application to customize options rather than/as well as a the .txt file. Still in concept.
+*The auto moving of windows when changing the size of windows with the arrow keys. About 5% complete but isn't ready for testing yet.. Not ready for testing yet.
