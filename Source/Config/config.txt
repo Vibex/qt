@@ -1,10 +1,4 @@
 ***These are my own personal configs, you may want to delete these and rename the Defaults to this for your own use.***
-	
-Main Monitor, Horizontal.
-1920
-
-Main Monitor, Vertical.
-1080
 
 Set the below value to the default number of rows (1 - 3) on your main monitor.
 2
@@ -14,17 +8,8 @@ Set the below value to the default number of columns (1 - 3) on your main monito
 
 
 
-Set this value to 0 if you don't have a monitor on the left of your main monitor. Set it to 1 if you do.
+Set this value to 0 if you don't have a monitor on the left of your main monitor. Set it to 1 if you do. This monitor must be your second monitor if you have 3 monitors, otherwise bugs WILL occur!
 1
-
-Second Monitor, Horizontal.
-1920
-
-Second Monitor, Vertical.
-1080
-
-Second monitor offset, If your monitor is not aligned at the top, set the number of pixels that it is off by to this value (Up is negative, Down is positive).
-0
 
 Set the below value to the default number of rows (1 - 3) on your second monitor.
 3
@@ -34,17 +19,8 @@ Set the below value to the default number of columns (1 - 3) on your second moni
 
 
 
-Set this value to 0 if you don't have a monitor on the right of your main monitor. Set it to 1 if you do.
+Set this value to 0 if you don't have a monitor on the right of your main monitor. Set it to 1 if you do. This monitor must be your third monitor if you have 3 monitors, otherwise bugs WILL occur!
 1
-
-Third Monitor, Horizontal.
-1440
-	
-Third Monitor, Vertical.
-900
-
-Third monitor offset, If your monitor is not aligned at the top, set the number of pixels that it is off by to this value (Up is negative, Down is positive).
-180
 
 Set the below value to the default number of rows (1 - 3) on your third monitor.
 3

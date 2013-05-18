@@ -1,4 +1,6 @@
 ﻿	;Autorun.
+		#MaxThreads 8
+		#WinActivateForce
 		AutoTrim, On
 		SetTitleMatchMode,Slow
 		CoordMode, Mouse, Screen
@@ -7,6 +9,8 @@
 		full := "This string is full and should fix all the problems I am having"
 		
 		reload()
+		SetWinDelay, %wspeed%
+		SetKeyDelay, %kspeed%
 		
 		remove(null, 1)
 		
@@ -14,7 +18,7 @@
 		
 		if (baryeah = 1)
 		{
-			InitializeBar(1, hres1, barheight, 0)
+			InitializeBar(1, Mon1Width, barheight, 0)
 		}
 		
 		previousid := null
@@ -333,17 +337,15 @@
 	
 	^WheelUp::
 	{
-		WinGet, tran, Transparent, A
-		newtrans := tran + custran
-		WinSet, Transparent, %newtrans%, A
+		idtemp := WinExist("A")
+		trans(idtemp, "u")
 	return
 	}
 	
 	^WheelDown::
 	{
-		WinGet, tran, Transparent, A
-		newtrans := tran - custran
-		WinSet, Transparent, %newtrans%, A
+		idtemp := WinExist("A")
+		trans(idtemp, "d")
 	return
 	}
 	

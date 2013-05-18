@@ -5,7 +5,7 @@
 		
 		WinGetTitle, title, ahk_id %lParam%
 		If (wParam = 2) { ;Window closed
-			remove(lParam)
+			;remove(lParam)
 		return
 		}
 		If (wParam = 1 && title != "Adobe Flash Player") { ;Window created
@@ -13,6 +13,11 @@
 		return
 		}
 		If (wParam = 4) { ;Window active
+			WinGet, tran, Transparent, ahk_id %lParam%
+			if (tran <= 1)
+			{
+				WinSet, Transparent, 255, ahk_id %lParam%
+			}
 			if (lParam != currentid)
 			{
 				previousid := currentid
@@ -57,31 +62,46 @@
 		if (enableadv = 1)
 		{
 			FileReadLine, bspeed, %configA%, 7
-			SetBatchLines, %batchspeed%
+			if (bspeed = "WARP DRIVE")
+			{
+				SetBatchLines, -1
+			} else {
+				SetBatchLines, %bspeed%
+			}
+			FileReadLine, wspeed, %configA%, 10
+			if (wspeed = "WARP DRIVE")
+			{
+				wspeed := -1
+			}
+			FileReadLine, kspeed, %configA%, 13
+			if (kspeed = "WARP DRIVE")
+			{
+				kspeed := -1
+			}
 			
-			FileReadLine, titleFix, %configA%, 10
+			FileReadLine, titleFix, %configA%, 16
 			
-			FileReadLine, us1, %configA%, 15
-			FileReadLine, ds1, %configA%, 18
-			FileReadLine, rs1, %configA%, 21
-			FileReadLine, ls1, %configA%, 24
+			FileReadLine, us1, %configA%, 21
+			FileReadLine, ds1, %configA%, 24
+			FileReadLine, rs1, %configA%, 27
+			FileReadLine, ls1, %configA%, 30
 			
-			FileReadLine, us2, %configA%, 29
-			FileReadLine, ds2, %configA%, 32
-			FileReadLine, rs2, %configA%, 35
-			FileReadLine, ls2, %configA%, 38
+			FileReadLine, us2, %configA%, 35
+			FileReadLine, ds2, %configA%, 38
+			FileReadLine, rs2, %configA%, 41
+			FileReadLine, ls2, %configA%, 44
 			
-			FileReadLine, us3, %configA%, 43
-			FileReadLine, ds3, %configA%, 46
-			FileReadLine, rs3, %configA%, 49
-			FileReadLine, ls3, %configA%, 52
+			FileReadLine, us3, %configA%, 49
+			FileReadLine, ds3, %configA%, 52
+			FileReadLine, rs3, %configA%, 55
+			FileReadLine, ls3, %configA%, 58
 			
-			FileReadLine, custran, %configA%, 57
+			FileReadLine, custran, %configA%, 63
 			
-			FileReadLine, winHook, %configA%, 62
+			FileReadLine, winHook, %configA%, 68
 			
-			FileReadLine, baryeah, %configA%, 69
-			FileReadLine, autorepos, %configA%, 72
+			FileReadLine, baryeah, %configA%, 75
+			FileReadLine, autorepos, %configA%, 78
 		} else {
 			;Defaults
 			SetBatchLines, 10ms
@@ -90,68 +110,67 @@
 			winHook := 1
 		}
 		
-		FileReadLine, hres1, %config%, 4
-		FileReadLine, vres1, %config%, 7
-		FileReadLine, row1, %config%, 10
-		FileReadLine, col1, %config%, 13
+		FileReadLine, row1, %config%, 4
+		FileReadLine, col1, %config%, 7
 		
-		FileReadLine, dis2, %config%, 18
+		FileReadLine, tbar1, %config%, 48
+		FileReadLine, bbar1, %config%, 57
+		FileReadLine, rbar1, %config%, 66
+		FileReadLine, lbar1, %config%, 75
+		
+		FileReadLine, dis2, %config%, 12
 		if (dis2 = 1)
 		{
-			FileReadLine, hres2, %config%, 21
-			FileReadLine, vres2, %config%, 24
-			FileReadLine, off2, %config%, 27
-			FileReadLine, row2, %config%, 30
-			FileReadLine, col2, %config%, 33
+			FileReadLine, row2, %config%, 15
+			FileReadLine, col2, %config%, 18
 			
-			FileReadLine, tbar2, %config%, 75
-			FileReadLine, bbar2, %config%, 84
-			FileReadLine, rbar2, %config%, 93
-			FileReadLine, lbar2, %config%, 102
+			FileReadLine, tbar2, %config%, 51
+			FileReadLine, bbar2, %config%, 60
+			FileReadLine, rbar2, %config%, 69
+			FileReadLine, lbar2, %config%, 78
 		}
 		
-		FileReadLine, dis3, %config%, 38
+		FileReadLine, dis3, %config%, 23
 		if (dis3 = 1)
 		{
-			FileReadLine, hres3, %config%, 41
-			FileReadLine, vres3, %config%, 44
-			FileReadLine, off3, %config%, 47
-			FileReadLine, row3, %config%, 50
-			FileReadLine, col3, %config%, 53
+			FileReadLine, row3, %config%, 26
+			FileReadLine, col3, %config%, 29
 			
-			FileReadLine, tbar3, %config%, 78
-			FileReadLine, bbar3, %config%, 87
-			FileReadLine, rbar3, %config%, 96
-			FileReadLine, lbar3, %config%, 105
+			FileReadLine, tbar3, %config%, 54
+			FileReadLine, bbar3, %config%, 63
+			FileReadLine, rbar3, %config%, 72
+			FileReadLine, lbar3, %config%, 81
 		}
 		
-		FileReadLine, hbor, %config%, 58
-		FileReadLine, vbor, %config%, 61
-		FileReadLine, hborex, %config%, 64
-		FileReadLine, vborex, %config%, 67
+		FileReadLine, hbor, %config%, 34
+		FileReadLine, vbor, %config%, 37
+		FileReadLine, hborex, %config%, 40
+		FileReadLine, vborex, %config%, 43
 		
-		FileReadLine, tbar1, %config%, 72
-		FileReadLine, bbar1, %config%, 81
-		FileReadLine, rbar1, %config%, 90
-		FileReadLine, lbar1, %config%, 99
+		FileReadLine, hspeed, %config%, 87
+		FileReadLine, vspeed, %config%, 90
 		
-		FileReadLine, hspeed, %config%, 111
-		FileReadLine, vspeed, %config%, 114
-		
-		FileReadLine, enablesound, %config%, 120
+		FileReadLine, enablesound, %config%, 96
 		if (enablesound = 1)
 		{
-			FileReadLine, vol, %config%, 123
+			FileReadLine, vol, %config%, 99
 			vold := vol * -1
 		}	
 		
-		FileReadLine, enablebeep, %config%, 128
+		FileReadLine, enablebeep, %config%, 104
 		if (enablebeep = 1)
 		{
-			FileReadLine, freq, %config%, 131
-			FileReadLine, dura, %config%, 134
+			FileReadLine, freq, %config%, 107
+			FileReadLine, dura, %config%, 110
 		}
 		
+		SysGet, MonNum, MonitorCount
+		Loop, %MonNum%
+		{
+			SysGet, Mon%A_Index%, Monitor, %A_Index%
+			Mon%A_Index%Width := Mon%A_Index%Right - Mon%A_Index%Left
+			Mon%A_Index%Height := Mon%A_Index%Bottom - Mon%A_Index%Top
+		}
 		if (math = 1)
 		{
 			math()
@@ -166,38 +185,38 @@
 	math()
 	{
 		global
-		local w1
-		local h1
-		local w2
-		local h2
-		local w3
-		local h3
 		
-		w1 := (hres1 - hbor - (col1 * hbor) - hborex - hborex - lbar1 - rbar1)
-		h1 := (vres1 - vbor - (row1 * vbor) - vborex - vborex - tbar1 - bbar1)
-		w2 := (hres2 - hbor - (col2 * hbor) - hborex - hborex - lbar2 - rbar2)
-		h2 := (vres2 - vbor - (row2 * vbor) - vborex - vborex - tbar2 - bbar2)
-		w3 := (hres3 - hbor - (col3 * hbor) - hborex - hborex - lbar3 - rbar3)
-		h3 := (vres3 - vbor - (row3 * vbor) - vborex - vborex - tbar3 - bbar3)
+		Mon1CusWidth := (Mon1Width - hbor - (col1 * hbor) - hborex - hborex - lbar1 - rbar1)
+		Mon1CusHeight := (Mon1Height - vbor - (row1 * vbor) - vborex - vborex - tbar1 - bbar1)
+		if (dis2 = 1)
+		{
+			Mon2CusWidth := (Mon2Width - hbor - (col2 * hbor) - hborex - hborex - lbar2 - rbar2)
+			Mon2CusHeight := (Mon2Height - vbor - (row2 * vbor) - vborex - vborex - tbar2 - bbar2)
+		}
+		if (dis3 = 1)
+		{
+			Mon3CusWidth := (Mon3Width - hbor - (col3 * hbor) - hborex - hborex - lbar3 - rbar3)
+			Mon3CusHeight := (Mon3Height - vbor - (row3 * vbor) - vborex - vborex - tbar3 - bbar3)
+		}
 		
-		row11 := h1 / row1
-		row12 := h1 / row1
-		row13 := h1 / row1
-		col11 := w1 / col1
-		col12 := w1 / col1
-		col13 := w1 / col1
-		row21 := h2 / row2
-		row22 := h2 / row2
-		row23 := h2 / row2
-		col21 := w2 / col2
-		col22 := w2 / col2
-		col23 := w2 / col2
-		row31 := h3 / row3
-		row32 := h3 / row3
-		row33 := h3 / row3
-		col31 := w3 / col3
-		col32 := w3 / col3
-		col33 := w3 / col3
+		row11 := Mon1CusHeight / row1
+		row12 := Mon1CusHeight / row1
+		row13 := Mon1CusHeight / row1
+		col11 := Mon1CusWidth / col1
+		col12 := Mon1CusWidth / col1
+		col13 := Mon1CusWidth / col1
+		row21 := Mon2CusHeight / row2
+		row22 := Mon2CusHeight / row2
+		row23 := Mon2CusHeight / row2
+		col21 := Mon2CusWidth / col2
+		col22 := Mon2CusWidth / col2
+		col23 := Mon2CusWidth / col2
+		row31 := Mon3CusHeight / row3
+		row32 := Mon3CusHeight / row3
+		row33 := Mon3CusHeight / row3
+		col31 := Mon3CusWidth / col3
+		col32 := Mon3CusWidth / col3
+		col33 := Mon3CusWidth / col3
 	return
 	}
 	
@@ -284,7 +303,7 @@
 	return
 	}
 	
-	move(id, row, col, expand = 1)
+	move(id, row, col, expand = 1, repos = 1)
 	{
 		global
 		local xtemp
@@ -294,60 +313,27 @@
 		local v
 		local b
 		local mon
-		local trow1
-		local tcol1
-		local trow2
-		local tcol2
-		local test
-		local path1
 		
 		WinGetPos, xtemp,,,, ahk_id %id%
-		remove(id)
+		remove(id, 0, row, col)
 		mon := 0
-		if (xtemp < 0 && dis2 = 1 && row <=  row2 && col <=  col2)
+		if (xtemp < Mon1Left && dis2 = 1 && row <=  row2 && col <=  col2)
 		{
 			mon := 2
 		}
-		if (xtemp >= hres1 && dis3 = 1 && row <=  row3 && col <=  col3)
+		if (xtemp >= Mon1Right && dis3 = 1 && row <=  row3 && col <=  col3)
 		{
 			mon := 3
 		}
-		if (xtemp >= 0 && xtemp < hres1 && row <= row1 && col <= col1)
+		if (xtemp >= Mon1Left && xtemp < Mon1Right && row <= row1 && col <= col1)
 		{
 			mon := 1
 		}
 		if (mon != 0)
 		{
-			if (mon%mon%_%row%_%col% != null && mon%mon%_%row%_%col% != full . id && autorepos = 1)
+			if (mon%mon%_%row%_%col% != null && repos = 1 && autorepos = 1)
 			{
-				path1 := 0
-				path2 := 0
-				trow1 := row + 1
-				tcol1 := col + 1
-				trow2 := row - 1
-				tcol2 := col - 1
-				test := InStr(mon%mon%_%row%_%tcol1%, mon%mon%_%row%_%col%)
-				if (test != 0 && tcol1 <= col%mon%)
-				{
-					path1 := 1
-					move(mon%mon%_%row%_%col%, row, tcol1)
-				}
-				test := InStr(mon%mon%_%trow1%_%col%, mon%mon%_%row%_%col%)
-				if (test != 0 && path1 = 0 && trow1 <= row%mon%)
-				{
-					move(mon%mon%_%row%_%col%, trow1, col)
-				}
-				test := InStr(mon%mon%_%row%_%tcol2%, mon%mon%_%row%_%col%)
-				if (test != 0 && tcol2 >= 1)
-				{
-					path2 := 1
-					move(mon%mon%_%row%_%col%, row, tcol2)
-				}
-				test := InStr(mon%mon%_%trow2%_%col%, mon%mon%_%row%_%col%)
-				if (test != 0 && path2 = 0 && trow2 >= 1)
-				{
-					move(mon%mon%_%row%_%col%, trow2, col)
-				}
+				repos(mon, id, row, col)
 			}
 			
 			findPos(mon, row, col)
@@ -384,21 +370,48 @@
 				} else {
 					b := 0
 				}
-				if (mon = 1)
-				{
-					WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar1), (g + f + (vbor * row) + tbar1), (rcol),  (rrow)		
-				return
-				}
-				if (mon = 2)
-				{
-					WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar2 - hres2), (g + f + (vbor * row) + tbar2 + off2), (rcol),  (rrow)
-				return
-				}
-				if (mon = 3)
-				{
-					WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar3 + hres1), (g + f + (vbor * row) + tbar3 + off3), (rcol),  (rrow)
-				}
+				WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar%mon% + Mon%mon%Left), (g + f + (vbor * row) + tbar%mon% + Mon%mon%Top), (rcol),  (rrow)
+			return
 			}
+		}
+	return
+	}
+	
+	repos(mon, id, row, col)
+	{
+		global
+		local trow1
+		local tcol1
+		local trow2
+		local tcol2
+		local test
+		
+		trow1 := row + 1
+		tcol1 := col + 1
+		trow2 := row - 1
+		tcol2 := col - 1
+		test := InStr(mon%mon%_%row%_%tcol1%, mon%mon%_%row%_%col%)
+		if (test != 0)
+		{
+			move(mon%mon%_%row%_%col%, row, tcol1, 1, 0)
+		return
+		}
+		test := InStr(mon%mon%_%trow1%_%col%, mon%mon%_%row%_%col%)
+		if (test != 0 && path1 = 0)
+		{
+			move(mon%mon%_%row%_%col%, trow1, col, 1, 0)
+		return
+		}
+		test := InStr(mon%mon%_%row%_%tcol2%, mon%mon%_%row%_%col%)
+		if (test != 0)
+		{
+			move(mon%mon%_%row%_%col%, row, tcol2, 1, 0)
+		return
+		}
+		test := InStr(mon%mon%_%trow2%_%col%, mon%mon%_%row%_%col%)
+		if (test != 0 && path2 = 0)
+		{
+			move(mon%mon%_%row%_%col%, trow2, col, 1, 0)
 		}
 	return
 	}
@@ -494,34 +507,21 @@
 		} else {
 			b := 0
 		}
-		if (mon = 1)
-		{
-			WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar1), (g + f + (vbor * row) + tbar1), (tw),  (th)
-		return
-		}
-		if (mon = 2)
-		{
-			WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar2 - hres2), (g + f + (vbor * row) + tbar2 + off2), (tw),  (th)
-		return
-		}
-		if (mon = 3)
-		{
-			WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar3 + hres1), (g + f + (vbor * row) + tbar3 + off3), (tw),  (th)
-		}
+		WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar%mon% + Mon%mon%Left), (g + f + (vbor * row) + tbar%mon% + Mon%mon%Top), (tw),  (th)
 	return
 	}
 	
 	grid(pos, row, col)
 	{
 		global
-		if (pos < 0 && dis2 = 1)
+		if (pos < Mon1Left && dis2 = 1)
 		{
 			row2 := row
 			col2 := col
 			math()
 		return
 		}
-		if (pos >= hres1 && dis3 = 1)
+		if (pos >= Mon1Right && dis3 = 1)
 		{
 			row3 := row
 			col3 := col
@@ -531,21 +531,26 @@
 		row1 := row
 		col1 := col
 		math()
+		autoShift()
 	return
 	}
 	
-	remove(id, all = 0)
+	remove(id, all = 0, row = 1, col = 1)
 	{
 		global
 		local x
 		local y
+		local temp1
+		local temp2
 		
-		x := 0
-		Loop, 3
+		temp1 := 4 - row
+		temp2 := 4 - col
+		x := row - 1
+		Loop, %temp1%
 		{
 			x += 1
-			y := 0
-			Loop, 3
+			y := col - 1
+			Loop, %temp2%
 			{
 				y += 1
 				if (mon1_%x%_%y% = id ||  mon1_%x%_%y% = full . id || all != 0)
@@ -574,15 +579,15 @@
 		
 		mon := 0
 		WinGetPos, xtemp,,,, ahk_id %id%
-		if (nowin = 1 || (xtemp < hres1 && xtemp >= 0 && row <=  row2 && col <=  col2))
+		if (nowin = 1 || (xtemp < Mon1Left && xtemp >= Mon1Right && row <=  row2 && col <=  col2))
 		{
 			mon := 1
 		}
-		if (nowin = 2 || (xtemp < 0 && dis2 = 1 && row <=  row2 && col <=  col2))
+		if (nowin = 2 || (xtemp < Mon1Left && dis2 = 1 && row <=  row2 && col <=  col2))
 		{
 			mon := 2
 		}
-		if (nowin = 3 || (xtemp >= hres1 && dis3 = 1 && row <=  row2 && col <=  col2))
+		if (nowin = 3 || (xtemp >= Mon1Right && dis3 = 1 && row <=  row2 && col <=  col2))
 		{
 			mon := 3
 		}
@@ -634,7 +639,7 @@
 			}
 			if (nowin = 0)
 			{
-				;auto(mon)
+				auto(mon)
 			}
 		}
 	return
@@ -648,11 +653,11 @@
 		local z
 		local test
 		
-		x := 3
+		x := 4
 		Loop, 3
 		{
 			x -= 1
-			y := 3
+			y := 4
 			Loop, 3
 			{
 				y -= 1
@@ -697,22 +702,8 @@
 	screenFill(mon, id)
 	{
 		global
-		
 		remove(id)
-		if (mon = 1)
-		{
-			WinMove, ahk_id %id%,, (hbor + hborex + lbar1), (tbar1 + vbor + vborex), (hres1 - hbor - hbor - hborex - hborex - lbar1 - rbar1), (vres1 - tbar1 - vbor - vbor - bbar1 - vborex - vborex)
-		return
-		}
-		if (mon = 2)
-		{
-			WinMove, ahk_id %id%,, (hbor + (-1 * hres2) + hborex + lbar2), (tbar2 + vbor + off2 + vborex), (hres2 - hbor - hbor - hborex - hborex - lbar2 - rbar2), (vres2 - tbar2 - vbor - vbor - bbar2 - vborex - vborex)
-		return
-		}
-		if (mon = 3)
-		{
-			WinMove, ahk_id %id%,, (hbor + hres1 + hborex + lbar3), (tbar3 + vbor + off3 + vborex), (hres3 - hbor - hbor - hborex - hborex - lbar3 - rbar3), (vres3 - tbar3 - vbor - vbor - bbar3 - vborex - vborex)
-		}
+		WinMove, ahk_id %id%,, (hbor + Mon%mon%Left + hborex + lbar%mon%), (tbar%mon% + vbor + Mon%mon%Top + vborex), (Mon%mon%CusWidth), (Mon%mon%CusHeight)
 	return
 	}
 	
@@ -748,6 +739,7 @@
 		
 		WinSet, Style, -0x800000, ahk_id %id%
 		WinSet, Style, ^0xC00000, ahk_id %id%
+		WinSet, Redraw,, ahk_id %id%
 		if (titleFix = 1)
 		{
 			WinMinimize, ahk_id %id%
@@ -763,17 +755,17 @@
 		local mon
 		
 		WinGetPos, xtemp, ytemp, wtemp, htemp, ahk_id %id%
-		if (xtemp < 0 && dis2 = 1)
+		if (xtemp < Mon1Right && xtemp >= Mon1Left)
+		{
+			mon := 1
+		}
+		if (xtemp < Mon1Left && dis2 = 1)
 		{
 			mon := 2
 		}
-		if (xtemp >= hres1 && dis3 = 1)
+		if (xtemp >= Mon1Right && dis3 = 1)
 		{
 			mon := 3
-		}
-		if (xtemp < hres1 && xtemp >= 0)
-		{
-			mon := 1
 		}
 		cord(mon, id)
 		if (rx != 0 && ry != 0)
@@ -815,4 +807,20 @@
 			}
 		}
 	return	
+	}
+	
+	trans(id, direc)
+	{
+		global custran
+		WinGet, tran, Transparent, ahk_id %id%
+		if (direc = "u")
+		{
+			newtrans := tran + custran
+		}
+		if (direc = "d")
+		{
+			newtrans := tran - custran
+		}
+		WinSet, Transparent, %newtrans%, ahk_id %id%
+	return
 	}

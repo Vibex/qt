@@ -1,0 +1,6 @@
+Version 0.1
+*Added Changelog to keep track of updates.
+*No longer must you specify the dimmensions of all your montiors. The script will automatically detect them.
+*More options to increase speed were added to the configAdvanced.txt file.
+*Fixed a bug with the auto placement of windows when shiffting there boundries.
+*Minor tweaks everywhere.
