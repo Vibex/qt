@@ -37,6 +37,11 @@ Ctrl + Alt + Numpad Home: Move to the left most monitor.
 Ctrl + Alt + Numpad Up: Move to the middle monitor.
 Ctrl + Alt + Numpad PgUp: Move to the right most monitor.
 
+Center Window Keys ***Numlock off***
+Ctrl + Alt + Numpad End: Centers the window on the left most monitor.
+Ctrl + Alt + Numpad Down: Centers the window on the middle monitor.
+Ctrl + Alt + Numpad PgDn: Centers the window on the right most monitor.
+
 Shift Borders Keys
 Ctrl + Alt + Up: Shift the borders up.
 Ctrl + Alt + Down: Shift the borders down.

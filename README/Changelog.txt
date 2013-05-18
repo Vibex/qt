@@ -1,4 +1,9 @@
-Version 0.1
+Version 0.1.1		05/18/2013
+*Added keys to center window on monitor while retaining there original size (unless the window is larger then the monitor. Then it is resized to fit.).
+*Fixed Screen fill bug that added an extra border length.
+*Cut out some superfluous code.
+
+Version 0.1.0		05/17/2013
 *Added Changelog to keep track of updates.
 *No longer must you specify the dimmensions of all your montiors. The script will automatically detect them.
 *More options to increase speed were added to the configAdvanced.txt file.

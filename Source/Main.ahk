@@ -11,6 +11,8 @@
 		reload()
 		SetWinDelay, %wspeed%
 		SetKeyDelay, %kspeed%
+		cspeed := 10
+		SetControlDelay, %cspeed%
 		
 		remove(null, 1)
 		
@@ -242,6 +244,29 @@
 	{
 		idtemp := WinExist("A")
 		screenFill(3, idtemp)
+	return
+	}
+	
+	
+	
+	!^NumpadEnd::
+	{
+		idtemp := WinExist("A")
+		center(2, idtemp)
+	return
+	}
+	
+	!^NumpadDown::
+	{
+		idtemp := WinExist("A")
+		center(1, idtemp)
+	return
+	}
+	
+	!^NumpadPgDn::
+	{
+		idtemp := WinExist("A")
+		center(3, idtemp)
 	return
 	}
 	

@@ -14,16 +14,16 @@
 		}
 		If (wParam = 4) { ;Window active
 			WinGet, tran, Transparent, ahk_id %lParam%
-			if (tran <= 1)
+			if (tran <= 0)
 			{
 				WinSet, Transparent, 255, ahk_id %lParam%
 			}
-			if (lParam != currentid)
+			if (baryeah = 1 && lParam != currentid)
 			{
 				previousid := currentid
 				currentid := lParam
+				Gosub, UpdateTitle
 			}
-			Gosub, UpdateTitle
 		return
 		}
 		If (wParam = 32774) { ;Flash Window
@@ -317,17 +317,15 @@
 		WinGetPos, xtemp,,,, ahk_id %id%
 		remove(id, 0, row, col)
 		mon := 0
-		if (xtemp < Mon1Left && dis2 = 1 && row <=  row2 && col <=  col2)
-		{
-			mon := 2
-		}
-		if (xtemp >= Mon1Right && dis3 = 1 && row <=  row3 && col <=  col3)
-		{
-			mon := 3
-		}
 		if (xtemp >= Mon1Left && xtemp < Mon1Right && row <= row1 && col <= col1)
 		{
 			mon := 1
+		} else if (xtemp < Mon1Left && dis2 = 1 && row <=  row2 && col <=  col2)
+		{
+			mon := 2
+		} else if (xtemp >= Mon1Right && dis3 = 1 && row <=  row3 && col <=  col3)
+		{
+			mon := 3
 		}
 		if (mon != 0)
 		{
@@ -370,7 +368,7 @@
 				} else {
 					b := 0
 				}
-				WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar%mon% + Mon%mon%Left), (g + f + (vbor * row) + tbar%mon% + Mon%mon%Top), (rcol),  (rrow)
+				WinMove, ahk_id %id%,, (v + b + (hbor * col)  + hborex + lbar%mon% + Mon%mon%Left), (g + f + (vbor * row) + vborex + tbar%mon% + Mon%mon%Top), (rcol),  (rrow)
 			return
 			}
 		}
@@ -507,15 +505,40 @@
 		} else {
 			b := 0
 		}
-		WinMove, ahk_id %id%,, (v + b + (hbor * col) + lbar%mon% + Mon%mon%Left), (g + f + (vbor * row) + tbar%mon% + Mon%mon%Top), (tw),  (th)
+		WinMove, ahk_id %id%,, (v + b + (hbor * col) + hborex + lbar%mon% + Mon%mon%Left), (g + f + (vbor * row) + vborex + tbar%mon% + Mon%mon%Top), (tw),  (th)
+	return
+	}
+	
+	center(mon, id)
+	{
+		global
+		
+		remove(id)
+		WinGetPos, xtemp,, widthtemp, heighttemp, ahk_id %id%
+		if (heighttemp > Mon%mon%CusHeight)
+		{			
+			if (widthtemp > Mon%mon%CusWidth)
+			{
+				WinMove, ahk_id %id%,, (Mon%mon%Left + lbar%mon% + hbor + hborex), (Mon%mon%Top + tbar%mon% + vbor + vborex), (Mon%mon%CusWidth), (Mon%mon%CusHeight)
+			return
+			}				
+			WinMove, ahk_id %id%,, (Mon%mon%Left + (lbar%mon% / 2) - (rbar%mon% / 2) + hbor + hborex + ((Mon%mon%Width / 2) - (widthtemp / 2))), (Mon%mon%Top + tbar%mon% + vbor + vborex), (widthtemp), (Mon%mon%CusHeight)
+		return
+		}			
+		if (widthtemp > Mon%mon%CusWidth)
+		{
+			WinMove, ahk_id %id%,, (Mon%mon%Left + lbar%mon% + hbor + hborex), (Mon%mon%Top + (tbar%mon% / 2) - (bbar%mon% / 2) + vbor + vborex + ((Mon%mon%Height / 2) - (heighttemp / 2))), (Mon%mon%CusWidth), (heighttemp)
+		return
+		}	
+		WinMove, ahk_id %id%,, (Mon%mon%Left + (lbar%mon% / 2) - (rbar%mon% / 2) + hbor + hborex + ((Mon%mon%Width / 2) - (widthtemp / 2))), (Mon%mon%Top + (tbar%mon% / 2) - (bbar%mon% / 2) + vbor + vborex + ((Mon%mon%Height / 2) - (heighttemp / 2)))
 	return
 	}
 	
 	grid(pos, row, col)
 	{
 		global
-		if (pos < Mon1Left && dis2 = 1)
 		{
+		if (pos < Mon1Left && dis2 = 1)
 			row2 := row
 			col2 := col
 			math()
@@ -579,15 +602,13 @@
 		
 		mon := 0
 		WinGetPos, xtemp,,,, ahk_id %id%
-		if (nowin = 1 || (xtemp < Mon1Left && xtemp >= Mon1Right && row <=  row2 && col <=  col2))
+		if (xtemp >= Mon1Left && xtemp < Mon1Right)
 		{
 			mon := 1
-		}
-		if (nowin = 2 || (xtemp < Mon1Left && dis2 = 1 && row <=  row2 && col <=  col2))
+		} else if (xtemp < Mon1Left && dis2 = 1)
 		{
 			mon := 2
-		}
-		if (nowin = 3 || (xtemp >= Mon1Right && dis3 = 1 && row <=  row2 && col <=  col2))
+		} else if (xtemp >= Mon1Right && dis3 = 1)
 		{
 			mon := 3
 		}
@@ -703,7 +724,7 @@
 	{
 		global
 		remove(id)
-		WinMove, ahk_id %id%,, (hbor + Mon%mon%Left + hborex + lbar%mon%), (tbar%mon% + vbor + Mon%mon%Top + vborex), (Mon%mon%CusWidth), (Mon%mon%CusHeight)
+		WinMove, ahk_id %id%,, (hbor + Mon%mon%Left + hborex + lbar%mon%), (tbar%mon% + vbor + Mon%mon%Top + vborex), (Mon%mon%Width - hbor - hbor - hborex - hborex - lbar%mon% - rbar%mon%), (Mon%mon%Height - vbor - vbor - vborex - vborex - tbar%mon% - bbar%mon%)
 	return
 	}
 	
@@ -755,15 +776,13 @@
 		local mon
 		
 		WinGetPos, xtemp, ytemp, wtemp, htemp, ahk_id %id%
-		if (xtemp < Mon1Right && xtemp >= Mon1Left)
+		if (xtemp >= Mon1Left && xtemp < Mon1Right)
 		{
 			mon := 1
-		}
-		if (xtemp < Mon1Left && dis2 = 1)
+		} else if (xtemp < Mon1Left && dis2 = 1)
 		{
 			mon := 2
-		}
-		if (xtemp >= Mon1Right && dis3 = 1)
+		} else if (xtemp >= Mon1Right && dis3 = 1)
 		{
 			mon := 3
 		}
