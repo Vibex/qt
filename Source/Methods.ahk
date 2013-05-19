@@ -4,12 +4,10 @@
 		global currentid
 		
 		WinGetTitle, title, ahk_id %lParam%
-		If (wParam = 2) { ;Window closed
-			;remove(lParam)
-		return
-		}
-		If (wParam = 1 && title != "Adobe Flash Player") { ;Window created
-			;titleBeGone(lParam)
+		WinGet, Style, Style, ahk_id %lParam%
+		mon := 0
+		If (wParam = 1 && Style & 0xC00000 && autobarbegone = 1) { ;Window created
+			titleBeGone(lParam, 2)
 		return
 		}
 		If (wParam = 4) { ;Window active
@@ -98,16 +96,35 @@
 			
 			FileReadLine, custran, %configA%, 63
 			
-			FileReadLine, winHook, %configA%, 68
+			FileReadLine, autobarbegone, %configA%, 68
 			
-			FileReadLine, baryeah, %configA%, 75
-			FileReadLine, autorepos, %configA%, 78
+			FileReadLine, winHook, %configA%, 73
+			
+			FileReadLine, baryeah, %configA%, 80
+			FileReadLine, autorepos, %configA%, 83
 		} else {
 			;Defaults
 			SetBatchLines, 10ms
-			custran := 128
+			wspeed := 100
+			kspeed := 10
 			titlefix := 0
+			us1 := 0
+			ds1 := 0
+			rs1 := 0
+			ls1 := 0
+			us2 := 0
+			ds2 := 0
+			rs2 := 0
+			ls2 := 0
+			us3 := 0
+			ds3 := 0
+			rs3 := 0
+			ls3 := 0
+			custran := 85
+			autobarbegone := 1
 			winHook := 1
+			baryeah := 0
+			autorepos := 0
 		}
 		
 		FileReadLine, row1, %config%, 4
@@ -229,7 +246,7 @@
 		Loop, 3
 		{
 			mon := mon + 1
-			if (us%mon% != 0)
+			if (us%mon% > 0)
 			{
 				temp := us%mon%
 				Loop, %temp%
@@ -237,7 +254,7 @@
 					shiftBorder(null, "u", mon)
 				}
 			}
-			if (ds%mon% != 0)
+			if (ds%mon% > 0)
 			{
 				temp := ds%mon%
 				Loop, %temp%
@@ -245,7 +262,7 @@
 					shiftBorder(null, "d", mon)
 				}
 			}
-			if (rs%mon% != 0)
+			if (rs%mon% > 0)
 			{
 				temp := rs%mon%
 				Loop, %temp%
@@ -253,7 +270,7 @@
 					shiftBorder(null, "r", mon)
 				}
 			}
-			if (ls%mon% != 0)
+			if (ls%mon% > 0)
 			{
 				temp := ls%mon%
 				Loop, %temp%
@@ -754,14 +771,28 @@
 	return
 	}
 	
-	titleBeGone(id)
+	titleBeGone(id, mode = 1)
 	{
 		global
+		local widthtemp
 		
 		WinSet, Style, -0x800000, ahk_id %id%
-		WinSet, Style, ^0xC00000, ahk_id %id%
+		if (mode = 1)
+		{
+			WinSet, Style, ^0xC00000, ahk_id %id%
+		} else if (mode = 2)
+		{
+			WinSet, Style, -0xC00000, ahk_id %id%
+		}
 		WinSet, Redraw,, ahk_id %id%
 		if (titleFix = 1)
+		{
+			WinGetPos,,, widthtemp,, ahk_id %id%
+			WinMove, ahk_id %id%,,,, (widthtemp - 1)
+			WinMove, ahk_id %id%,,,, (widthtemp)
+		return
+		}
+		if (titleFix = 2)
 		{
 			WinMinimize, ahk_id %id%
 			WinActivate, ahk_id %id%
@@ -775,7 +806,7 @@
 		global
 		local mon
 		
-		WinGetPos, xtemp, ytemp, wtemp, htemp, ahk_id %id%
+		WinGetPos, xtemp,,,, ahk_id %id%
 		if (xtemp >= Mon1Left && xtemp < Mon1Right)
 		{
 			mon := 1

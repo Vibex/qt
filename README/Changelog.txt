@@ -1,3 +1,9 @@
+Version 0.1.2		05/19/2013
+*Added the ability to drag windows without using titlebars.
+*Added auto removal of titlebars from newly created windows (can be disabled in the configAdvanced.txt file).
+*Added a less annoying fix for the black bar when removing titlebars (The old one is still avaliable though if you prefer it).
+
+
 Version 0.1.1		05/18/2013
 *Added keys to center window on monitor while retaining there original size (unless the window is larger then the monitor. Then it is resized to fit.).
 *Fixed Screen fill bug that added an extra border length.

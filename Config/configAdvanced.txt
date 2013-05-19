@@ -12,7 +12,7 @@ Set the value of how long of a delay there is when using window commands (in ms,
 Set the value of how long of a delay there is when pressing keys (in ms, though the "ms" ending is not needed). You can also specify unlimited speed with the string "WARP DRIVE".
 10
 
-*FIX*Set this to 1 if you encounter a black bar beneath your windows when removing the titlebar. Otherwise set this to 0. This will cause the window to flash. This is intentional, don't worry.
+*FIX*Set this to 1 or 2 if you encounter a black bar beneath your windows when removing the titlebar. 1 will cause a small shift on the right border of the window. 2 will cause the window to disappear and then reappear to fix the bug. Otherwise set this to 0.
 0
 
 
@@ -60,7 +60,12 @@ Auto shift horizontal on the third monitor. This will determine an amount to aut
 
 
 Set the value below to the amount of opacity change you want when Ctrl + Scrolling (0 to 255).
-128
+85
+
+
+
+Set this to 1 if you want windows to have their titlebars removed when they are created. Otherwise set it to 0
+1
 
 
 
