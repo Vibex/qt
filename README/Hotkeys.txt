@@ -59,7 +59,8 @@ Ctrl + Scroll Wheel Down: Decrease the opacity of the selected window.
 
 Manuel Move Keys
 Alt + Left Mouse Button: Have the window follow your cursor until you release.
-Esc: While you have the Left mouse button held down you can press Esc to return the window to it's original position.
+Alt + Right Mouse Button: Have the window be resized by your mouse movement.
+Esc: While you have the Left mouse button held down you can press Esc to return the window to it's original position. While you are holding down the right button it will return it to the original size and position. ONLY HAS AN EFFECT WHEN USING THE 2 ABOVE KEY COMBINATIONS!
 
 Other Keys
 Ctrl + Alt + Numpad Clear: Remove the titlebar from the current window.

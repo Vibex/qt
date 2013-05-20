@@ -13,7 +13,7 @@ Set the value of how long of a delay there is when pressing keys (in ms, though 
 WARP DRIVE
 
 *FIX*Set this to 1 or 2 if you encounter a black bar beneath your windows when removing the titlebar. 1 will cause a small shift on the right border of the window. 2 will cause the window to disappear and then reappear to fix the bug. Otherwise set this to 0.
-2
+1
 
 
 
