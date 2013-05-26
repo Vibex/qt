@@ -1,25 +1,14 @@
 Hotkeys
-Expand Keys ***Numlock off***
-Ctrl + Numpad Home: Set to the cordinates in the grid 1,1. Auto expand is active.
-Ctrl + Numpad Up: Set to the cordinates in the grid 2,1. Auto expand is active.
-Ctrl + Numpad PgUp: Set to the cordinates in the grid 3,1. Auto expand is active.
-Ctrl + Numpad Letf: Set to the cordinates in the grid 1,2. Auto expand is active.
-Ctrl + Numpad Clear: Set to the cordinates in the grid 2,2. Auto expand is active.
-Ctrl + Numpad Right: Set to the cordinates in the grid 3,2. Auto expand is active.
-Ctrl + Numpad End: Set to the cordinates in the grid 1,3. Auto expand is active.
-Ctrl + Numpad Down: Set to the cordinates in the grid 2,3. Auto expand is active.
-Ctrl + Numpad PgDn: Set to the cordinates in the grid 3,3. Auto expand is active.
-
-Nonexpand Keys ***Numlock off***
-Shift + Numpad Home: Set to the cordinates in the grid 1,1. Auto expand is NOT active.
-Shift + Numpad Up: Set to the cordinates in the grid 2,1. Auto expand is NOT active.
-Shift + Numpad PgUp: Set to the cordinates in the grid 3,1. Auto expand is NOT active.
-Shift + Numpad Letf: Set to the cordinates in the grid 1,2. Auto expand is NOT active.
-Shift + Numpad Clear: Set to the cordinates in the grid 2,2. Auto expand is NOT active.
-Shift + Numpad Right: Set to the cordinates in the grid 3,2. Auto expand is NOT active.
-Shift + Numpad End: Set to the cordinates in the grid 1,3. Auto expand is NOT active.
-Shift + Numpad Down: Set to the cordinates in the grid 2,3. Auto expand is NOT active.
-Shift + Numpad PgDn: Set to the cordinates in the grid 3,3. Auto expand is NOT active.
+Expand Keys (If you double click the window will not expand.) ***Numlock off*** 
+Ctrl + Numpad Home: Set to the cordinates in the grid 1,1.
+Ctrl + Numpad Up: Set to the cordinates in the grid 2,1.
+Ctrl + Numpad PgUp: Set to the cordinates in the grid 3,1.
+Ctrl + Numpad Letf: Set to the cordinates in the grid 1,2.
+Ctrl + Numpad Clear: Set to the cordinates in the grid 2,2.
+Ctrl + Numpad Right: Set to the cordinates in the grid 3,2.
+Ctrl + Numpad End: Set to the cordinates in the grid 1,3.
+Ctrl + Numpad Down: Set to the cordinates in the grid 2,3.
+Ctrl + Numpad PgDn: Set to the cordinates in the grid 3,3.
 
 Change Grid Keys ***Numlock on***
 Ctrl + Numpad 7: Set to the grid to 1,1.
@@ -60,7 +49,8 @@ Ctrl + Scroll Wheel Down: Decrease the opacity of the selected window.
 Manuel Move Keys
 Alt + Left Mouse Button: Have the window follow your cursor until you release.
 Alt + Right Mouse Button: Have the window be resized by your mouse movement.
-Esc: While you have the Left mouse button held down you can press Esc to return the window to it's original position. While you are holding down the right button it will return it to the original size and position. ONLY HAS AN EFFECT WHEN USING THE 2 ABOVE KEY COMBINATIONS!
+Alt + Middle Mouse Button:Maximize the current window on the current monitor.
+Esc: Return the window to it's position before using the 3 above mouse commands.
 
 Other Keys
 Ctrl + Alt + Numpad Clear: Remove the titlebar from the current window.

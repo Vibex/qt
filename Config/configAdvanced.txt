@@ -81,3 +81,6 @@ Taskbar. This is a bar to be placed at the top of your main monitor (I may make 
 
 Set the value below to 1 if you want to test the auto move window in relation to the newly placed window (really long title) feature. otherwise set this to 0. This feature is still incredibly buggy
 0
+
+To enable the debug window (not sure why you would want to, it just shows you a grid of 3 monitors with there contents. A 0 means empty and 1 means filled) set this value to 1. Otherwise set it to 0.
+0

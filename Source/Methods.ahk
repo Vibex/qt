@@ -2,15 +2,20 @@
 	{
 		global previousid
 		global currentid
+		global titlebaraway
 		
 		WinGetTitle, title, ahk_id %lParam%
 		WinGet, Style, Style, ahk_id %lParam%
 		mon := 0
-		If (wParam = 1 && Style & 0xC00000 && autobarbegone = 1) { ;Window created
+		If (wParam = 1 && Style & 0xC00000 && titlebaraway = 1)
+		{
+			;Window created
 			titleBeGone(lParam, 2)
 		return
 		}
-		If (wParam = 4) { ;Window active
+		If (wParam = 4)
+		{
+			;Window active
 			WinGet, tran, Transparent, ahk_id %lParam%
 			if (tran <= 0)
 			{
@@ -24,7 +29,9 @@
 			}
 		return
 		}
-		If (wParam = 32774) { ;Flash Window
+		If (wParam = 32774)
+		{
+			;Flash Window
 			flashCheck(lparam)
 		}
 	return
@@ -53,6 +60,7 @@
 	{
 		global
 		
+		SetBatchLines, -1
 		config := "Config\config.txt"
 		configA := "Config\configAdvanced.txt"
 	
@@ -62,9 +70,7 @@
 			FileReadLine, bspeed, %configA%, 7
 			if (bspeed = "WARP DRIVE")
 			{
-				SetBatchLines, -1
-			} else {
-				SetBatchLines, %bspeed%
+				bspeed := -1
 			}
 			FileReadLine, wspeed, %configA%, 10
 			if (wspeed = "WARP DRIVE")
@@ -96,12 +102,13 @@
 			
 			FileReadLine, custran, %configA%, 63
 			
-			FileReadLine, autobarbegone, %configA%, 68
+			FileReadLine, titlebaraway, %configA%, 68
 			
 			FileReadLine, winHook, %configA%, 73
 			
 			FileReadLine, baryeah, %configA%, 80
 			FileReadLine, autorepos, %configA%, 83
+			FileReadLine, debug, %configA%, 86
 		} else {
 			;Defaults
 			SetBatchLines, 10ms
@@ -121,10 +128,11 @@
 			rs3 := 0
 			ls3 := 0
 			custran := 85
-			autobarbegone := 1
+			titlebaraway := 1
 			winHook := 1
 			baryeah := 0
 			autorepos := 0
+			debug := 0
 		}
 		
 		FileReadLine, row1, %config%, 4
@@ -320,19 +328,25 @@
 	return
 	}
 	
-	move(id, row, col, expand = 1, repos = 1)
+	move(id, row, col)
 	{
 		global
 		local xtemp
+		local mon
+		local expand
 		local d
 		local g
 		local f
 		local v
 		local b
-		local mon
 		
 		WinGetPos, xtemp,,,, ahk_id %id%
-		remove(id, 0, row, col)
+		remove(id)
+		expand := 1
+		if (A_TimeSincePriorHotkey<400 && A_TimeSincePriorHotkey<>-1 && A_PriorHotkey = A_ThisHotkey)
+		{
+			expand := 0
+		}
 		mon := 0
 		if (xtemp >= Mon1Left && xtemp < Mon1Right && row <= row1 && col <= col1)
 		{
@@ -345,12 +359,7 @@
 			mon := 3
 		}
 		if (mon != 0)
-		{
-			if (mon%mon%_%row%_%col% != null && repos = 1 && autorepos = 1)
-			{
-				repos(mon, id, row, col)
-			}
-			
+		{	
 			findPos(mon, row, col)
 			setId(mon, id, row, col)
 			if (expand = 1)
@@ -395,38 +404,24 @@
 	repos(mon, id, row, col)
 	{
 		global
-		local trow1
-		local tcol1
-		local trow2
-		local tcol2
+		local trow
+		local tcol
+		local trown
+		local tcoln
 		local test
 		
-		trow1 := row + 1
-		tcol1 := col + 1
-		trow2 := row - 1
-		tcol2 := col - 1
-		test := InStr(mon%mon%_%row%_%tcol1%, mon%mon%_%row%_%col%)
+		trow := row + 1
+		tcol := col + 1
+		test := InStr(mon%mon%_%row%_%tcol%, mon%mon%_%row%_%col%)
 		if (test != 0)
 		{
-			move(mon%mon%_%row%_%col%, row, tcol1, 1, 0)
+			move(mon%mon%_%row%_%col%, row, tcol)
 		return
 		}
-		test := InStr(mon%mon%_%trow1%_%col%, mon%mon%_%row%_%col%)
-		if (test != 0 && path1 = 0)
-		{
-			move(mon%mon%_%row%_%col%, trow1, col, 1, 0)
-		return
-		}
-		test := InStr(mon%mon%_%row%_%tcol2%, mon%mon%_%row%_%col%)
+		test := InStr(mon%mon%_%trow%_%col%, mon%mon%_%row%_%col%)
 		if (test != 0)
 		{
-			move(mon%mon%_%row%_%col%, row, tcol2, 1, 0)
-		return
-		}
-		test := InStr(mon%mon%_%trow2%_%col%, mon%mon%_%row%_%col%)
-		if (test != 0 && path2 = 0)
-		{
-			move(mon%mon%_%row%_%col%, trow2, col, 1, 0)
+			move(mon%mon%_%row%_%col%, trow, col)
 		}
 	return
 	}
@@ -493,6 +488,10 @@
 		{
 			th := th + row%mon%%trow2% + vbor
 			mon%mon%_%trow2%_%col% := full . id
+			if (path1 = 1)
+			{
+				mon%mon%_%trow2%_%tcol1% := full . id
+			}
 		}
 		if ((row - 1) > 0)
 		{
@@ -575,22 +574,18 @@
 	return
 	}
 	
-	remove(id, all = 0, row = 1, col = 1)
+	remove(id, all = 0)
 	{
 		global
 		local x
 		local y
-		local temp1
-		local temp2
 		
-		temp1 := 4 - row
-		temp2 := 4 - col
-		x := row - 1
-		Loop, %temp1%
+		x := 0
+		Loop, 3
 		{
 			x += 1
-			y := col - 1
-			Loop, %temp2%
+			y := 0
+			Loop, 3
 			{
 				y += 1
 				if (mon1_%x%_%y% = id ||  mon1_%x%_%y% = full . id || all != 0)
@@ -751,21 +746,23 @@
 		
 		if (enablesound = 1)
 		{
+			if (enablebeep = 1)
+			{
+				SoundBeep, %freq%, %dura%
+			}
 			if (direc = "u")
 			{
 				run nircmd.exe changesysvolume %vol%
+			return
 			}
 			if (direc = "d")
 			{
 				run nircmd.exe changesysvolume %vold%
+			return
 			}
 			if (direc = "m")
 			{
 				run nircmd.exe mutesysvolume 2
-			}
-			if (enablebeep = 1)
-			{
-				SoundBeep, %freq%, %dura%
 			}
 		}
 	return

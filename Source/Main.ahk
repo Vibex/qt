@@ -1,5 +1,6 @@
-﻿	;Autorun.
+﻿	;Autorun
 		#MaxThreads 8
+		#MaxHotkeysPerInterval 100
 		#WinActivateForce
 		AutoTrim, On
 		SetTitleMatchMode,Slow
@@ -9,6 +10,7 @@
 		full := "This string is full and should fix all the problems I am having"
 		
 		reload()
+		SetBatchLines, %bspeed%
 		SetWinDelay, %wspeed%
 		SetKeyDelay, %kspeed%
 		cspeed := 10
@@ -16,10 +18,9 @@
 		
 		remove(null, 1)
 		
-		barheight := 15
-		
 		if (baryeah = 1)
 		{
+			barheight := 15
 			InitializeBar(1, Mon1Width, barheight, 0)
 		}
 		
@@ -27,6 +28,11 @@
 		currentid := WinExist("A")
 		
 		flashNum0 := 0
+		
+		if (debug = 1)
+		{
+			createDebug()
+		}
 		
 		if (winHook = 1)
 		{
@@ -95,67 +101,10 @@
 	return
 	}
 	
-	+NumpadPgDn::
 	^NumpadPgDn::
 	{
 		idtemp := WinExist("A")
-        move(idtemp, 3, 3, 0)
-	return
-	}
-	
-	+NumpadHome::
-	{
-		idtemp := WinExist("A")
-        move(idtemp, 1, 1, 0)
-	return
-	}
-	
-	+NumpadUp::
-	{
-		idtemp := WinExist("A")
-        move(idtemp, 1, 2, 0)
-	return
-	}
-	
-	+NumpadPgUp::
-	{
-		idtemp := WinExist("A")
-        move(idtemp, 1, 3, 0)
-	return
-	}
-	
-	+NumpadLeft::
-	{
-		idtemp := WinExist("A")
-        move(idtemp, 2, 1, 0)
-	return
-	}
-
-	+NumpadClear::
-	{
-		idtemp := WinExist("A")
-        move(idtemp, 2, 2, 0)
-	return
-	}
-	
-	+NumpadRight::
-	{
-		idtemp := WinExist("A")
-        move(idtemp, 2, 3, 0)
-	return
-	}
-
-	+NumpadEnd::
-	{
-		idtemp := WinExist("A")
-        move(idtemp, 3, 1, 0)
-	return
-	}
-
-	+NumpadDown::
-	{
-		idtemp := WinExist("A")
-        move(idtemp, 3, 2, 0)
+        move(idtemp, 3, 3)
 	return
 	}
 	
@@ -303,7 +252,7 @@
 	{
 		idtemp := WinExist("A")
 		WinGetTitle, title, ahk_id %idtemp%
-		InputBox, newName, Rename - qt.pi, Rename the current window.`n(Curently custom fonts are not avaliable in AHK input boxes.),,,,,,,, %title%
+		InputBox, newName, Rename "%title%" - qt.pi, Rename the current window.`n(Curently custom fonts are not available in AHK input boxes. As soon as this is available`, I will implement it. OTherwise I will write a GUI to do this more nicely.),,,,,,,, %title%
 		WinSetTitle, ahk_id %idtemp%,, %newName%
 	return
 	}
@@ -379,21 +328,16 @@
 	;This script is a modified version of http://www.autohotkey.com/docs/scripts/EasyWindowDrag_%28KDE%29.htm.
 	!LButton::
 	{
-		SetWinDelay, 0
-		CoordMode,Mouse
+		SetWinDelay, -1
 		MouseGetPos,KDE_X1,KDE_Y1,KDE_id
 		WinActivate, ahk_id %KDE_id%
-		WinGet,KDE_Win,MinMax,ahk_id %KDE_id%
-		If KDE_Win
-			return
-		; Get the initial window position.
 		WinGetPos,KDE_WinXStart,KDE_WinYStart,,,ahk_id %KDE_id%
 		
 		KDE_WinX1 := KDE_WinXStart
 		KDE_WinY1 := KDE_WinYStart
 		Loop
 		{
-			GetKeyState,KDE_Button,LButton,P ; Break if button has been released.
+			GetKeyState,KDE_Button,LButton,P
 			If KDE_Button = U
 			{
 			break
@@ -404,33 +348,26 @@
 				WinMove, ahk_id %KDE_id%,, %KDE_WinXStart%, %KDE_WinYStart%
 			break
 			}
-			MouseGetPos,KDE_X2,KDE_Y2 ; Get the current mouse position.
-			KDE_X2 -= KDE_X1 ; Obtain an offset from the initial mouse position.
+			MouseGetPos,KDE_X2,KDE_Y2
+			KDE_X2 -= KDE_X1
 			KDE_Y2 -= KDE_Y1
-			KDE_WinX2 := (KDE_WinX1 + KDE_X2) ; Apply this offset to the window position.
+			KDE_WinX2 := (KDE_WinX1 + KDE_X2)
 			KDE_WinY2 := (KDE_WinY1 + KDE_Y2)
-			WinMove,ahk_id %KDE_id%,,%KDE_WinX2%,%KDE_WinY2% ; Move the window to the new position.
+			WinMove,ahk_id %KDE_id%,,%KDE_WinX2%,%KDE_WinY2%
 		}
 	return
 	}
 	
 	!RButton::
 	{
-		SetWinDelay, 0
-		CoordMode,Mouse
+		SetWinDelay, -1
 		MouseGetPos,KDE_X1,KDE_Y1,KDE_id
 		WinActivate, ahk_id %KDE_id%
-		WinGet,KDE_Win,MinMax,ahk_id %KDE_id%
-		If KDE_Win
-			return
-		; Get the initial window position and size.
 		WinGetPos,KDE_WinXStart,KDE_WinYStart,KDE_WinWStart,KDE_WinHStart,ahk_id %KDE_id%
 		KDE_WinX1 := KDE_WinXStart
 		KDE_WinY1 := KDE_WinYStart
 		KDE_WinW := KDE_WinWStart
 		KDE_WinH := KDE_WinHStart
-		; Define the window region the mouse is currently in.
-		; The four regions are Up and Left, Up and Right, Down and Left, Down and Right.
 		If (KDE_X1 < KDE_WinX1 + KDE_WinW / 2)
 		{
 			KDE_WinLeft := 1
@@ -460,23 +397,52 @@
 				WinMove, ahk_id %KDE_id%,, %KDE_WinXStart%, %KDE_WinYStart%, %KDE_WinWStart%, %KDE_WinHStart%
 			break
 			}
-			MouseGetPos,KDE_X2,KDE_Y2 ; Get the current mouse position.
-			; Get the current window position and size.
+			MouseGetPos,KDE_X2,KDE_Y2
 			WinGetPos,KDE_WinX1,KDE_WinY1,KDE_WinW,KDE_WinH,ahk_id %KDE_id%
-			KDE_X2 -= KDE_X1 ; Obtain an offset from the initial mouse position.
+			KDE_X2 -= KDE_X1
 			KDE_Y2 -= KDE_Y1
-			; Then, act according to the defined region.
-			WinMove,ahk_id %KDE_id%,, KDE_WinX1 + (KDE_WinLeft+1)/2*KDE_X2  ; X of resized window
-							, KDE_WinY1 +   (KDE_WinUp+1)/2*KDE_Y2  ; Y of resized window
-                            , KDE_WinW  -     KDE_WinLeft  *KDE_X2  ; W of resized window
-                            , KDE_WinH  -       KDE_WinUp  *KDE_Y2  ; H of resized window
-			KDE_X1 := (KDE_X2 + KDE_X1) ; Reset the initial position for the next iteration.
+			WinMove,ahk_id %KDE_id%,, KDE_WinX1 + (KDE_WinLeft+1)/2*KDE_X2 , KDE_WinY1 +  (KDE_WinUp+1)/2*KDE_Y2 , KDE_WinW - KDE_WinLeft *KDE_X2 , KDE_WinH - KDE_WinUp *KDE_Y2
+			KDE_X1 := (KDE_X2 + KDE_X1)
 			KDE_Y1 := (KDE_Y2 + KDE_Y1)
 		}
 	return
 	}
 	
+	!MButton::
+	{
+		SetWinDelay, -1
+		MouseGetPos,,,KDE_id
+		WinActivate, ahk_id %KDE_id%
+		WinGetPos,KDE_WinXStart,KDE_WinYStart,KDE_WinWStart,KDE_WinHStart,ahk_id %KDE_id%
+		Loop
+		{
+			GetKeyState, KDE_Button, MButton, P
+			If KDE_Button = U
+			{
+			break
+			}
+			GetKeyState, KDE_EscapeState, Escape, P
+			if KDE_EscapeState = D
+			{
+				WinMove, ahk_id %KDE_id%,, %KDE_WinXStart%, %KDE_WinYStart%, %KDE_WinWStart%, %KDE_WinHStart%
+			break
+			}
+			MouseGetPos, mousepos
+			if (mousepos < 0 && dis2 = 1)
+			{
+				newmon := 2
+			} else if (mousepos >= Mon1Right && dis3 = 1)
+			{
+				newmon := 3
+			} else {
+				newmon := 1
+			}
+			screenFill(newmon, KDE_id)
+		}
+	return
+	}
 	
 	
 	#Include Methods.ahk
 	#Include Bar.ahk
+	#Include Debug.ahk
