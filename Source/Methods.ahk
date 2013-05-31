@@ -7,7 +7,7 @@
 		WinGetTitle, title, ahk_id %lParam%
 		WinGet, Style, Style, ahk_id %lParam%
 		mon := 0
-		If (wParam = 1 && Style & 0xC00000 && titlebaraway = 1)
+		If (wParam = 1 && titlebaraway = 1)
 		{
 			;Window created
 			titleBeGone(lParam, 2)
@@ -394,6 +394,7 @@
 				} else {
 					b := 0
 				}
+				GoSub, UpdateDebug
 				WinMove, ahk_id %id%,, (v + b + (hbor * col)  + hborex + lbar%mon% + Mon%mon%Left), (g + f + (vbor * row) + vborex + tbar%mon% + Mon%mon%Top), (rcol),  (rrow)
 			return
 			}
@@ -521,6 +522,7 @@
 		} else {
 			b := 0
 		}
+		GoSub, UpdateDebug
 		WinMove, ahk_id %id%,, (v + b + (hbor * col) + hborex + lbar%mon% + Mon%mon%Left), (g + f + (vbor * row) + vborex + tbar%mon% + Mon%mon%Top), (tw),  (th)
 	return
 	}
@@ -531,6 +533,7 @@
 		
 		remove(id)
 		WinGetPos, xtemp,, widthtemp, heighttemp, ahk_id %id%
+		Mon%mon%_center := id
 		if (heighttemp > Mon%mon%CusHeight)
 		{			
 			if (widthtemp > Mon%mon%CusWidth)
@@ -600,6 +603,10 @@
 				{
 					mon3_%x%_%y% := null
 				}
+			}
+			if (mon%x%_center = id || all != 1)
+			{
+				mon%x%_center := null
 			}
 		}
 	return

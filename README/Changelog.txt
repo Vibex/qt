@@ -1,3 +1,7 @@
+Version 0.1.5		05/30/2013
+*Made some minor efficiency changes.
+*Made some changes to the debug window (not that anyone cares).
+
 Version 0.1.4		05/25/2013
 *You no longer have to shift click with the numpad to make a window not expand. Instead just double click/hold down the hotkey.
 *If you use Alt + Middle Mouse Click you will expand the window to it's full size on the current monitor. The window will follow the cursor to any new monitor while the Middle Mouse Button is still held down.

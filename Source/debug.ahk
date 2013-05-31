@@ -3,15 +3,16 @@
 	createDebug()
 	{
 		global
+		Gui, Margin, 0, 0
 		demon := 1
 		Gui, +Resize
-		Gui, Add, Edit, vMainDebug WantTab W200 H200, 
+		Gui, Add, Edit, vMainDebug WantTab W200 H200 X0 Y0, 
 		Gui, Show,, de.pi
 		gid:= WinExist("A")
 		titleBeGone(gid)
-		move(gid, 3, 3)
+		center(1, gid)
 		GoSub, UpdateDebug
-		SetTimer, UpdateDebug, 500
+		SetTimer, UpdateDebug, 1000
 	return
 	}
 
@@ -21,8 +22,8 @@
 		{
 		return
 		}
-		NewWidth := A_GuiWidth - 20
-		NewHeight := A_GuiHeight - 20
+		NewWidth := A_GuiWidth
+		NewHeight := A_GuiHeight
 		GuiControl, Move, MainDebug, W%NewWidth% H%NewHeight%
 	return
 	}
@@ -34,6 +35,7 @@
 	
 	UpdateDebug:
 	{
+		Gui, Submit, NoHide
 		temptotal1 := "1`n"
 		temptotal2 := "2`n"
 		temptotal3 := "3`n"
@@ -45,62 +47,37 @@
 			Loop, 3
 			{
 				Y += 1
-				if (mon1_%X%_%Y% != null)
+				Loop, 3
 				{
-					temp1%x%_%Y% := 1
-				} else {
-				
-					temp1%x%_%Y% := 0
+					if (mon%A_Index%_%X%_%Y% != null)
+					{
+						test := InStr(mon%A_Index%_%X%_%Y%, full)
+						if (test != 0)
+						{
+							temp%A_Index%%x%_%Y% := "F"
+						} else {
+							temp%A_Index%%x%_%Y% := 1
+						}
+					} else if (x <= row%A_Index% && y <= col%A_Index%)
+					{
+						temp%A_Index%%x%_%Y% := 0
+					}
+					temptotal%A_Index% := temptotal%A_Index% . temp%A_Index%%X%_%Y%
 				}
-				temptotal1 := temptotal1 . temp1%X%_%Y%
-				if (mon2_%X%_%Y% != null)
-				{
-					temp2%x%_%Y% := 1
-				} else {
-					temp2%x%_%Y% := 0
-				}
-				temptotal2 := temptotal2 . temp2%X%_%Y%
-				if (mon3_%X%_%Y% != null)
-				{
-					temp3%x%_%Y% := 1
-				} else {
-					temp3%x%_%Y% := 0
-				}
-				temptotal3 := temptotal3 . temp3%X%_%Y%
 			}
-			temptotal1 := temptotal1 . "`n"
-			temptotal2 := temptotal2 . "`n"
-			temptotal3 := temptotal3 . "`n"
+			Loop, 3
+			{
+				if (x <= row%A_Index%)
+				{
+					temptotal%A_Index% := temptotal%A_Index% . "`n"
+				}
+			}
 		}
-		GuiControl,, MainDebug, %temptotal1%`n%temptotal2%`n%temptotal3%
-	return
-	}
-	
-	demon(new)
-	{
-		global demon
-		demon := new
-	return
-	}
-	
-	#If activeWindow()
-	^1::
-	{
-		demon(1)
-	return
-	}
-	
-	#If activeWindow()
-	^2::
-	{
-		demon(2)
-	return
-	}
-	
-	#If activeWindow()
-	^3::
-	{
-		demon(3)
+		merge := temptotal1 . "`n" . temptotal2 . "`n" . temptotal3
+		if (MainDebug != merge)
+		{
+			GuiControl,, MainDebug, %merge%
+		}
 	return
 	}
 	

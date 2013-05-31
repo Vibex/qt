@@ -1,4 +1,5 @@
 ﻿	;Autorun
+		#SingleInstance Force
 		#MaxThreads 8
 		#MaxHotkeysPerInterval 100
 		#WinActivateForce
@@ -384,11 +385,24 @@
 		{
 			KDE_WinUp := -1
 		}
+		mon := 0
+		Loop, 3
+		{
+			if (Mon%A_Index%_center = KDE_id)
+			{
+				mon := A_Index
+			break
+			}
+		}
 		Loop
 		{
 			GetKeyState,KDE_Button,RButton,P ; Break if button has been released.
 			If KDE_Button = U
 			{
+				if (mon != 0)
+				{
+					center(mon, KDE_id)
+				}
 			break
 			}
 			GetKeyState, KDE_EscapeState, Escape, P
