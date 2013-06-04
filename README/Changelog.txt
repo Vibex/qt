@@ -1,10 +1,21 @@
+Version 0.2		06/03/2013
+*Main Mod key changed from Ctrl to Win.
+*Setting the ground work for improving the taskbar. It still is a massive work in progress, but it is now the main focus of my work (for real this time, not like all the other times I've said this).
+*Increased usefulness of debug (again, doubt anyone cares).
+*Improved overall code flow when loading from config.
+*Instead of reloading the config, the Win + R hotkey now reloads the entire script.
+*Added Win + O to set a window to always on top.
+
+
 Version 0.1.5		05/30/2013
 *Made some minor efficiency changes.
 *Made some changes to the debug window (not that anyone cares).
 
+
 Version 0.1.4		05/25/2013
 *You no longer have to shift click with the numpad to make a window not expand. Instead just double click/hold down the hotkey.
 *If you use Alt + Middle Mouse Click you will expand the window to it's full size on the current monitor. The window will follow the cursor to any new monitor while the Middle Mouse Button is still held down.
+
 
 Version 0.1.3		05/20/2013
 *Added more functionality to the mouse controlling windows size and position.

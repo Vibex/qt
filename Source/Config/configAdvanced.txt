@@ -4,12 +4,15 @@ Enable advanced config settings by setting this to 1. Otherwise set it to 0.
 1
 
 Set the value of how often the script will sleep for 10ms. A value of 10(ms) will keep the CPU usage lower than 50% on most systems. If you leave off the "ms" ending it will specify a number of lines instead of milliseconds. You can also specify unlimited speed with the string "WARP DRIVE".
-5ms
+15ms
 
 Set the value of how long of a delay there is when using window commands (in ms, though the "ms" ending is not needed). This can cause problems if you lower the delay to far. You can also specify unlimited speed with the string "WARP DRIVE".
-5
+0
 
-Set the value of how long of a delay there is when pressing keys (in ms, though the "ms" ending is not needed). You can also specify unlimited speed with the string "WARP DRIVE".
+Set the value of how long of a delay there is when pressing keys (in ms, thotugh the "ms" ending is not needed). You can also specify unlimited speed with the string "WARP DRIVE".
+0
+
+Set the value of how long of a delay there is when using qt.pi windows (ex. Debug window and taskbar) (in ms, though the "ms" ending is not needed). You can also specify unlimited speed with the string "WARP DRIVE".
 5
 
 *FIX*Set this to 1 or 2 if you encounter a black bar beneath your windows when removing the titlebar. 1 will cause a small shift on the right border of the window. 2 will cause the window to disappear and then reappear to fix the bug. Otherwise set this to 0.

@@ -1,16 +1,14 @@
 	createDebug()
-	
-	createDebug()
 	{
 		global
 		Gui, Margin, 0, 0
 		demon := 1
 		Gui, +Resize
 		Gui, Add, Edit, vMainDebug WantTab W200 H200 X0 Y0, 
-		Gui, Show,, de.pi
-		gid:= WinExist("A")
-		titleBeGone(gid)
-		center(1, gid)
+		Gui, Show,, %A_AhkVersion% - de.pi
+		gidDEBUG:= WinExist("A")
+		titleBeGone(gidDEBUG)
+		center(1, gidDEBUG)
 		GoSub, UpdateDebug
 		SetTimer, UpdateDebug, 1000
 	return
@@ -74,6 +72,7 @@
 			}
 		}
 		merge := temptotal1 . "`n" . temptotal2 . "`n" . temptotal3
+		merge := "0.2`n`n" . merge . "`nBatch Lines: " . A_BatchLines . "`nKey Delay: " . A_KeyDelay . "ms" . "`nWin Delay: " . A_WinDelay . "ms" . "`nControl Delay: " . A_ControlDelay . "ms"
 		if (MainDebug != merge)
 		{
 			GuiControl,, MainDebug, %merge%
@@ -92,5 +91,5 @@
 	{
 		global
 		temp:= WinExist("A")
-	return (temp = gid)
+	return (temp = gidDEBUG)
 	}

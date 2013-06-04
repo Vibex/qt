@@ -1,0 +1,19 @@
+***These options only matter if you have the taskbar enabled.***
+
+Set this to the update rate in ms (Leave off the ms ending).
+50
+
+This is the default colour of the bar.
+C9C9C9
+
+This is the colour of the selected items on the taskbar.
+B5B5B5
+
+This is the colour of the text on the bar.
+2F2F2F
+
+This is the font used on the bar.
+Haxrcorp 4088
+
+This is the font size.
+9

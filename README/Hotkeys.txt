@@ -1,60 +1,69 @@
 Hotkeys
 Expand Keys (If you double click the window will not expand.) ***Numlock off*** 
-Ctrl + Numpad Home: Set to the cordinates in the grid 1,1.
-Ctrl + Numpad Up: Set to the cordinates in the grid 2,1.
-Ctrl + Numpad PgUp: Set to the cordinates in the grid 3,1.
-Ctrl + Numpad Letf: Set to the cordinates in the grid 1,2.
-Ctrl + Numpad Clear: Set to the cordinates in the grid 2,2.
-Ctrl + Numpad Right: Set to the cordinates in the grid 3,2.
-Ctrl + Numpad End: Set to the cordinates in the grid 1,3.
-Ctrl + Numpad Down: Set to the cordinates in the grid 2,3.
-Ctrl + Numpad PgDn: Set to the cordinates in the grid 3,3.
+Win + Numpad Home: Set to the cordinates in the grid 1,1.
+Win + Numpad Up: Set to the cordinates in the grid 2,1.
+Win + Numpad PgUp: Set to the cordinates in the grid 3,1.
+Win + Numpad Letf: Set to the cordinates in the grid 1,2.
+Win + Numpad Clear: Set to the cordinates in the grid 2,2.
+Win + Numpad Right: Set to the cordinates in the grid 3,2.
+Win + Numpad End: Set to the cordinates in the grid 1,3.
+Win + Numpad Down: Set to the cordinates in the grid 2,3.
+Win + Numpad PgDn: Set to the cordinates in the grid 3,3.
+
 
 Change Grid Keys ***Numlock on***
-Ctrl + Numpad 7: Set to the grid to 1,1.
-Ctrl + Numpad 8: Set to the grid to 2,1.
-Ctrl + Numpad 9: Set to the grid to 3,1.
-Ctrl + Numpad 4: Set to the grid to 1,2.
-Ctrl + Numpad 5: Set to the grid to 2,2.
-Ctrl + Numpad 6: Set to the grid to 3,2.
-Ctrl + Numpad 1: Set to the grid to 1,3.
-Ctrl + Numpad 2: Set to the grid to 2,3.
-Ctrl + Numpad 3: Set to the grid to 3,3.
+Win + Numpad 7: Set to the grid to 1,1.
+Win + Numpad 8: Set to the grid to 2,1.
+Win + Numpad 9: Set to the grid to 3,1.
+Win + Numpad 4: Set to the grid to 1,2.
+Win + Numpad 5: Set to the grid to 2,2.
+Win + Numpad 6: Set to the grid to 3,2.
+Win + Numpad 1: Set to the grid to 1,3.
+Win + Numpad 2: Set to the grid to 2,3.
+Win + Numpad 3: Set to the grid to 3,3.
+
 
 Move Monitor Keys ***Numlock off***
-Ctrl + Alt + Numpad Home: Move to the left most monitor.
-Ctrl + Alt + Numpad Up: Move to the middle monitor.
-Ctrl + Alt + Numpad PgUp: Move to the right most monitor.
+Win + Ctrl + Numpad Home: Move to the left most monitor.
+Win + Ctrl + Numpad Up: Move to the middle monitor.
+Win + Ctrl + Numpad PgUp: Move to the right most monitor.
+
 
 Center Window Keys ***Numlock off***
-Ctrl + Alt + Numpad End: Centers the window on the left most monitor.
-Ctrl + Alt + Numpad Down: Centers the window on the middle monitor.
-Ctrl + Alt + Numpad PgDn: Centers the window on the right most monitor.
+Win + Ctrl + Numpad End: Centers the window on the left most monitor.
+Win + Ctrl + Numpad Down: Centers the window on the middle monitor.
+Win + Ctrl + Numpad PgDn: Centers the window on the right most monitor.
+
 
 Shift Borders Keys
-Ctrl + Alt + Up: Shift the borders up.
-Ctrl + Alt + Down: Shift the borders down.
-Ctrl + Alt + Left: Shift the borders left.
-Ctrl + Alt + Right: Shift the borders right.
+Win + Ctrl + Up: Shift the borders up.
+Win + Ctrl + Down: Shift the borders down.
+Win + Ctrl + Left: Shift the borders left.
+Win + Ctrl + Right: Shift the borders right.
+
 
 Soun Keys ***nircmd must be installed***
-Ctrl + Numpad Add: Increase volume.
-Ctrl + Numpad Sub: Decrease volume.
-Ctrl + Numpad Enter: Mute volume.
+Win + Numpad Add: Increase volume.
+Win + Numpad Sub: Decrease volume.
+Win + Numpad Enter: Mute volume.
+
 
 Transparency Hotkeys
-Ctrl + Scroll Wheel Up: Increase the opacity of the selected window.
-Ctrl + Scroll Wheel Down: Decrease the opacity of the selected window.
+Win + Scroll Wheel Up: Increase the opacity of the selected window.
+Win + Scroll Wheel Down: Decrease the opacity of the selected window.
+
 
 Manuel Move Keys
-Alt + Left Mouse Button: Have the window follow your cursor until you release.
-Alt + Right Mouse Button: Have the window be resized by your mouse movement.
-Alt + Middle Mouse Button:Maximize the current window on the current monitor.
+Win + Left Mouse Button: Have the window follow your cursor until you release.
+Win + Right Mouse Button: Have the window be resized by your mouse movement.
+Win + Middle Mouse Button:Maximize the current window on the current monitor.
 Esc: Return the window to it's position before using the 3 above mouse commands.
 
+
 Other Keys
-Ctrl + Alt + Numpad Clear: Remove the titlebar from the current window.
-Ctrl + Alt + F: Remove the active window from the current stored window information.
-Ctrl + Alt + R: Reread the config.txt and configAdvanced.txt file.
-Ctrl + Alt + W: Removes all stored window data.
-Ctrl + Alt + T: Rename the selected window.
+Win + Ctrl + Numpad Clear: Remove the titlebar from the current window.
+Win +  F: Remove the active window from the current stored window information.
+Win +  R: Reload the script.
+Win +  W: Removes all stored window data.
+Win + T: Rename the selected window.
+Win + O: Toggle always on top on the current window.

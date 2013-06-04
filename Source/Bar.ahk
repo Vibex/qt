@@ -1,89 +1,61 @@
-﻿	InitializeBar(b, w, h, x)
+﻿	InitializeBar(mon, w, h, x)
 	{
 		global
 		CoordMode, Mouse, Screen
 		Gui, Margin, 0, 0
+
 		hpos := 1
 		hwin := 1
 		hflash := 1
 		hclock := 1
 		
+		configB := "Config\Bar\configBar.txt"
+		FileReadLine, updateRate, %configB%, 4
+		FileReadLine, barColour, %configB%, 7
+		FileReadLine, selecColour, %configB%, 10
+		FileReadLine, texColour, %configB%, 13
+		FileReadLine, font, %configB%, 16
+		FileReadLine, fontsize, %configB%, 19
+		
 		noWin := "no window selected"
 		currentWin := noWin
 		
-		transColour := "EEAA99"
-		barColour := "C9C9C9"
-		selecColour := "B5B5B5"
-		texColour := "2F2F2F"
-		
-		font := "Haxrcorp 4088"
-		fontSize := 9
-		
-		updateRate := 50
+		Gui, bar:Color, %barColour%
+		Gui, bar:+LastFound -Caption +ToolWindow
+		Gui, bar:Font, s%fontSize% c%texColour%, %font%
 		
 		if (hpos = 1)
 		{
-			Gui pos:+LastFound +AlwaysOnTop -Caption +ToolWindow
-			Gui, pos:Color, %barColour%
-			Gui, pos:Font, s%fontSize% c%texColour%, %font%
-			Gui, pos:Add, Text, vText x4 y1 h%h%, XXXXX, YYYYY
-			Gui, pos:Show, x0 y0 h%h% NoActivate
+			Gui, bar:Add, Text, vPos x4 y1 h%h%, XXXXX, YYYYY
 		}
+		
+		numop := 9
 		
 		if (hwin = 1)
 		{
-			Gui win:+LastFound +AlwaysOnTop -Caption +ToolWindow
-			Gui, win:Color, %selecColour%
-			Gui, win:Font, s%fontSize% c%texColour%, %font%
-			size := (w - 44 - 80 - 40) / 9
-			if (hpos = 0)
+			size := (w - 44 - 84 - 10) / numop
+			shift := 84
+			Loop, %numop%
 			{
-				shift := 4
-			} else {
-				shift := 80
+				Gui, bar:Add, Text, vItem%A_Index% x%shift% y1 w%size% Center, %noWin%
+				shift := shift + size
 			}
-			Gui, win:Add, Text, vText x4 y1 w%size%, %noWin%
-			Gui, win:Show, x%shift% y0 w%size% h%h% NoActivate
-		
-			Gui win2:+LastFound +AlwaysOnTop -Caption +ToolWindow
-			Gui, win2:Color, %barColour%
-			Gui, win2:Font, s%fontSize% c%texColour%, %font%
-			if (hpos = 0)
-			{
-				shift := 4 + size
-			} else {
-				shift := 80 + size
-			}
-			Gui, win2:Add, Text, vText x4 y1 w%size%, %noWin%
-			Gui, win2:Show, x%shift% y0 w%size% h%h% NoActivate
 		}
 		
 		if (hflash = 1)
 		{
-			Gui fla:+LastFound +AlwaysOnTop -Caption +ToolWindow
-			Gui, fla:Color, %selecColour%
-			Gui, fla:Font, s%fontSize% c%texColour%, %font%
-			x := shift + size
-			Gui, fla:Add, Text, vText x3 y1 h%h%, 0
-			Gui, fla:Show, x%x% y0 h%h% w11 NoActivate
+			Gui, bar:Add, Text, vflash x%shift% y1 h%h% Center, 0
 		}
 		
 		if (hclock = 1) 
 		{
-			Gui clock:+LastFound +AlwaysOnTop -Caption +ToolWindow
-			Gui, clock:Color, %barColour%
-			Gui, clock:Font, s%fontSize% c%texColour%, %font%
-			Gui, clock:Add, Text, vText x4 y1 h%h%, 00 00.00
-			shift := w - 44
-			Gui, clock:Show, x%shift% y0 h%h% NoActivate
+			shift := shift + 10
+			Gui, bar:Add, Text, vClock x%shift% y1 h%h%, 00 00.00
 		}
-		
-		Gui, bar:Color, %barColour%
-		Gui bar:+LastFound -Caption +ToolWindow
-		Gui, bar:Show, x0 y0 w%w% h%h% NoActivate
 		
 		SetTimer, Update, %updateRate%
 		Gosub, Update
+		Gui, bar:Show, x0 y0 w%w% h%h% NoActivate
 	return
 	}
 
@@ -92,15 +64,15 @@
 		if (hpos = 1)
 		{
 			MouseGetPos, MouseX, MouseY
-			GuiControl, pos:, Text, X%MouseX%, Y%MouseY%
+			GuiControl, bar:, Pos, X%MouseX%, Y%MouseY%
 		}
 		if (hclock = 1)
 		{
-			GuiControl, clock:, Text, %A_DD% %A_Hour%.%A_Min%
+			GuiControl, bar:, Clock, %A_DD% %A_Hour%.%A_Min%
 		}
 		if (hflash = 1)
 		{
-			GuiControl, fla:, Text, %flashNum0%
+			GuiControl, bar:, flash, %flashNum0%
 		}
 		Gosub, UpdateTitle
 	return
@@ -110,7 +82,7 @@
 	{
 		WinGetTitle, current, ahk_id %currentid%
 		WinGetTitle, previous, ahk_id %previousid%
-		GuiControl, win:, Text, %current%
-		GuiControl, win2:, Text, %previous%
+		GuiControl, bar:, Item1, %current%
+		GuiControl, bar:, Item2, %previous%
 	return
 	}

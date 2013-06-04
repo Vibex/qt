@@ -3,6 +3,7 @@
 		global previousid
 		global currentid
 		global titlebaraway
+		global baryeah
 		
 		WinGetTitle, title, ahk_id %lParam%
 		WinGet, Style, Style, ahk_id %lParam%
@@ -17,11 +18,11 @@
 		{
 			;Window active
 			WinGet, tran, Transparent, ahk_id %lParam%
-			if (tran <= 0)
+			if (tran = 0)
 			{
 				WinSet, Transparent, 255, ahk_id %lParam%
 			}
-			if (baryeah = 1 && lParam != currentid)
+			if (lParam != currentid && baryeah = 1)
 			{
 				previousid := currentid
 				currentid := lParam
@@ -83,37 +84,44 @@
 				kspeed := -1
 			}
 			
-			FileReadLine, titleFix, %configA%, 16
+			FileReadLine, cspeed, %configA%, 16
+			if (cspeed = "WARP DRIVE")
+			{
+				cspeed := -1
+			}
 			
-			FileReadLine, us1, %configA%, 21
-			FileReadLine, ds1, %configA%, 24
-			FileReadLine, rs1, %configA%, 27
-			FileReadLine, ls1, %configA%, 30
+			FileReadLine, titleFix, %configA%, 19
 			
-			FileReadLine, us2, %configA%, 35
-			FileReadLine, ds2, %configA%, 38
-			FileReadLine, rs2, %configA%, 41
-			FileReadLine, ls2, %configA%, 44
+			FileReadLine, us1, %configA%, 24
+			FileReadLine, ds1, %configA%, 27
+			FileReadLine, rs1, %configA%, 30
+			FileReadLine, ls1, %configA%, 33
 			
-			FileReadLine, us3, %configA%, 49
-			FileReadLine, ds3, %configA%, 52
-			FileReadLine, rs3, %configA%, 55
-			FileReadLine, ls3, %configA%, 58
+			FileReadLine, us2, %configA%, 38
+			FileReadLine, ds2, %configA%, 41
+			FileReadLine, rs2, %configA%, 44
+			FileReadLine, ls2, %configA%, 47
 			
-			FileReadLine, custran, %configA%, 63
+			FileReadLine, us3, %configA%, 52
+			FileReadLine, ds3, %configA%, 55
+			FileReadLine, rs3, %configA%, 58
+			FileReadLine, ls3, %configA%, 61
 			
-			FileReadLine, titlebaraway, %configA%, 68
+			FileReadLine, custran, %configA%, 66
 			
-			FileReadLine, winHook, %configA%, 73
+			FileReadLine, titlebaraway, %configA%, 71
 			
-			FileReadLine, baryeah, %configA%, 80
-			FileReadLine, autorepos, %configA%, 83
-			FileReadLine, debug, %configA%, 86
+			FileReadLine, winHook, %configA%, 76
+			
+			FileReadLine, baryeah, %configA%, 83
+			FileReadLine, autorepos, %configA%, 86
+			FileReadLine, debug, %configA%, 89
 		} else {
 			;Defaults
-			SetBatchLines, 10ms
+			bspeed := "10ms"
 			wspeed := 100
 			kspeed := 10
+			cspeed := 20
 			titlefix := 0
 			us1 := 0
 			ds1 := 0
@@ -135,6 +143,7 @@
 			debug := 0
 		}
 		
+		disp1 := 1
 		FileReadLine, row1, %config%, 4
 		FileReadLine, col1, %config%, 7
 		
@@ -213,35 +222,34 @@
 		
 		Mon1CusWidth := (Mon1Width - hbor - (col1 * hbor) - hborex - hborex - lbar1 - rbar1)
 		Mon1CusHeight := (Mon1Height - vbor - (row1 * vbor) - vborex - vborex - tbar1 - bbar1)
-		if (dis2 = 1)
-		{
-			Mon2CusWidth := (Mon2Width - hbor - (col2 * hbor) - hborex - hborex - lbar2 - rbar2)
-			Mon2CusHeight := (Mon2Height - vbor - (row2 * vbor) - vborex - vborex - tbar2 - bbar2)
-		}
-		if (dis3 = 1)
-		{
-			Mon3CusWidth := (Mon3Width - hbor - (col3 * hbor) - hborex - hborex - lbar3 - rbar3)
-			Mon3CusHeight := (Mon3Height - vbor - (row3 * vbor) - vborex - vborex - tbar3 - bbar3)
-		}
-		
 		row11 := Mon1CusHeight / row1
 		row12 := Mon1CusHeight / row1
 		row13 := Mon1CusHeight / row1
 		col11 := Mon1CusWidth / col1
 		col12 := Mon1CusWidth / col1
 		col13 := Mon1CusWidth / col1
-		row21 := Mon2CusHeight / row2
-		row22 := Mon2CusHeight / row2
-		row23 := Mon2CusHeight / row2
-		col21 := Mon2CusWidth / col2
-		col22 := Mon2CusWidth / col2
-		col23 := Mon2CusWidth / col2
-		row31 := Mon3CusHeight / row3
-		row32 := Mon3CusHeight / row3
-		row33 := Mon3CusHeight / row3
-		col31 := Mon3CusWidth / col3
-		col32 := Mon3CusWidth / col3
-		col33 := Mon3CusWidth / col3
+		if (dis2 = 1)
+		{
+			Mon2CusWidth := (Mon2Width - hbor - (col2 * hbor) - hborex - hborex - lbar2 - rbar2)
+			Mon2CusHeight := (Mon2Height - vbor - (row2 * vbor) - vborex - vborex - tbar2 - bbar2)
+			row21 := Mon2CusHeight / row2
+			row22 := Mon2CusHeight / row2
+			row23 := Mon2CusHeight / row2
+			col21 := Mon2CusWidth / col2
+			col22 := Mon2CusWidth / col2
+			col23 := Mon2CusWidth / col2
+		}
+		if (dis3 = 1)
+		{
+			Mon3CusWidth := (Mon3Width - hbor - (col3 * hbor) - hborex - hborex - lbar3 - rbar3)
+			Mon3CusHeight := (Mon3Height - vbor - (row3 * vbor) - vborex - vborex - tbar3 - bbar3)
+			row31 := Mon3CusHeight / row3
+			row32 := Mon3CusHeight / row3
+			row33 := Mon3CusHeight / row3
+			col31 := Mon3CusWidth / col3
+			col32 := Mon3CusWidth / col3
+			col33 := Mon3CusWidth / col3
+		}
 	return
 	}
 	
@@ -341,12 +349,6 @@
 		local b
 		
 		WinGetPos, xtemp,,,, ahk_id %id%
-		remove(id)
-		expand := 1
-		if (A_TimeSincePriorHotkey<400 && A_TimeSincePriorHotkey<>-1 && A_PriorHotkey = A_ThisHotkey)
-		{
-			expand := 0
-		}
 		mon := 0
 		if (xtemp >= Mon1Left && xtemp < Mon1Right && row <= row1 && col <= col1)
 		{
@@ -354,18 +356,17 @@
 		} else if (xtemp < Mon1Left && dis2 = 1 && row <=  row2 && col <=  col2)
 		{
 			mon := 2
-		} else if (xtemp >= Mon1Right && dis3 = 1 && row <=  row3 && col <=  col3)
+		} else if (xtemp >= Mon1Right && dis3 = 1  && row <=  row3 && col <=  col3)
 		{
 			mon := 3
 		}
 		if (mon != 0)
-		{	
+		{
 			findPos(mon, row, col)
+			remove(id)
 			setId(mon, id, row, col)
-			if (expand = 1)
+			if (A_TimeSincePriorHotkey < 400 && A_TimeSincePriorHotkey <> -1 && A_PriorHotkey = A_ThisHotkey)
 			{
-				expand(mon, id, row, col, rcol, rrow)
-			} else {
 				if ((row - 1) > 0)
 				{
 					d := row - 1
@@ -396,7 +397,8 @@
 				}
 				GoSub, UpdateDebug
 				WinMove, ahk_id %id%,, (v + b + (hbor * col)  + hborex + lbar%mon% + Mon%mon%Left), (g + f + (vbor * row) + vborex + tbar%mon% + Mon%mon%Top), (rcol),  (rrow)
-			return
+			} else {
+				expand(mon, id, row, col, rcol, rrow)
 			}
 		}
 	return
@@ -604,7 +606,7 @@
 					mon3_%x%_%y% := null
 				}
 			}
-			if (mon%x%_center = id || all != 1)
+			if (mon%x%_center = id || all = 1)
 			{
 				mon%x%_center := null
 			}

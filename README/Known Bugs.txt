@@ -1,4 +1,3 @@
 ***BUGS***
 Currently sometimes when hiding the titlebar on a window a black bar will appear at the bottom of the window. A fix for this can be activated in the configAdvanced.txt file.
 The taskbar will flicker repeatedly when displaying non english characters.
-When reloading the script with the Ctrl + Alt + R hotkey some settings can be accidentally broken. It is advised to just relaunch the script.

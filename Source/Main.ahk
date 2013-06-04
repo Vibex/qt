@@ -14,7 +14,6 @@
 		SetBatchLines, %bspeed%
 		SetWinDelay, %wspeed%
 		SetKeyDelay, %kspeed%
-		cspeed := 10
 		SetControlDelay, %cspeed%
 		
 		remove(null, 1)
@@ -22,7 +21,7 @@
 		if (baryeah = 1)
 		{
 			barheight := 15
-			InitializeBar(1, Mon1Width, barheight, 0)
+			InitializeBar(1, Mon1Width, barheight, Mon1Left)
 		}
 		
 		previousid := null
@@ -46,63 +45,63 @@
 	
 	
 	
-	^NumpadHome::
+	#NumpadHome::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 1, 1)
 	return
 	}
 	
-	^NumpadUp::
+	#NumpadUp::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 1, 2)
 	return
 	}
 	
-	^NumpadPgUp::
+	#NumpadPgUp::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 1, 3)
 	return
 	}
 	
-	^NumpadLeft::
+	#NumpadLeft::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 2, 1)
 	return
 	}
 
-	^NumpadClear::
+	#NumpadClear::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 2, 2)
 	return
 	}
 	
-	^NumpadRight::
+	#NumpadRight::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 2, 3)
 	return
 	}
 
-	^NumpadEnd::
+	#NumpadEnd::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 3, 1)
 	return
 	}
 
-	^NumpadDown::
+	#NumpadDown::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 3, 2)
 	return
 	}
 	
-	^NumpadPgDn::
+	#NumpadPgDn::
 	{
 		idtemp := WinExist("A")
         move(idtemp, 3, 3)
@@ -111,63 +110,63 @@
 	
 	
 	
-	^Numpad7::
+	#Numpad7::
 	{
 		MouseGetPos, mpos
 		grid(mpos, 1, 1)
 	return
 	}
 	
-	^Numpad8::
+	#Numpad8::
 	{
 		MouseGetPos, mpos
 		grid(mpos, 1, 2)
 	return
 	}
 	
-	^Numpad9::
+	#Numpad9::
 	{
 		MouseGetPos, mpos
 		grid(mpos, 1, 3)
 	return
 	}
 	
-	^Numpad4::
+	#Numpad4::
 	{
 		MouseGetPos, mpos
 		grid(mpos, 2, 1)
 	return
 	}
 	
-	^Numpad5::
+	#Numpad5::
 	{
 		MouseGetPos, mpos
 		grid(mpos, 2, 2)
 	return
 	}
 	
-	^Numpad6::
+	#Numpad6::
 	{
 		MouseGetPos, mpos
 		grid(mpos, 2, 3)
 	return
 	}
 	
-	^Numpad1::
+	#Numpad1::
 	{
 		MouseGetPos, mpos
 		grid(mpos, 3, 1)
 	return
 	}
 	
-	^Numpad2::
+	#Numpad2::
 	{
 		MouseGetPos, mpos
 		grid(mpos, 3, 2)
 	return
 	}
 	
-	^Numpad3::
+	#Numpad3::
 	{
 		MouseGetPos, mpos
 		grid(mpos, 3, 3)
@@ -176,21 +175,21 @@
 	
 	
 	
-	!^NumpadHome::
+	#^NumpadHome::
 	{
 		idtemp := WinExist("A")
 		screenFill(2, idtemp)
 	return
 	}
 	
-	!^NumpadUp::
+	#^NumpadUp::
 	{
 		idtemp := WinExist("A")
 		screenFill(1, idtemp)
 	return
 	}
 	
-	!^NumpadPgUp::
+	#^NumpadPgUp::
 	{
 		idtemp := WinExist("A")
 		screenFill(3, idtemp)
@@ -199,21 +198,21 @@
 	
 	
 	
-	!^NumpadEnd::
+	#^NumpadEnd::
 	{
 		idtemp := WinExist("A")
 		center(2, idtemp)
 	return
 	}
 	
-	!^NumpadDown::
+	#^NumpadDown::
 	{
 		idtemp := WinExist("A")
 		center(1, idtemp)
 	return
 	}
 	
-	!^NumpadPgDn::
+	#^NumpadPgDn::
 	{
 		idtemp := WinExist("A")
 		center(3, idtemp)
@@ -222,14 +221,16 @@
 	
 	
 	
-	!^NumpadClear::
+	#^NumpadClear::
 	{
 		idtemp := WinExist("A")
 		titleBeGone(idtemp)
 	return
 	}
 	
-	!^F::
+	
+	
+	#F::
 	~!F4::
 	{
 		idtemp := WinExist("A")
@@ -237,51 +238,59 @@
 	return
 	}
 	
-	!^R::
+	#R::
 	{
-		reload()
+		Reload
+		Sleep 1000
 	return
 	}
 	
-	!^W::
+	#W::
 	{
 		remove(a, 1)
 	return
 	}
 	
-	!^T::
+	#T::
 	{
 		idtemp := WinExist("A")
 		WinGetTitle, title, ahk_id %idtemp%
-		InputBox, newName, Rename "%title%" - qt.pi, Rename the current window.`n(Curently custom fonts are not available in AHK input boxes. As soon as this is available`, I will implement it. OTherwise I will write a GUI to do this more nicely.),,,,,,,, %title%
+		InputBox, newName, Rename "%title%" - qt.pi, Rename the current window.`n(Curently custom fonts are not available in AHK input boxes. As soon as this is available`, I will implement it. Otherwise I will write a GUI to do this more nicely.),,,,,,,, %title%
 		WinSetTitle, ahk_id %idtemp%,, %newName%
+	return
+	}
+	
+	#O::
+	{
+		idtemp := WinExist("A")
+		WinSet, AlwaysOnTop,, ahk_id %idtemp%
 	return
 	}
 	
 	
 	
-	!^Up::
+	#^Up::
 	{
 		idtemp := WinExist("A")
 		shiftBorder(idtemp, "u")
 	return
 	}
 	
-	!^Down::
+	#^Down::
 	{
 		idtemp := WinExist("A")
 		shiftBorder(idtemp, "d")
 	return
 	}
 	
-	!^Left::
+	#^Left::
 	{
 		idtemp := WinExist("A")
 		shiftBorder(idtemp, "l")
 	return
 	}
 	
-	!^Right::
+	#^Right::
 	{
 		idtemp := WinExist("A")
 		shiftBorder(idtemp, "r")
@@ -290,19 +299,19 @@
 	
 	
 	
-	^NumpadAdd::
+	#NumpadAdd::
 	{
 		sound("u")
 	return
 	}
 	
-	^NumpadSub::
+	#NumpadSub::
 	{	
 		sound("d")
 	return
 	}
 	
-	^NumpadEnter::
+	#NumpadEnter::
 	{
 		sound("m")
 	return
@@ -310,14 +319,14 @@
 	
 	
 	
-	^WheelUp::
+	#WheelUp::
 	{
 		idtemp := WinExist("A")
 		trans(idtemp, "u")
 	return
 	}
 	
-	^WheelDown::
+	#WheelDown::
 	{
 		idtemp := WinExist("A")
 		trans(idtemp, "d")
@@ -327,7 +336,7 @@
 	
 	
 	;This script is a modified version of http://www.autohotkey.com/docs/scripts/EasyWindowDrag_%28KDE%29.htm.
-	!LButton::
+	#LButton::
 	{
 		SetWinDelay, -1
 		MouseGetPos,KDE_X1,KDE_Y1,KDE_id
@@ -359,7 +368,7 @@
 	return
 	}
 	
-	!RButton::
+	#RButton::
 	{
 		SetWinDelay, -1
 		MouseGetPos,KDE_X1,KDE_Y1,KDE_id
@@ -422,7 +431,7 @@
 	return
 	}
 	
-	!MButton::
+	#MButton::
 	{
 		SetWinDelay, -1
 		MouseGetPos,,,KDE_id
