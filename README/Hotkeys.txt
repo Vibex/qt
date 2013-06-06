@@ -60,10 +60,18 @@ Win + Middle Mouse Button:Maximize the current window on the current monitor.
 Esc: Return the window to it's position before using the 3 above mouse commands.
 
 
+Minimize Hotkeys
+Win + M: Minimize the current window.
+Win + Ctrl + M: Minimize all windows.
+Win + Alt + M: Restore all windows.
+
+
 Other Keys
 Win + Ctrl + Numpad Clear: Remove the titlebar from the current window.
 Win +  F: Remove the active window from the current stored window information.
+Alt + F4: Kill the window and remove it from the grid.
 Win +  R: Reload the script.
 Win +  W: Removes all stored window data.
 Win + T: Rename the selected window.
 Win + O: Toggle always on top on the current window.
+Win + F11: Fullscreen.

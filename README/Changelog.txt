@@ -1,3 +1,11 @@
+Version 0.2.1		06/05/2013
+*Added hotkeys for minimizing windows (all, single and restoration). The keys are Win + M to minimize the current window, Win + Ctrl + M to minimize all windows, and Win + Alt + M to restore all windows.
+*Added Fullscreen key (different from the screen fill keys. These new keys fit it to the total size of the monitor disregarding all taskbars and borders.) It is activated by Win + F11.
+*Found a new bug with the transparency scroll. Looking into a fix. First I need to find the cause though.
+*Removed some needless code.
+*Added descriptions of all the methods and other aspects of the script so others can tinker with it (Plaes still give me credit though!).
+
+
 Version 0.2		06/03/2013
 *Main Mod key changed from Ctrl to Win.
 *Setting the ground work for improving the taskbar. It still is a massive work in progress, but it is now the main focus of my work (for real this time, not like all the other times I've said this).

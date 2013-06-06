@@ -1,5 +1,7 @@
-﻿	ShellMessage( wParam,lParam )
+﻿	;If you know what you are doing with AHK feel free to play with the methods below. I've left comments on things that you may want to play with. I have also added a descrition of each methods function.
+	ShellMessage( wParam,lParam )
 	{
+		;This detects messages sent by windows itself and preforms actions based on the messages.
 		global previousid
 		global currentid
 		global titlebaraway
@@ -18,7 +20,9 @@
 		{
 			;Window active
 			WinGet, tran, Transparent, ahk_id %lParam%
-			if (tran = 0)
+			;tranthresh is the transparency value at which, when a window is below, is activated, it will retun to 100% opaque.
+			tranthresh := 0
+			if (tran = tranthresh)
 			{
 				WinSet, Transparent, 255, ahk_id %lParam%
 			}
@@ -30,7 +34,7 @@
 			}
 		return
 		}
-		If (wParam = 32774)
+		If (wParam = 32774 && baryeah = 1)
 		{
 			;Flash Window
 			flashCheck(lparam)
@@ -40,6 +44,7 @@
 	
 	flashCheck(id)
 	{
+		;This method is called when a window flashes. I then sends the value to the taskbar.
 		global
 		
 		if (flashNum0 != 0)
@@ -59,9 +64,11 @@
 	
 	reload(math = 1, autoShift = 1)
 	{
+		;This loads all of the information from the config files.
 		global
 		
 		SetBatchLines, -1
+		;The location of the config files.
 		config := "Config\config.txt"
 		configA := "Config\configAdvanced.txt"
 	
@@ -72,6 +79,7 @@
 			if (bspeed = "WARP DRIVE")
 			{
 				bspeed := -1
+				SetBatchLines, %bspeed%
 			}
 			FileReadLine, wspeed, %configA%, 10
 			if (wspeed = "WARP DRIVE")
@@ -117,8 +125,9 @@
 			FileReadLine, autorepos, %configA%, 86
 			FileReadLine, debug, %configA%, 89
 		} else {
-			;Defaults
+			;Defaults when advanced config is disabled.
 			bspeed := "10ms"
+			SetBatchLines, %bspeed%
 			wspeed := 100
 			kspeed := 10
 			cspeed := 20
@@ -218,6 +227,7 @@
 	
 	math()
 	{
+		;This preforms some random math to determine some values.
 		global
 		
 		Mon1CusWidth := (Mon1Width - hbor - (col1 * hbor) - hborex - hborex - lbar1 - rbar1)
@@ -255,6 +265,7 @@
 	
 	autoShift()
 	{
+		;This will automatically shift your window grid when the script is called.
 		global
 		local mon
 		
@@ -300,6 +311,7 @@
 	
 	findPos(mon, x, y)
 	{
+		;This determines the grid parameters to use.
 		global
 		
 		if (x = 1)
@@ -331,6 +343,7 @@
 	
 	setId(mon, id, row, col)
 	{
+		;This sets the id to the grid.
 		global
 		mon%mon%_%row%_%col% := id
 	return
@@ -338,6 +351,7 @@
 	
 	move(id, row, col)
 	{
+		;This is the main method that actually does the movement of the windows.
 		global
 		local xtemp
 		local mon
@@ -348,6 +362,10 @@
 		local v
 		local b
 		
+		if (id = null)
+		{
+			id := WinExist("A")
+		}
 		WinGetPos, xtemp,,,, ahk_id %id%
 		mon := 0
 		if (xtemp >= Mon1Left && xtemp < Mon1Right && row <= row1 && col <= col1)
@@ -406,6 +424,7 @@
 	
 	repos(mon, id, row, col)
 	{
+		;This does the automatic repositioning of windows. It's still very much in development.
 		global
 		local trow
 		local tcol
@@ -431,6 +450,7 @@
 	
 	expand(mon, id, row, col, tw, th)
 	{
+		;This does the resizing of the windows to fit the full grid.
 		global
 		local path1
 		local path2
@@ -531,6 +551,7 @@
 	
 	center(mon, id)
 	{
+		;This centers the window on the screen and resizes it if need be.
 		global
 		
 		remove(id)
@@ -555,11 +576,14 @@
 	return
 	}
 	
-	grid(pos, row, col)
+	grid(row, col)
 	{
+		;This resizes the grid to a new row by col value.
 		global
-		{
+		
+		MouseGetPos, pos
 		if (pos < Mon1Left && dis2 = 1)
+		{
 			row2 := row
 			col2 := col
 			math()
@@ -581,6 +605,7 @@
 	
 	remove(id, all = 0)
 	{
+		;Removes the window from the grid (or all items if all = 1).
 		global
 		local x
 		local y
@@ -616,6 +641,7 @@
 	
 	shiftBorder(id, direc, nowin = 0)
 	{
+		;This does the border shifting.
 		global
 		
 		local xtemp
@@ -689,6 +715,7 @@
 	
 	auto(mon)
 	{
+		;This automatically places windows when shifting borders.
 		global
 		local x
 		local y
@@ -716,6 +743,7 @@
 	
 	cord(mon, id)
 	{
+		;Finds the grid position.
 		global
 		local x
 		local y
@@ -743,6 +771,7 @@
 	
 	screenFill(mon, id)
 	{
+		;Fills the entire screen with a window.
 		global
 		remove(id)
 		WinMove, ahk_id %id%,, (hbor + Mon%mon%Left + hborex + lbar%mon%), (tbar%mon% + vbor + Mon%mon%Top + vborex), (Mon%mon%Width - hbor - hbor - hborex - hborex - lbar%mon% - rbar%mon%), (Mon%mon%Height - vbor - vbor - vborex - vborex - tbar%mon% - bbar%mon%)
@@ -751,6 +780,7 @@
 	
 	sound(direc)
 	{
+		;Changes the system sound (if nircmd.exe is installed).
 		global
 		
 		if (enablesound = 1)
@@ -779,6 +809,7 @@
 	
 	titleBeGone(id, mode = 1)
 	{
+		;Hides the titlebar on the window. 
 		global
 		local widthtemp
 		
@@ -809,6 +840,7 @@
 	
 	switchWin(id, direc)
 	{
+		;I can't actually remember what this did. I think it shifts the focus to a different window. I'll probably rewrite this because I'm to lazy to read it. 
 		global
 		local mon
 		
@@ -867,6 +899,7 @@
 	
 	trans(id, direc)
 	{
+		;This controls the transparency on windows.
 		global custran
 		WinGet, tran, Transparent, ahk_id %id%
 		if (direc = "u")

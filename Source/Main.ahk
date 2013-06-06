@@ -21,13 +21,12 @@
 		if (baryeah = 1)
 		{
 			barheight := 15
+			flashNum0 := 0
 			InitializeBar(1, Mon1Width, barheight, Mon1Left)
 		}
 		
 		previousid := null
 		currentid := WinExist("A")
-		
-		flashNum0 := 0
 		
 		if (debug = 1)
 		{
@@ -47,64 +46,55 @@
 	
 	#NumpadHome::
 	{
-		idtemp := WinExist("A")
-        move(idtemp, 1, 1)
+        move(null, 1, 1)
 	return
 	}
 	
 	#NumpadUp::
 	{
-		idtemp := WinExist("A")
-        move(idtemp, 1, 2)
+        move(null, 1, 2)
 	return
 	}
 	
 	#NumpadPgUp::
 	{
-		idtemp := WinExist("A")
-        move(idtemp, 1, 3)
+        move(null, 1, 3)
 	return
 	}
 	
 	#NumpadLeft::
 	{
-		idtemp := WinExist("A")
-        move(idtemp, 2, 1)
+        move(null, 2, 1)
 	return
 	}
 
 	#NumpadClear::
 	{
-		idtemp := WinExist("A")
-        move(idtemp, 2, 2)
+        move(null, 2, 2)
 	return
 	}
 	
 	#NumpadRight::
 	{
-		idtemp := WinExist("A")
-        move(idtemp, 2, 3)
+        move(null, 2, 3)
 	return
 	}
 
 	#NumpadEnd::
 	{
-		idtemp := WinExist("A")
-        move(idtemp, 3, 1)
+        move(null, 3, 1)
 	return
 	}
 
 	#NumpadDown::
 	{
-		idtemp := WinExist("A")
-        move(idtemp, 3, 2)
+        move(null, 3, 2)
 	return
 	}
 	
 	#NumpadPgDn::
 	{
-		idtemp := WinExist("A")
-        move(idtemp, 3, 3)
+        move(null, 3, 3)
 	return
 	}
 	
@@ -112,64 +102,55 @@
 	
 	#Numpad7::
 	{
-		MouseGetPos, mpos
-		grid(mpos, 1, 1)
+		grid(1, 1)
 	return
 	}
 	
 	#Numpad8::
 	{
-		MouseGetPos, mpos
-		grid(mpos, 1, 2)
+		grid(1, 2)
 	return
 	}
 	
 	#Numpad9::
 	{
-		MouseGetPos, mpos
-		grid(mpos, 1, 3)
+		grid(1, 3)
 	return
 	}
 	
 	#Numpad4::
 	{
-		MouseGetPos, mpos
-		grid(mpos, 2, 1)
+		grid(2, 1)
 	return
 	}
 	
 	#Numpad5::
 	{
-		MouseGetPos, mpos
-		grid(mpos, 2, 2)
+		grid(2, 2)
 	return
 	}
 	
 	#Numpad6::
 	{
-		MouseGetPos, mpos
-		grid(mpos, 2, 3)
+		grid(2, 3)
 	return
 	}
 	
 	#Numpad1::
 	{
-		MouseGetPos, mpos
-		grid(mpos, 3, 1)
+		grid(3, 1)
 	return
 	}
 	
 	#Numpad2::
 	{
-		MouseGetPos, mpos
-		grid(mpos, 3, 2)
+		grid(3, 2)
 	return
 	}
 	
 	#Numpad3::
 	{
-		MouseGetPos, mpos
-		grid(mpos, 3, 3)
+		grid(3, 3)
 	return
 	}
 	
@@ -253,6 +234,7 @@
 	
 	#T::
 	{
+		;Change the window title.
 		idtemp := WinExist("A")
 		WinGetTitle, title, ahk_id %idtemp%
 		InputBox, newName, Rename "%title%" - qt.pi, Rename the current window.`n(Curently custom fonts are not available in AHK input boxes. As soon as this is available`, I will implement it. Otherwise I will write a GUI to do this more nicely.),,,,,,,, %title%
@@ -264,6 +246,62 @@
 	{
 		idtemp := WinExist("A")
 		WinSet, AlwaysOnTop,, ahk_id %idtemp%
+	return
+	}
+	
+	#M::
+	{
+		idtemp := WinExist("A")
+		WinMinimize, ahk_id %idtemp%
+	return
+	}
+	
+	#^M::
+	{
+		DetectHiddenWindows, OFF
+		WinGet, winarr ,List
+		Loop, %winarr%
+		{
+			idtemp := winarr%A_Index%
+			WinGetClass, class, ahk_id %idtemp%
+			if (!(class = "RainmeterMeterWindow" || class = "bbIconBox" || class = "bbLeanBar" || class = "bbSlit"))
+			{
+				WinMinimize, ahk_id %idtemp%
+			}
+		}
+	return
+	}
+	
+	#!M::
+	{
+		DetectHiddenWindows, OFF
+		WinGet, winarr ,List
+		Loop, %winarr%
+		{
+			idtemp := winarr%A_Index%
+			WinRestore, ahk_id %idtemp%
+		}
+	return
+	}
+	
+	#F11::
+	{
+		idtemp := WinExist("A")
+		WinGetPos, xtemp,,,, ahk_id %idtemp%
+		if (xtemp >= Mon1Left && xtemp < Mon1Right)
+		{
+			mon := 1
+		} else if (xtemp < Mon1Left && dis2 = 1)
+		{
+			mon := 2
+		} else if (xtemp >= Mon1Right && dis3 = 1)
+		{
+			mon := 3
+		}
+		if (mon != 0)
+		{
+			WinMove, ahk_id %idtemp%,, (Mon%mon%Left), (Mon%mon%Top), (Mon%mon%Width), (Mon%mon%Height)
+		}
 	return
 	}
 	
@@ -338,6 +376,7 @@
 	;This script is a modified version of http://www.autohotkey.com/docs/scripts/EasyWindowDrag_%28KDE%29.htm.
 	#LButton::
 	{
+		;Drag window.
 		SetWinDelay, -1
 		MouseGetPos,KDE_X1,KDE_Y1,KDE_id
 		WinActivate, ahk_id %KDE_id%
@@ -370,6 +409,7 @@
 	
 	#RButton::
 	{
+		;Resize window.
 		SetWinDelay, -1
 		MouseGetPos,KDE_X1,KDE_Y1,KDE_id
 		WinActivate, ahk_id %KDE_id%
@@ -433,6 +473,7 @@
 	
 	#MButton::
 	{
+		;Fill monitor.
 		SetWinDelay, -1
 		MouseGetPos,,,KDE_id
 		WinActivate, ahk_id %KDE_id%
