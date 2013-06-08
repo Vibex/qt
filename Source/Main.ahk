@@ -17,6 +17,7 @@
 		SetControlDelay, %cspeed%
 		
 		remove(null, 1)
+		Confine := 0
 		
 		if (baryeah = 1)
 		{
@@ -211,27 +212,6 @@
 	
 	
 	
-	#F::
-	~!F4::
-	{
-		idtemp := WinExist("A")
-		remove(idtemp)
-	return
-	}
-	
-	#R::
-	{
-		Reload
-		Sleep 1000
-	return
-	}
-	
-	#W::
-	{
-		remove(a, 1)
-	return
-	}
-	
 	#T::
 	{
 		;Change the window title.
@@ -244,6 +224,7 @@
 	
 	#O::
 	{
+		;Toggle the always on yop state.
 		idtemp := WinExist("A")
 		WinSet, AlwaysOnTop,, ahk_id %idtemp%
 	return
@@ -251,13 +232,21 @@
 	
 	#M::
 	{
+		;Minimize the current window
 		idtemp := WinExist("A")
 		WinMinimize, ahk_id %idtemp%
 	return
 	}
 	
+	#W::
+	{
+		remove(a, 1)
+	return
+	}
+	
 	#^M::
 	{
+		;Minimize all windows
 		DetectHiddenWindows, OFF
 		WinGet, winarr ,List
 		Loop, %winarr%
@@ -274,6 +263,7 @@
 	
 	#!M::
 	{
+		;Restore all windows
 		DetectHiddenWindows, OFF
 		WinGet, winarr ,List
 		Loop, %winarr%
@@ -284,10 +274,46 @@
 	return
 	}
 	
-	#F11::
+	#ScrollLock::
+	{
+		;Confine the cursor to a window. Still only semi functional.
+		idtemp := WinExist("A")
+		WinGetPos, xtemp, ytemp, wtemp, htemp, ahk_id %idtemp%
+		Confine := !Confine 
+		ClipCursor(Confine, xtemp, ytemp, wtemp, htemp) 
+	return
+	}
+	
+	#F2::
 	{
 		idtemp := WinExist("A")
-		WinGetPos, xtemp,,,, ahk_id %idtemp%
+		WinGetPos, newSize3, newSize4, newSize1, newSize2, ahk_id %idtemp%
+		InputBox, size, Rename "%title%" - qt.pi, Input the size in the format w`, h`, x`, y. You may leave out any parameters you want.
+		StringSplit, newSize, size, `,
+		WinMove, ahk_id %idtemp%,, (newSize3), (newSize4), (newSize1), (newSize2)
+	return
+	}
+	
+	#F4::
+	~!F4::
+	{
+		idtemp := WinExist("A")
+		remove(idtemp)
+	return
+	}
+	
+	#F5::
+	{
+		Reload
+		Sleep 1000
+	return
+	}
+	
+	#F11::
+	{
+		;Toggle the fullscreen state
+		idtemp := WinExist("A")
+		WinGetPos, xtemp, ytemp, wtemp, htemp, ahk_id %idtemp%
 		if (xtemp >= Mon1Left && xtemp < Mon1Right)
 		{
 			mon := 1
@@ -300,7 +326,22 @@
 		}
 		if (mon != 0)
 		{
-			WinMove, ahk_id %idtemp%,, (Mon%mon%Left), (Mon%mon%Top), (Mon%mon%Width), (Mon%mon%Height)
+			remove(idtemp)
+			if (xtemp = Mon%mon%Left && ytemp = Mon%mon%Top && wtemp = Mon%mon%Width && htemp = Mon%mon%Height)
+			{
+				screenFill(mon, idtemp)
+				if (titlebaraway = 0)
+				{
+					titlebegone(idtemp, 3)
+				}
+			} else {
+				titlebegone(idtemp, 2, null)
+				id := mon%x%_Full
+				WinSet, Style, +0x40000, ahk_id %id%
+				WinSet, Style, -0x40000, ahk_id %idtemp%
+				Mon%mon%_Full := idtemp
+				WinMove, ahk_id %idtemp%,, (Mon%mon%Left), (Mon%mon%Top), (Mon%mon%Width), (Mon%mon%Height)
+			}
 		}
 	return
 	}

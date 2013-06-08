@@ -1,4 +1,4 @@
-﻿	;If you know what you are doing with AHK feel free to play with the methods below. I've left comments on things that you may want to play with. I have also added a descrition of each methods function.
+﻿	;If you know what you are doing with AHK feel free to play with the methods below. I've left comments on things that you may want to play with. I have also added a description of each methods function.
 	ShellMessage( wParam,lParam )
 	{
 		;This detects messages sent by windows itself and preforms actions based on the messages.
@@ -6,6 +6,7 @@
 		global currentid
 		global titlebaraway
 		global baryeah
+		global tranthresh
 		
 		WinGetTitle, title, ahk_id %lParam%
 		WinGet, Style, Style, ahk_id %lParam%
@@ -20,9 +21,7 @@
 		{
 			;Window active
 			WinGet, tran, Transparent, ahk_id %lParam%
-			;tranthresh is the transparency value at which, when a window is below, is activated, it will retun to 100% opaque.
-			tranthresh := 0
-			if (tran = tranthresh)
+			if (tran <= tranthresh)
 			{
 				WinSet, Transparent, 255, ahk_id %lParam%
 			}
@@ -79,7 +78,6 @@
 			if (bspeed = "WARP DRIVE")
 			{
 				bspeed := -1
-				SetBatchLines, %bspeed%
 			}
 			FileReadLine, wspeed, %configA%, 10
 			if (wspeed = "WARP DRIVE")
@@ -124,10 +122,10 @@
 			FileReadLine, baryeah, %configA%, 83
 			FileReadLine, autorepos, %configA%, 86
 			FileReadLine, debug, %configA%, 89
+			tranthresh := 0
 		} else {
-			;Defaults when advanced config is disabled.
+			;Defaults when advanced config is disabled. What each value does can be found in the advancedConfig.txt file. The items below are listed in the order they appear in the text file.
 			bspeed := "10ms"
-			SetBatchLines, %bspeed%
 			wspeed := 100
 			kspeed := 10
 			cspeed := 20
@@ -150,6 +148,7 @@
 			baryeah := 0
 			autorepos := 0
 			debug := 0
+			tranthresh := 0
 		}
 		
 		disp1 := 1
@@ -609,6 +608,7 @@
 		global
 		local x
 		local y
+		local mon
 		
 		x := 0
 		Loop, 3
@@ -634,6 +634,12 @@
 			if (mon%x%_center = id || all = 1)
 			{
 				mon%x%_center := null
+			}
+			if (mon%x%_Full = id || all = 1)
+			{
+				idtemp := mon%x%_Full
+				WinSet, Style, +0x40000, ahk_id %idtemp%
+				mon%x%_Full := null
 			}
 		}
 	return
@@ -773,6 +779,7 @@
 	{
 		;Fills the entire screen with a window.
 		global
+		
 		remove(id)
 		WinMove, ahk_id %id%,, (hbor + Mon%mon%Left + hborex + lbar%mon%), (tbar%mon% + vbor + Mon%mon%Top + vborex), (Mon%mon%Width - hbor - hbor - hborex - hborex - lbar%mon% - rbar%mon%), (Mon%mon%Height - vbor - vbor - vborex - vborex - tbar%mon% - bbar%mon%)
 	return
@@ -807,12 +814,16 @@
 	return
 	}
 	
-	titleBeGone(id, mode = 1)
+	titleBeGone(id, mode = 1, titleFixmode = 0)
 	{
-		;Hides the titlebar on the window. 
+		;Controls the titlebar on the window. The way it does this is based on the mode.
 		global
 		local widthtemp
 		
+		if (titleFixMode = 0)
+		{
+			titleFixMode = titleFix
+		}
 		WinSet, Style, -0x800000, ahk_id %id%
 		if (mode = 1)
 		{
@@ -820,16 +831,19 @@
 		} else if (mode = 2)
 		{
 			WinSet, Style, -0xC00000, ahk_id %id%
+		} else if (mode = 3)
+		{
+			WinSet, Style, +0xC00000, ahk_id %id%
 		}
 		WinSet, Redraw,, ahk_id %id%
-		if (titleFix = 1)
+		if (titleFixMode = 1)
 		{
 			WinGetPos,,, widthtemp,, ahk_id %id%
 			WinMove, ahk_id %id%,,,, (widthtemp - 1)
 			WinMove, ahk_id %id%,,,, (widthtemp)
 		return
 		}
-		if (titleFix = 2)
+		if (titleFixMode = 2)
 		{
 			WinMinimize, ahk_id %id%
 			WinActivate, ahk_id %id%
@@ -838,69 +852,11 @@
 	return
 	}
 	
-	switchWin(id, direc)
-	{
-		;I can't actually remember what this did. I think it shifts the focus to a different window. I'll probably rewrite this because I'm to lazy to read it. 
-		global
-		local mon
-		
-		WinGetPos, xtemp,,,, ahk_id %id%
-		if (xtemp >= Mon1Left && xtemp < Mon1Right)
-		{
-			mon := 1
-		} else if (xtemp < Mon1Left && dis2 = 1)
-		{
-			mon := 2
-		} else if (xtemp >= Mon1Right && dis3 = 1)
-		{
-			mon := 3
-		}
-		cord(mon, id)
-		if (rx != 0 && ry != 0)
-		{
-			if (direc := "u")
-			{
-				rx := rx - 1
-				if (rx !> 0)
-				{
-					rx := rx + 1
-				}
-			return
-			}
-			if (direc := "d")
-			{
-				rx := rx + 1
-				if (rx !< 4)
-				{
-					rx := rx - 1
-				}
-			return
-			}
-			if (direc := "l")
-			{
-				ry := ry - 1
-				if (rx !> 0)
-				{
-					ry := ry + 1
-				}
-			return
-			}
-			if (direc := "r")
-			{
-				ry := ry + 1
-				if (rx !< 4)
-				{
-					ry := ry - 1
-				}
-			}
-		}
-	return	
-	}
-	
 	trans(id, direc)
 	{
 		;This controls the transparency on windows.
 		global custran
+		
 		WinGet, tran, Transparent, ahk_id %id%
 		if (direc = "u")
 		{
@@ -912,4 +868,10 @@
 		}
 		WinSet, Transparent, %newtrans%, ahk_id %id%
 	return
+	}
+	
+	ClipCursor(Confine=True, x1=0 , y1=0, x2=1, y2=1)
+	{
+		VarSetCapacity(R,16,0),  NumPut(x1,&R+0),NumPut(y1,&R+4),NumPut(x2,&R+8),NumPut(y2,&R+12) 
+	return Confine ? DllCall( "ClipCursor", UInt,&R ) : DllCall( "ClipCursor" ) 
 	}

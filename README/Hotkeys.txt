@@ -1,5 +1,5 @@
 Hotkeys
-Expand Keys (If you double click the window will not expand.) ***Numlock off*** 
+Expand Keys (If you double click the window will not expand to the full size of the avaliable area.) ***Numlock off*** 
 Win + Numpad Home: Set to the cordinates in the grid 1,1.
 Win + Numpad Up: Set to the cordinates in the grid 2,1.
 Win + Numpad PgUp: Set to the cordinates in the grid 3,1.
@@ -56,7 +56,7 @@ Win + Scroll Wheel Down: Decrease the opacity of the selected window.
 Manuel Move Keys
 Win + Left Mouse Button: Have the window follow your cursor until you release.
 Win + Right Mouse Button: Have the window be resized by your mouse movement.
-Win + Middle Mouse Button:Maximize the current window on the current monitor.
+Win + Middle Mouse Button: Maximize the current window on the current monitor.
 Esc: Return the window to it's position before using the 3 above mouse commands.
 
 
@@ -66,12 +66,16 @@ Win + Ctrl + M: Minimize all windows.
 Win + Alt + M: Restore all windows.
 
 
+Function Keys
+Win + F2: Set specific size of a window in pixels.
+Win +  F4: Remove the active window from the current stored window information.
+Alt + F4: Kill the window and remove it from the grid.
+Win +  F5: Reload the script.
+Win + F11: Fullscreen.
+
+
 Other Keys
 Win + Ctrl + Numpad Clear: Remove the titlebar from the current window.
-Win +  F: Remove the active window from the current stored window information.
-Alt + F4: Kill the window and remove it from the grid.
-Win +  R: Reload the script.
-Win +  W: Removes all stored window data.
+Win + W: Remove all stored window data.
 Win + T: Rename the selected window.
 Win + O: Toggle always on top on the current window.
-Win + F11: Fullscreen.

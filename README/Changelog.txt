@@ -1,3 +1,9 @@
+Version 0.2.2		06/07.2013
+*Cleaned up some code.
+*Added new function keys and altered others.
+*Semi functional key bind to window functionality. Win + Scroll Lock.
+
+
 Version 0.2.1		06/05/2013
 *Added hotkeys for minimizing windows (all, single and restoration). The keys are Win + M to minimize the current window, Win + Ctrl + M to minimize all windows, and Win + Alt + M to restore all windows.
 *Added Fullscreen key (different from the screen fill keys. These new keys fit it to the total size of the monitor disregarding all taskbars and borders.) It is activated by Win + F11.
