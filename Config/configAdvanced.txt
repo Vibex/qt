@@ -12,6 +12,9 @@ Set the value of how long of a delay there is when using window commands (in ms,
 Set the value of how long of a delay there is when pressing keys (in ms, though the "ms" ending is not needed). You can also specify unlimited speed with the string "WARP DRIVE".
 10
 
+Set the value of how long of a delay there is when using qt.pi windows (ex. Debug window and taskbar) (in ms, though the "ms" ending is not needed). You can also specify unlimited speed with the string "WARP DRIVE".
+1
+
 *FIX*Set this to 1 or 2 if you encounter a black bar beneath your windows when removing the titlebar. 1 will cause a small shift on the right border of the window. 2 will cause the window to disappear and then reappear to fix the bug. Otherwise set this to 0.
 0
 
@@ -71,6 +74,16 @@ Set this to 1 if you want windows to have their titlebars removed when they are 
 
 Set this value to 1 to enable window hooking. Set to 0 otherwise. If this is 0 it will break a fair number of the features avaliable to the UI (and some other features) of qt.pi. YOU HAVE BEEN WARNED!
 1
+
+
+
+Set this value to 1 if you want to flip the left and right window positions. Otherwise set it to 0.
+0
+
+
+
+Exclusion classes. List the classes below and seperate them with a ",". The classes of windows will be ignored when minimizing all windows and on the taskbar
+
 
 
 

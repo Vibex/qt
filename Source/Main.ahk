@@ -212,16 +212,6 @@
 	
 	
 	
-	#T::
-	{
-		;Change the window title.
-		idtemp := WinExist("A")
-		WinGetTitle, title, ahk_id %idtemp%
-		InputBox, newName, Rename "%title%" - qt.pi, Rename the current window.`n(Curently custom fonts are not available in AHK input boxes. As soon as this is available`, I will implement it. Otherwise I will write a GUI to do this more nicely.),,,,,,,, %title%
-		WinSetTitle, ahk_id %idtemp%,, %newName%
-	return
-	}
-	
 	#O::
 	{
 		;Toggle the always on yop state.
@@ -244,36 +234,6 @@
 	return
 	}
 	
-	#^M::
-	{
-		;Minimize all windows
-		DetectHiddenWindows, OFF
-		WinGet, winarr ,List
-		Loop, %winarr%
-		{
-			idtemp := winarr%A_Index%
-			WinGetClass, class, ahk_id %idtemp%
-			if (!(class = "RainmeterMeterWindow" || class = "bbIconBox" || class = "bbLeanBar" || class = "bbSlit"))
-			{
-				WinMinimize, ahk_id %idtemp%
-			}
-		}
-	return
-	}
-	
-	#!M::
-	{
-		;Restore all windows
-		DetectHiddenWindows, OFF
-		WinGet, winarr ,List
-		Loop, %winarr%
-		{
-			idtemp := winarr%A_Index%
-			WinRestore, ahk_id %idtemp%
-		}
-	return
-	}
-	
 	#ScrollLock::
 	{
 		;Confine the cursor to a window. Still only semi functional.
@@ -284,17 +244,39 @@
 	return
 	}
 	
-	#F2::
+	#F1::
 	{
-		idtemp := WinExist("A")
-		WinGetPos, newSize3, newSize4, newSize1, newSize2, ahk_id %idtemp%
-		InputBox, size, Rename "%title%" - qt.pi, Input the size in the format w`, h`, x`, y. You may leave out any parameters you want.
-		StringSplit, newSize, size, `,
-		WinMove, ahk_id %idtemp%,, (newSize3), (newSize4), (newSize1), (newSize2)
+		IfExist, README\Hotkeys.txt
+		{
+			Run, %A_WorkingDir%\README\Hotkeys.txt
+		} else {
+			Run, explore %A_WorkingDir%
+		}
 	return
 	}
 	
+	#F2::
+	{
+		;Change the window title.
+		idtemp := WinExist("A")
+		WinGetTitle, title, ahk_id %idtemp%
+		InputBox, newName, Rename "%title%" - qt.pi, Rename the current window.`n(Curently custom fonts are not available in AHK input boxes. As soon as this is available`, I will implement it. Otherwise I will write a GUI to do this more nicely.),,,,,,,, %title%
+		WinSetTitle, ahk_id %idtemp%,, %newName%
+	return
+	}
+	
+	;#F3::
+	;{
+		;Will launch in the in-bar search function
+	;return
+	;}
+	
 	#F4::
+	{
+		ExitApp
+	return
+	}
+	
 	~!F4::
 	{
 		idtemp := WinExist("A")
@@ -306,6 +288,36 @@
 	{
 		Reload
 		Sleep 1000
+	return
+	}
+	
+	#F8::
+	{
+		;Minimize all windows
+		DetectHiddenWindows, OFF
+		WinGet, winarr ,List
+		Loop, %winarr%
+		{
+			idtemp := winarr%A_Index%
+			WinGetClass, class, ahk_id %idtemp%
+			if (exclusion(class) = 1)
+			{
+				WinMinimize, ahk_id %idtemp%
+			}
+		}
+	return
+	}
+	
+	#F9::
+	{
+		;Restore all windows
+		DetectHiddenWindows, OFF
+		WinGet, winarr ,List
+		Loop, %winarr%
+		{
+			idtemp := winarr%A_Index%
+			WinRestore, ahk_id %idtemp%
+		}
 	return
 	}
 	
@@ -329,11 +341,11 @@
 			remove(idtemp)
 			if (xtemp = Mon%mon%Left && ytemp = Mon%mon%Top && wtemp = Mon%mon%Width && htemp = Mon%mon%Height)
 			{
-				screenFill(mon, idtemp)
 				if (titlebaraway = 0)
 				{
 					titlebegone(idtemp, 3)
 				}
+				screenFill(mon, idtemp)
 			} else {
 				titlebegone(idtemp, 2, null)
 				id := mon%x%_Full
@@ -400,12 +412,30 @@
 	
 	#WheelUp::
 	{
+		BlockInput, On
+		Send {PgUp}
+		BlockInput, Off
+	return
+	}
+	
+	#WheelDown::
+	{
+		BlockInput, On
+		Send {PgDn}
+		BlockInput, Off
+	return
+	}
+	
+	
+	
+	#^WheelUp::
+	{
 		idtemp := WinExist("A")
 		trans(idtemp, "u")
 	return
 	}
 	
-	#WheelDown::
+	#^WheelDown::
 	{
 		idtemp := WinExist("A")
 		trans(idtemp, "d")
@@ -512,40 +542,11 @@
 	return
 	}
 	
-	#MButton::
-	{
-		;Fill monitor.
-		SetWinDelay, -1
-		MouseGetPos,,,KDE_id
-		WinActivate, ahk_id %KDE_id%
-		WinGetPos,KDE_WinXStart,KDE_WinYStart,KDE_WinWStart,KDE_WinHStart,ahk_id %KDE_id%
-		Loop
-		{
-			GetKeyState, KDE_Button, MButton, P
-			If KDE_Button = U
-			{
-			break
-			}
-			GetKeyState, KDE_EscapeState, Escape, P
-			if KDE_EscapeState = D
-			{
-				WinMove, ahk_id %KDE_id%,, %KDE_WinXStart%, %KDE_WinYStart%, %KDE_WinWStart%, %KDE_WinHStart%
-			break
-			}
-			MouseGetPos, mousepos
-			if (mousepos < 0 && dis2 = 1)
-			{
-				newmon := 2
-			} else if (mousepos >= Mon1Right && dis3 = 1)
-			{
-				newmon := 3
-			} else {
-				newmon := 1
-			}
-			screenFill(newmon, KDE_id)
-		}
-	return
-	}
+	;#MButton::
+	;{
+	;	
+	;return
+	;}
 	
 	
 	#Include Methods.ahk

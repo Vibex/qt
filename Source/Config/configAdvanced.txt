@@ -52,7 +52,7 @@ Auto shift vertical on the third monitor. This will determine an amount to auto 
 0
 
 Auto shift vertical on the third monitor. This will determine an amount to auto shift your borders down when launching the script. It is a value in number of clicks.
-0
+19
 
 Auto shift horizontal on the third monitor. This will determine an amount to auto shift your borders right when launching the script. It is a value in number of clicks.
 0
@@ -77,10 +77,20 @@ Set this value to 1 to enable window hooking. Set to 0 otherwise. If this is 0 i
 
 
 
+Set this value to 1 if you want to flip the left and right window positions. Otherwise set it to 0.
+1
+
+
+
+Exclusion classes. List the classes below and seperate them with a ",". The classes of windows will be ignored when minimizing all windows and on the taskbar
+RainmeterMeterWindow,bbIconBox,bbLeanBar,bbSlit
+
+
+
 BETA
 
 Taskbar. This is a bar to be placed at the top of your main monitor (I may make position customizable in the future). It will display the current running task along with the date and mouse position. Set the value to 1 if you want the bar. Otherwise set it to 0.
-0
+1
 
 Set the value below to 1 if you want to test the auto move window in relation to the newly placed window (really long title) feature. otherwise set this to 0. This feature is still incredibly buggy
 1

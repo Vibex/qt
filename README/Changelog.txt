@@ -1,4 +1,19 @@
-Version 0.2.2		06/07.2013
+Version 0.3		07/07/2013
+*Added the need to hold the Ctrl key when doing transparency scrolling.
+*Win + Scroll Wheel Roll now send PgUp or PgDn key presses.
+*Win + F1 now opens the Hotkeys.txt file or the containing folder if no file exists.
+*Win + T has been changed to Win + F2.
+*Win + F4 now kills the script instead of removing the window from the grid.
+*Win + F8 hides all windows instead of Win + Ctrl + M
+*Win + F9 Shows all minimized windows instead of Win + Alt + M.
+*Changes made to bar.ahk nut it is still a buggy mess.
+*Win + Middle mouse button removed. It will be replaced by something.
+*Exclusion list made more efficient.
+*Added an option to flip the right and left monitor.
+*Fixed some transparency threshold problems.
+
+
+Version 0.2.2		06/07/2013
 *Cleaned up some code.
 *Added new function keys and altered others.
 *Semi functional key bind to window functionality. Win + Scroll Lock.

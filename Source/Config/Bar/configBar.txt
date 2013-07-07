@@ -1,7 +1,7 @@
 ***These options only matter if you have the taskbar enabled.***
 
 Set this to the update rate in ms (Leave off the ms ending).
-50
+35
 
 This is the default colour of the bar.
 C9C9C9

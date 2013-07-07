@@ -9,6 +9,7 @@
 		global tranthresh
 		
 		WinGetTitle, title, ahk_id %lParam%
+		WinGetClass, class , ahk_id %lParam%
 		WinGet, Style, Style, ahk_id %lParam%
 		mon := 0
 		If (wParam = 1 && titlebaraway = 1)
@@ -65,6 +66,8 @@
 	{
 		;This loads all of the information from the config files.
 		global
+		local temp
+		local x
 		
 		SetBatchLines, -1
 		;The location of the config files.
@@ -119,9 +122,20 @@
 			
 			FileReadLine, winHook, %configA%, 76
 			
-			FileReadLine, baryeah, %configA%, 83
-			FileReadLine, autorepos, %configA%, 86
-			FileReadLine, debug, %configA%, 89
+			FileReadLine, monreverse, %configA%, 81
+			
+			FileReadLine, exclude, %configA%, 86
+			if (exclude != null)
+			{
+				StringSplit, exclusion, exclude, `,
+			} else {
+				exclusion0 := 1
+				exclusion1 := null	
+			}
+		
+			FileReadLine, baryeah, %configA%, 93
+			FileReadLine, autorepos, %configA%, 96
+			FileReadLine, debug, %configA%, 99
 			tranthresh := 0
 		} else {
 			;Defaults when advanced config is disabled. What each value does can be found in the advancedConfig.txt file. The items below are listed in the order they appear in the text file.
@@ -145,10 +159,14 @@
 			custran := 85
 			titlebaraway := 1
 			winHook := 1
+			monreverse := 0
+			exclusion0 := 1
+			exclusion1 := null
 			baryeah := 0
 			autorepos := 0
 			debug := 0
-			tranthresh := 0
+			tranthresh := 1
+			monreverse := 0
 		}
 		
 		disp1 := 1
@@ -209,7 +227,17 @@
 		SysGet, MonNum, MonitorCount
 		Loop, %MonNum%
 		{
-			SysGet, Mon%A_Index%, Monitor, %A_Index%
+			if (monreverse = 1 && A_Index = 2)
+			{
+				temp := 3
+			} 
+			else if (monreverse = 1 && A_Index = 3)
+			{
+				temp := 2
+			} else {
+				temp := A_Index
+			}
+			SysGet, Mon%A_Index%, Monitor, %temp%
 			Mon%A_Index%Width := Mon%A_Index%Right - Mon%A_Index%Left
 			Mon%A_Index%Height := Mon%A_Index%Bottom - Mon%A_Index%Top
 		}
@@ -267,6 +295,7 @@
 		;This will automatically shift your window grid when the script is called.
 		global
 		local mon
+		local temp
 		
 		mon := 0
 		Loop, 3
@@ -654,16 +683,21 @@
 		local mon
 		
 		mon := 0
-		WinGetPos, xtemp,,,, ahk_id %id%
-		if (xtemp >= Mon1Left && xtemp < Mon1Right)
+		if (id != null)
 		{
-			mon := 1
-		} else if (xtemp < Mon1Left && dis2 = 1)
-		{
-			mon := 2
-		} else if (xtemp >= Mon1Right && dis3 = 1)
-		{
-			mon := 3
+			WinGetPos, xtemp,,,, ahk_id %id%
+			if (xtemp >= Mon1Left && xtemp < Mon1Right)
+			{
+				mon := 1
+			} else if (xtemp < Mon1Left && dis2 = 1)
+			{
+				mon := 2
+			} else if (xtemp >= Mon1Right && dis3 = 1)
+			{
+				mon := 3
+			}
+		} else {
+			mon := nowin
 		}
 		if (mon != 0)
 		{
@@ -868,6 +902,19 @@
 		}
 		WinSet, Transparent, %newtrans%, ahk_id %id%
 	return
+	}
+	
+	exclusion(class)
+	{
+		global
+		Loop, %exclusion0%
+		{
+			if(class = exclusion%A_Index%)
+			{
+				return 0
+			}
+		}
+	return 1
 	}
 	
 	ClipCursor(Confine=True, x1=0 , y1=0, x2=1, y2=1)

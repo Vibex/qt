@@ -5,7 +5,6 @@
 		Gui, Margin, 0, 0
 
 		hpos := 1
-		hwin := 1
 		hflash := 1
 		hclock := 1
 		
@@ -29,27 +28,22 @@
 			Gui, bar:Add, Text, vPos x4 y1 h%h%, XXXXX, YYYYY
 		}
 		
-		numop := 9
-		
-		if (hwin = 1)
+		shift := 84
+		Loop, 9
 		{
-			size := (w - 44 - 84 - 10) / numop
-			shift := 84
-			Loop, %numop%
-			{
-				Gui, bar:Add, Text, vItem%A_Index% x%shift% y1 w%size% Center, %noWin%
-				shift := shift + size
-			}
+			Gui, bar:Add, Text, vItem%A_Index% Center, %noWin%
+			GuiControl, Hide, Item%A_Index%
 		}
 		
 		if (hflash = 1)
 		{
+			shift := w - 44 - 68 + 64
 			Gui, bar:Add, Text, vflash x%shift% y1 h%h% Center, 0
 		}
 		
 		if (hclock = 1) 
 		{
-			shift := shift + 10
+			shift := w - 44 - 68 - 10 + 80
 			Gui, bar:Add, Text, vClock x%shift% y1 h%h%, 00 00.00
 		}
 		
@@ -58,7 +52,7 @@
 		Gui, bar:Show, x0 y0 w%w% h%h% NoActivate
 	return
 	}
-
+ 
 	Update:
 	{
 		if (hpos = 1)
@@ -72,7 +66,7 @@
 		}
 		if (hflash = 1)
 		{
-			GuiControl, bar:, flash, %flashNum0%
+			GuiControl, bar:, flash, %numwin1%
 		}
 		Gosub, UpdateTitle
 	return
@@ -80,9 +74,41 @@
 	
 	UpdateTitle:
 	{
-		WinGetTitle, current, ahk_id %currentid%
-		WinGetTitle, previous, ahk_id %previousid%
-		GuiControl, bar:, Item1, %current%
-		GuiControl, bar:, Item2, %previous%
+		DetectHiddenWindows, Off
+		WinGet, List, List
+		numwin1 := 0
+		Loop, %List%
+		{
+			curwin := List%A_Index%
+			WinGetClass, class, ahk_id %curwin%
+			WinGetPos, xtemp,,,, ahk_id %curwin%
+			WinGetTitle, title, ahk_id %curwin%
+			if (xtemp >= Mon1Left && xtemp < Mon1Right && exclusion(class) = 1 && title != "main.ahk")
+			{
+				numwin1 += 1
+				numwin1_%A_Index% := curwin
+			}
+		}
+		shift := 80
+		size := (Mon1Width - 44 - shift - 10) / numwin1
+		Loop, 9
+		{
+			GuiControl, bar:, Item%A_Index%, %noWin%
+			GuiControl, Hide, Item%A_Index%
+		}
+		Loop, %numwin1%
+		{
+			Gui, Submit, NoHide
+			curwin := numwin1_%A_Index%
+			WinGetTitle, Temp, ahk_id %curwin%
+			GuiControl, bar:Move, Item%A_Index%, x%shift% y1 w%size%
+			if(Item%A_Index% != Temp)
+			{
+				GuiControl, bar:, Item%A_Index%, %temp%
+			}
+			GuiControl, bar:Show, Item%A_Index%,
+			shift := shift + size
+		}
+		DetectHiddenWindows, On
 	return
 	}
