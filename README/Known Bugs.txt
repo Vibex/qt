@@ -1,4 +1,4 @@
-***BUGS***
-Currently sometimes when hiding the titlebar on a window a black bar will appear at the bottom of the window. A fix for this can be activated in the configAdvanced.txt file.
-The taskbar will flicker repeatedly when displaying non english characters.
-For some reason when using the transparency scroll, the first time you scroll in a while, the window will instantly go 100% transparent. No idea why this is hapening, I'm currently looking into it.
+BUGS
+	*Currently sometimes when hiding the titlebar on a window a black bar will appear at the bottom of the window. A fix for this can be activated in the configAdvanced.txt file.
+	*The taskbar will flicker repeatedly when displaying non english characters.
+	*For some reason when using the transparency scroll, the first time you scroll in a while, the window will instantly go 100% transparent. No idea why this is hapening, I'm currently looking into it.

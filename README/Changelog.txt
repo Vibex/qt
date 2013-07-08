@@ -1,70 +1,77 @@
+Version 0.3.1		07/07/2013
+	*Removed the window flash control from the taskbar.
+	*Added ability to have nonactive windows be transparent.
+	*On quiting qt.pi all windows are restored to full opacity and have there titlebars added back (this doesn't take effect when reloading the script with Win + F5).
+	*Replaced opening the Help text files with a custom text viewer.
+	
+
 Version 0.3		07/07/2013
-*Added the need to hold the Ctrl key when doing transparency scrolling.
-*Win + Scroll Wheel Roll now send PgUp or PgDn key presses.
-*Win + F1 now opens the Hotkeys.txt file or the containing folder if no file exists.
-*Win + T has been changed to Win + F2.
-*Win + F4 now kills the script instead of removing the window from the grid.
-*Win + F8 hides all windows instead of Win + Ctrl + M
-*Win + F9 Shows all minimized windows instead of Win + Alt + M.
-*Changes made to bar.ahk nut it is still a buggy mess.
-*Win + Middle mouse button removed. It will be replaced by something.
-*Exclusion list made more efficient.
-*Added an option to flip the right and left monitor.
-*Fixed some transparency threshold problems.
+	*Added the need to hold the Ctrl key when doing transparency scrolling.
+	*Win + Scroll Wheel Roll now send PgUp or PgDn key presses.
+	*Win + F1 now opens the Hotkeys.txt file or the containing folder if no file exists.
+	*Win + T has been changed to Win + F2.
+	*Win + F4 now kills the script instead of removing the window from the grid.
+	*Win + F8 hides all windows instead of Win + Ctrl + M
+	*Win + F9 Shows all minimized windows instead of Win + Alt + M.
+	*Changes made to bar.ahk nut it is still a buggy mess.
+	*Win + Middle mouse button removed. It will be replaced by something.
+	*Exclusion list made more efficient.
+	*Added an option to flip the right and left monitor.
+	*Fixed some transparency threshold problems.
 
 
 Version 0.2.2		06/07/2013
-*Cleaned up some code.
-*Added new function keys and altered others.
-*Semi functional key bind to window functionality. Win + Scroll Lock.
+	*Cleaned up some code.
+	*Added new function keys and altered others.
+	*Semi functional key bind to window functionality. Win + Scroll Lock.
 
 
 Version 0.2.1		06/05/2013
-*Added hotkeys for minimizing windows (all, single and restoration). The keys are Win + M to minimize the current window, Win + Ctrl + M to minimize all windows, and Win + Alt + M to restore all windows.
-*Added Fullscreen key (different from the screen fill keys. These new keys fit it to the total size of the monitor disregarding all taskbars and borders.) It is activated by Win + F11.
-*Found a new bug with the transparency scroll. Looking into a fix. First I need to find the cause though.
-*Removed some needless code.
-*Added descriptions of all the methods and other aspects of the script so others can tinker with it (Plaes still give me credit though!).
+	*Added hotkeys for minimizing windows (all, single and restoration). The keys are Win + M to minimize the current window, Win + Ctrl + M to minimize all windows, and Win + Alt + M to restore all windows.
+	*Added Fullscreen key (different from the screen fill keys. These new keys fit it to the total size of the monitor disregarding all taskbars and borders.) It is activated by Win + F11.
+	*Found a new bug with the transparency scroll. Looking into a fix. First I need to find the cause though.
+	*Removed some needless code.
+	*Added descriptions of all the methods and other aspects of the script so others can tinker with it (Plaes still give me credit though!).
 
 
 Version 0.2		06/03/2013
-*Main Mod key changed from Ctrl to Win.
-*Setting the ground work for improving the taskbar. It still is a massive work in progress, but it is now the main focus of my work (for real this time, not like all the other times I've said this).
-*Increased usefulness of debug (again, doubt anyone cares).
-*Improved overall code flow when loading from config.
-*Instead of reloading the config, the Win + R hotkey now reloads the entire script.
-*Added Win + O to set a window to always on top.
+	*Main Mod key changed from Ctrl to Win.
+	*Setting the ground work for improving the taskbar. It still is a massive work in progress, but it is now the main focus of my work (for real this time, not like all the other times I've said this).
+	*Increased usefulness of debug (again, doubt anyone cares).
+	*Improved overall code flow when loading from config.
+	*Instead of reloading the config, the Win + R hotkey now reloads the entire script.
+	*Added Win + O to set a window to always on top.
 
 
 Version 0.1.5		05/30/2013
-*Made some minor efficiency changes.
-*Made some changes to the debug window (not that anyone cares).
+	*Made some minor efficiency changes.
+	*Made some changes to the debug window (not that anyone cares).
 
 
 Version 0.1.4		05/25/2013
-*You no longer have to shift click with the numpad to make a window not expand. Instead just double click/hold down the hotkey.
-*If you use Alt + Middle Mouse Click you will expand the window to it's full size on the current monitor. The window will follow the cursor to any new monitor while the Middle Mouse Button is still held down.
+	*You no longer have to shift click with the numpad to make a window not expand. Instead just double click/hold down the hotkey.
+	*If you use Alt + Middle Mouse Click you will expand the window to it's full size on the current monitor. The window will follow the cursor to any new monitor while the Middle Mouse Button is still held down.
 
 
 Version 0.1.3		05/20/2013
-*Added more functionality to the mouse controlling windows size and position.
+	*Added more functionality to the mouse controlling windows size and position.
 
 
 Version 0.1.2		05/19/2013
-*Added the ability to drag windows without using titlebars.
-*Added auto removal of titlebars from newly created windows (can be disabled in the configAdvanced.txt file).
-*Added a less annoying fix for the black bar when removing titlebars (The old one is still avaliable though if you prefer it).
+	*Added the ability to drag windows without using titlebars.
+	*Added auto removal of titlebars from newly created windows (can be disabled in the configAdvanced.txt file).
+	*Added a less annoying fix for the black bar when removing titlebars (The old one is still avaliable though if you prefer it).
 
 
 Version 0.1.1		05/18/2013
-*Added keys to center window on monitor while retaining there original size (unless the window is larger then the monitor. Then it is resized to fit.).
-*Fixed Screen fill bug that added an extra border length.
-*Cut out some superfluous code.
+	*Added keys to center window on monitor while retaining there original size (unless the window is larger then the monitor. Then it is resized to fit.).
+	*Fixed Screen fill bug that added an extra border length.
+	*Cut out some superfluous code.
 
 
 Version 0.1.0		05/17/2013
-*Added Changelog to keep track of updates.
-*No longer must you specify the dimmensions of all your montiors. The script will automatically detect them.
-*More options to increase speed were added to the configAdvanced.txt file.
-*Fixed a bug with the auto placement of windows when shiffting there boundries.
-*Minor tweaks everywhere.
+	*Added Changelog to keep track of updates.
+	*No longer must you specify the dimmensions of all your montiors. The script will automatically detect them.
+	*More options to increase speed were added to the configAdvanced.txt file.
+	*Fixed a bug with the auto placement of windows when shiffting there boundries.
+	*Minor tweaks everywhere.

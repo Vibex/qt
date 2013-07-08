@@ -35,15 +35,9 @@
 			GuiControl, Hide, Item%A_Index%
 		}
 		
-		if (hflash = 1)
-		{
-			shift := w - 44 - 68 + 64
-			Gui, bar:Add, Text, vflash x%shift% y1 h%h% Center, 0
-		}
-		
 		if (hclock = 1) 
 		{
-			shift := w - 44 - 68 - 10 + 80
+			shift := w - 44 - 68 -10 + 80
 			Gui, bar:Add, Text, vClock x%shift% y1 h%h%, 00 00.00
 		}
 		
@@ -90,7 +84,7 @@
 			}
 		}
 		shift := 80
-		size := (Mon1Width - 44 - shift - 10) / numwin1
+		size := (Mon1Width - 44 - shift) / numwin1
 		Loop, 9
 		{
 			GuiControl, bar:, Item%A_Index%, %noWin%

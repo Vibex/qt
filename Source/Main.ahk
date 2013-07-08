@@ -7,6 +7,7 @@
 		SetTitleMatchMode,Slow
 		CoordMode, Mouse, Screen
 		DetectHiddenWindows, On
+		OnExit, DeathToTheScript
 		null := ""
 		full := "This string is full and should fix all the problems I am having"
 		
@@ -32,6 +33,24 @@
 		if (debug = 1)
 		{
 			createDebug()
+		}
+		
+		WinGet, winarr ,List
+		Loop, %winarr%
+		{
+			idtemp := winarr%A_Index%
+			WinGetClass, class, ahk_id %idtemp%
+			if (exclusion(class) = 1)
+			{
+				if (titlebaraway = 1)
+				{
+					titleBeGone(idtemp, 2)
+				}
+				if (nonactivetrans = 255)
+				{
+					trans(idtemp, nonactivetrans)
+				}
+			}
 		}
 		
 		if (winHook = 1)
@@ -246,9 +265,17 @@
 	
 	#F1::
 	{
-		IfExist, README\Hotkeys.txt
+		IfExist, README.exe
 		{
-			Run, %A_WorkingDir%\README\Hotkeys.txt
+			Run, README.exe
+		} else IfExist, README.ahk
+		{
+			IfExist, README.txt
+			{
+				Run, README.ahk
+			} else {
+				Run, explore %A_WorkingDir%
+			}
 		} else {
 			Run, explore %A_WorkingDir%
 		}
@@ -348,7 +375,7 @@
 				screenFill(mon, idtemp)
 			} else {
 				titlebegone(idtemp, 2, null)
-				id := mon%x%_Full
+				id := mon%mon%_Full
 				WinSet, Style, +0x40000, ahk_id %id%
 				WinSet, Style, -0x40000, ahk_id %idtemp%
 				Mon%mon%_Full := idtemp
@@ -547,6 +574,31 @@
 	;	
 	;return
 	;}
+	
+	
+	
+	DeathToTheScript:
+	{
+		DetectHiddenWindows, Off
+		SetBatchLines, -1
+		if(A_ExitReason != "Shutdown" && A_ExitReason != "Logoff" && A_ExitReason != "reload")
+		{
+			WinGet, winarr ,List
+			Loop, %winarr%
+			{
+				idtemp := winarr%A_Index%
+				WinGetClass, class, ahk_id %idtemp%
+				if (exclusion(class) = 1)
+				{
+					titleBeGone(idtemp, 3)
+				}
+				trans(idtemp, 255)
+			}
+		}
+	ExitApp
+	Sleep 1000
+	}
+	
 	
 	
 	#Include Methods.ahk

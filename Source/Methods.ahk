@@ -7,6 +7,7 @@
 		global titlebaraway
 		global baryeah
 		global tranthresh
+		global nonactivetrans
 		
 		WinGetTitle, title, ahk_id %lParam%
 		WinGetClass, class , ahk_id %lParam%
@@ -16,6 +17,10 @@
 		{
 			;Window created
 			titleBeGone(lParam, 2)
+			if (nonactivetrans != 255)
+			{
+				trans(lParam, nonatcivetrans)
+			}
 		return
 		}
 		If (wParam = 4)
@@ -24,41 +29,21 @@
 			WinGet, tran, Transparent, ahk_id %lParam%
 			if (tran <= tranthresh)
 			{
-				WinSet, Transparent, 255, ahk_id %lParam%
+				trans(lParam, 255)
 			}
-			if (lParam != currentid && baryeah = 1)
+			if (lParam != currentid)
 			{
 				previousid := currentid
 				currentid := lParam
 				Gosub, UpdateTitle
 			}
+			if (nonactivetrans != 255)
+			{
+				trans(currentid, 255)
+				trans(previousid, nonactivetrans)
+			}
 		return
 		}
-		If (wParam = 32774 && baryeah = 1)
-		{
-			;Flash Window
-			flashCheck(lparam)
-		}
-	return
-	}
-	
-	flashCheck(id)
-	{
-		;This method is called when a window flashes. I then sends the value to the taskbar.
-		global
-		
-		if (flashNum0 != 0)
-		{
-			Loop, %flashNum0%
-			{
-				if (id = flashNum%A_Index%)
-				{
-				return
-				}
-			}
-		}
-		flashNum0 += 1
-		flashNum%flashNum0% := id
 	return
 	}
 	
@@ -117,14 +102,16 @@
 			FileReadLine, ls3, %configA%, 61
 			
 			FileReadLine, custran, %configA%, 66
+			FileReadLine, nonactivetrans, %configA%, 69
+
 			
-			FileReadLine, titlebaraway, %configA%, 71
+			FileReadLine, titlebaraway, %configA%, 74
 			
-			FileReadLine, winHook, %configA%, 76
+			FileReadLine, winHook, %configA%, 79
 			
-			FileReadLine, monreverse, %configA%, 81
+			FileReadLine, monreverse, %configA%, 84
 			
-			FileReadLine, exclude, %configA%, 86
+			FileReadLine, exclude, %configA%, 89
 			if (exclude != null)
 			{
 				StringSplit, exclusion, exclude, `,
@@ -133,9 +120,9 @@
 				exclusion1 := null	
 			}
 		
-			FileReadLine, baryeah, %configA%, 93
-			FileReadLine, autorepos, %configA%, 96
-			FileReadLine, debug, %configA%, 99
+			FileReadLine, baryeah, %configA%, 96
+			FileReadLine, autorepos, %configA%, 99
+			FileReadLine, debug, %configA%, 102
 			tranthresh := 0
 		} else {
 			;Defaults when advanced config is disabled. What each value does can be found in the advancedConfig.txt file. The items below are listed in the order they appear in the text file.
@@ -165,8 +152,7 @@
 			baryeah := 0
 			autorepos := 0
 			debug := 0
-			tranthresh := 1
-			monreverse := 0
+			tranthresh := 0
 		}
 		
 		disp1 := 1
@@ -854,10 +840,6 @@
 		global
 		local widthtemp
 		
-		if (titleFixMode = 0)
-		{
-			titleFixMode = titleFix
-		}
 		WinSet, Style, -0x800000, ahk_id %id%
 		if (mode = 1)
 		{
@@ -868,8 +850,13 @@
 		} else if (mode = 3)
 		{
 			WinSet, Style, +0xC00000, ahk_id %id%
+			WinSet, Style, +0x40000, ahk_id %id%
 		}
 		WinSet, Redraw,, ahk_id %id%
+		if (titleFixMode = 0)
+		{
+			titleFixMode = titleFix
+		}
 		if (titleFixMode = 1)
 		{
 			WinGetPos,,, widthtemp,, ahk_id %id%
@@ -892,13 +879,17 @@
 		global custran
 		
 		WinGet, tran, Transparent, ahk_id %id%
-		if (direc = "u")
+		if direc is not integer
 		{
-			newtrans := tran + custran
-		}
-		if (direc = "d")
-		{
-			newtrans := tran - custran
+			if (direc = "u")
+			{
+				newtrans := tran + custran
+			} else if (direc = "d")
+			{
+				newtrans := tran - custran
+			}
+		} else {
+			newtrans := direc
 		}
 		WinSet, Transparent, %newtrans%, ahk_id %id%
 	return

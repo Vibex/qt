@@ -65,6 +65,9 @@ Auto shift horizontal on the third monitor. This will determine an amount to aut
 Set the value below to the amount of opacity change you want when Ctrl + Scrolling (0 to 255).
 85
 
+Set this value to the default transparency levels of all non-active windows. the Active windows is always 255.
+255
+
 
 
 Set this to 1 if you want windows to have their titlebars removed when they are created. Otherwise set it to 0
