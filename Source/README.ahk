@@ -1,3 +1,6 @@
+	#NoTrayIcon
+	#SingleInstance off
+	
 	Gui, +Resize
 	Gui, Add, Tab, x0 y0 w560 h460 vTab, Readme|Hotkeys|Changelog|Bugs|Beta
 	FileRead, temp, Readme.txt

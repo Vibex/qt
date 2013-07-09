@@ -1,3 +1,12 @@
+Version 0.3.2		07/09/2013
+	*Added option to auto center windows when they are created.
+	*Removed debug from advanced options and made it so Win + ` would open it.
+	*Shell Messages now have Batch lines set to -1 for maximum speed.
+	*Changed the titlebar away default to 0 instead of 1.
+	*Made minor changes to the README.exe program.
+	*Fixed a transparency bug.
+
+
 Version 0.3.1		07/07/2013
 	*Removed the window flash control from the taskbar.
 	*Added ability to have nonactive windows be transparent.

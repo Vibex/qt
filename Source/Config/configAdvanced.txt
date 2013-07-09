@@ -73,6 +73,9 @@ Set this value to the default transparency levels of all non-active windows. the
 Set this to 1 if you want windows to have their titlebars removed when they are created. Otherwise set it to 0
 1
 
+Set this to the monitor number you want your windows automatically centered on when they load. Or set the value to 0 to disable automatic centering.
+1
+
 
 
 Set this value to 1 to enable window hooking. Set to 0 otherwise. If this is 0 it will break a fair number of the features avaliable to the UI (and some other features) of qt.pi. YOU HAVE BEEN WARNED!
@@ -96,7 +99,4 @@ Taskbar. This is a bar to be placed at the top of your main monitor (I may make 
 1
 
 Set the value below to 1 if you want to test the auto move window in relation to the newly placed window (really long title) feature. otherwise set this to 0. This feature is still incredibly buggy
-1
-
-To enable the debug window (not sure why you would want to, it just shows you a grid of 3 monitors with there contents. A 0 means empty and 1 means filled) set this value to 1. Otherwise set it to 0.
 1

@@ -20,6 +20,8 @@
 		remove(null, 1)
 		Confine := 0
 		
+		gidDEBUG := null
+		
 		if (baryeah = 1)
 		{
 			barheight := 15
@@ -29,11 +31,6 @@
 		
 		previousid := null
 		currentid := WinExist("A")
-		
-		if (debug = 1)
-		{
-			createDebug()
-		}
 		
 		WinGet, winarr ,List
 		Loop, %winarr%
@@ -263,6 +260,48 @@
 	return
 	}
 	
+	#`::
+	{
+		WinGetPos, xtemp,,,, ahk_id %gidDEBUG%
+		if (gidDEBUG = null)
+		{
+			createDebug()
+		} else if (dis3 = 1)
+		{
+			if (xtemp > Mon3Right)
+			{
+				center(1, gidDEBUG)
+			} else {
+				x := Mon3Right + 100
+				WinMove, ahk_id %gidDEBUG%,, %x%
+			}
+		} else {
+			if (xtemp > Mon1Right)
+			{
+				center(1, gidDEBUG)
+			} else {
+				x := Mon1Right + 100
+				WinMove, ahk_id %gidDEBUG%,, %x%
+			}
+		}
+	return
+	}
+	
+	#Home::
+	{
+		;Run My Computer
+		Run ::{20D04FE0-3AEA-1069-A2D8-08002B30309D}
+	return
+	}
+	
+	#Delete::
+	{
+		;Run Recycle Bin
+		Run ::{645FF040-5081-101B-9F08-00AA002F954E}
+	return
+	}
+	
+	
 	#F1::
 	{
 		IfExist, README.exe
@@ -321,7 +360,7 @@
 	#F8::
 	{
 		;Minimize all windows
-		DetectHiddenWindows, OFF
+		DetectHiddenWindows, Off
 		WinGet, winarr ,List
 		Loop, %winarr%
 		{
@@ -338,7 +377,7 @@
 	#F9::
 	{
 		;Restore all windows
-		DetectHiddenWindows, OFF
+		DetectHiddenWindows, Off
 		WinGet, winarr ,List
 		Loop, %winarr%
 		{
@@ -579,8 +618,8 @@
 	
 	DeathToTheScript:
 	{
-		DetectHiddenWindows, Off
 		SetBatchLines, -1
+		DetectHiddenWindows, Off
 		if(A_ExitReason != "Shutdown" && A_ExitReason != "Logoff" && A_ExitReason != "reload")
 		{
 			WinGet, winarr ,List

@@ -41,7 +41,7 @@ Shift Borders Keys
 	Win + Ctrl + Right: Shift the borders right.
 
 
-Soun Keys ***nircmd must be installed***
+Sound Keys ***nircmd must be installed***
 	Win + Numpad Add: Increase volume.
 	Win + Numpad Sub: Decrease volume.
 	Win + Numpad Enter: Mute volume.
@@ -71,9 +71,14 @@ Function Keys
 
 
 Other Keys
+	Win + Home: Opens My Computer.
+	Win + Delete: Opens Recycle Bin.
 	Win + Ctrl + Numpad Clear: Remove the titlebar from the current window.
 	Win + W: Remove all stored window data.
 	Win + O: Toggle always on top on the current window.
 	Win + M: Minimize the current window.
 	Win + Scroll Wheel Up: PgUp key sent.
 	Win + Scroll Wheel Down: PgDn key sent.
+	
+Dev Hotkeys
+	Win + `: Opens the debug window.

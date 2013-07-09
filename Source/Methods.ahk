@@ -1,22 +1,31 @@
 ﻿	;If you know what you are doing with AHK feel free to play with the methods below. I've left comments on things that you may want to play with. I have also added a description of each methods function.
-	ShellMessage( wParam,lParam )
+	ShellMessage(wParam, lParam)
 	{
 		;This detects messages sent by windows itself and preforms actions based on the messages.
 		global previousid
 		global currentid
+		global autocenter
 		global titlebaraway
 		global baryeah
 		global tranthresh
 		global nonactivetrans
 		
+		SetBatchLines, -1
 		WinGetTitle, title, ahk_id %lParam%
 		WinGetClass, class , ahk_id %lParam%
 		WinGet, Style, Style, ahk_id %lParam%
 		mon := 0
-		If (wParam = 1 && titlebaraway = 1)
+		If (wParam = 1)
 		{
 			;Window created
-			titleBeGone(lParam, 2)
+			if (autocenter != 0 && Title != "Adobe Flash Player")
+			{
+				Center(autocenter, lParam)
+			}
+			if (titlebaraway = 1)
+			{
+				titleBeGone(lParam, 2)
+			}
 			if (nonactivetrans != 255)
 			{
 				trans(lParam, nonatcivetrans)
@@ -106,12 +115,13 @@
 
 			
 			FileReadLine, titlebaraway, %configA%, 74
+			FileReadLine, autocenter, %configA%, 77
 			
-			FileReadLine, winHook, %configA%, 79
+			FileReadLine, winHook, %configA%, 82
 			
-			FileReadLine, monreverse, %configA%, 84
+			FileReadLine, monreverse, %configA%, 87
 			
-			FileReadLine, exclude, %configA%, 89
+			FileReadLine, exclude, %configA%, 92
 			if (exclude != null)
 			{
 				StringSplit, exclusion, exclude, `,
@@ -120,9 +130,8 @@
 				exclusion1 := null	
 			}
 		
-			FileReadLine, baryeah, %configA%, 96
-			FileReadLine, autorepos, %configA%, 99
-			FileReadLine, debug, %configA%, 102
+			FileReadLine, baryeah, %configA%, 99
+			FileReadLine, autorepos, %configA%, 102
 			tranthresh := 0
 		} else {
 			;Defaults when advanced config is disabled. What each value does can be found in the advancedConfig.txt file. The items below are listed in the order they appear in the text file.
@@ -144,14 +153,14 @@
 			rs3 := 0
 			ls3 := 0
 			custran := 85
-			titlebaraway := 1
+			titlebaraway := 0
+			autocenter := 0
 			winHook := 1
 			monreverse := 0
 			exclusion0 := 1
 			exclusion1 := null
 			baryeah := 0
 			autorepos := 0
-			debug := 0
 			tranthresh := 0
 		}
 		
