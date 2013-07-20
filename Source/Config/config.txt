@@ -8,9 +8,6 @@ Set the below value to the default number of columns (1 - 3) on your main monito
 
 
 
-Set this value to 0 if you don't have a monitor on the left of your main monitor. Set it to 1 if you do. This monitor must be your second monitor if you have 3 monitors, otherwise bugs WILL occur!
-1
-
 Set the below value to the default number of rows (1 - 3) on your second monitor.
 3
 
@@ -18,9 +15,6 @@ Set the below value to the default number of columns (1 - 3) on your second moni
 3
 
 
-
-Set this value to 0 if you don't have a monitor on the right of your main monitor. Set it to 1 if you do. This monitor must be your third monitor if you have 3 monitors, otherwise bugs WILL occur!
-1
 
 Set the below value to the default number of rows (1 - 3) on your third monitor.
 3

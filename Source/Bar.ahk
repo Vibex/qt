@@ -37,8 +37,8 @@
 		
 		if (hclock = 1) 
 		{
-			shift := w - 44 - 68 -10 + 80
-			Gui, bar:Add, Text, vClock x%shift% y1 h%h%, 00 00.00
+			shift := w - 44 - 68 - 10 + 80
+			Gui, bar:Add, Text, vClock x%shift% y1 h%h%, 00 - 00.00
 		}
 		
 		SetTimer, Update, %updateRate%
@@ -56,7 +56,7 @@
 		}
 		if (hclock = 1)
 		{
-			GuiControl, bar:, Clock, %A_DD% %A_Hour%.%A_Min%
+			GuiControl, bar:, Clock, %A_DD% - %A_Hour%.%A_Min%
 		}
 		if (hflash = 1)
 		{
@@ -98,7 +98,7 @@
 			GuiControl, bar:Move, Item%A_Index%, x%shift% y1 w%size%
 			if(Item%A_Index% != Temp)
 			{
-				GuiControl, bar:, Item%A_Index%, %temp%
+				GuiControl, bar:, Item%A_Index%, %temp% - %curwin%
 			}
 			GuiControl, bar:Show, Item%A_Index%,
 			shift := shift + size

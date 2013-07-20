@@ -11,6 +11,7 @@
 		null := ""
 		full := "This string is full and should fix all the problems I am having"
 		
+		boundary := 20
 		reload()
 		SetBatchLines, %bspeed%
 		SetWinDelay, %wspeed%
@@ -25,7 +26,6 @@
 		if (baryeah = 1)
 		{
 			barheight := 15
-			flashNum0 := 0
 			InitializeBar(1, Mon1Width, barheight, Mon1Left)
 		}
 		
@@ -117,77 +117,21 @@
 	
 	
 	
-	#Numpad7::
-	{
-		grid(1, 1)
-	return
-	}
-	
-	#Numpad8::
-	{
-		grid(1, 2)
-	return
-	}
-	
-	#Numpad9::
-	{
-		grid(1, 3)
-	return
-	}
-	
-	#Numpad4::
-	{
-		grid(2, 1)
-	return
-	}
-	
-	#Numpad5::
-	{
-		grid(2, 2)
-	return
-	}
-	
-	#Numpad6::
-	{
-		grid(2, 3)
-	return
-	}
-	
-	#Numpad1::
-	{
-		grid(3, 1)
-	return
-	}
-	
-	#Numpad2::
-	{
-		grid(3, 2)
-	return
-	}
-	
-	#Numpad3::
-	{
-		grid(3, 3)
-	return
-	}
-	
-	
-	
-	#^NumpadHome::
+	#NumLock::
 	{
 		idtemp := WinExist("A")
 		screenFill(2, idtemp)
 	return
 	}
 	
-	#^NumpadUp::
+	#NumpadDiv::
 	{
 		idtemp := WinExist("A")
 		screenFill(1, idtemp)
 	return
 	}
 	
-	#^NumpadPgUp::
+	#NumpadMult::
 	{
 		idtemp := WinExist("A")
 		screenFill(3, idtemp)
@@ -196,24 +140,38 @@
 	
 	
 	
-	#^NumpadEnd::
+	#^NumLock::
 	{
 		idtemp := WinExist("A")
 		center(2, idtemp)
 	return
 	}
 	
-	#^NumpadDown::
+	#^NumpadDiv::
 	{
 		idtemp := WinExist("A")
 		center(1, idtemp)
 	return
 	}
 	
-	#^NumpadPgDn::
+	#^NumpadMult::
 	{
 		idtemp := WinExist("A")
 		center(3, idtemp)
+	return
+	}
+	
+	
+	
+	#^NumpadHome::
+	{
+		centerPanel("l")
+	return
+	}
+	
+	#^NumpadPgUp::
+	{
+		centerPanel("r")
 	return
 	}
 	
@@ -250,15 +208,7 @@
 	return
 	}
 	
-	#ScrollLock::
-	{
-		;Confine the cursor to a window. Still only semi functional.
-		idtemp := WinExist("A")
-		WinGetPos, xtemp, ytemp, wtemp, htemp, ahk_id %idtemp%
-		Confine := !Confine 
-		ClipCursor(Confine, xtemp, ytemp, wtemp, htemp) 
-	return
-	}
+	
 	
 	#`::
 	{
@@ -286,20 +236,7 @@
 		}
 	return
 	}
-	
-	#Home::
-	{
-		;Run My Computer
-		Run ::{20D04FE0-3AEA-1069-A2D8-08002B30309D}
-	return
-	}
-	
-	#Delete::
-	{
-		;Run Recycle Bin
-		Run ::{645FF040-5081-101B-9F08-00AA002F954E}
-	return
-	}
+
 	
 	
 	#F1::
@@ -343,10 +280,16 @@
 	return
 	}
 	
-	~!F4::
+	!F4::
 	{
 		idtemp := WinExist("A")
-		remove(idtemp)
+		if (idtemp != gidDEBUG)
+		{
+			remove(idtemp)
+			WinKill, ahk_id %idtemp%
+		} else {
+			MsgBox, Please use Win + `` to hide the debug window.
+		}
 	return
 	}
 	
@@ -428,29 +371,25 @@
 	
 	#^Up::
 	{
-		idtemp := WinExist("A")
-		shiftBorder(idtemp, "u")
+		shiftBorder("u")
 	return
 	}
 	
 	#^Down::
 	{
-		idtemp := WinExist("A")
-		shiftBorder(idtemp, "d")
+		shiftBorder("d")
 	return
 	}
 	
 	#^Left::
 	{
-		idtemp := WinExist("A")
-		shiftBorder(idtemp, "l")
+		shiftBorder("l")
 	return
 	}
 	
 	#^Right::
 	{
-		idtemp := WinExist("A")
-		shiftBorder(idtemp, "r")
+		shiftBorder("r")
 	return
 	}
 	
@@ -462,35 +401,38 @@
 	return
 	}
 	
-	#NumpadSub::
-	{	
+	#NumpadEnter::
+	{
 		sound("d")
 	return
 	}
 	
-	#NumpadEnter::
-	{
+	#NumpadSub::
+	{	
 		sound("m")
 	return
 	}
 	
 	
 	
-	#WheelUp::
+	#Insert::
 	{
-		BlockInput, On
-		Send {PgUp}
-		BlockInput, Off
+		Send {Media_Play_Pause}
 	return
 	}
 	
-	#WheelDown::
+	#Home::
 	{
-		BlockInput, On
-		Send {PgDn}
-		BlockInput, Off
+		Send {Media_Prev}
 	return
 	}
+	
+	#PgUp::
+	{
+		Send {Media_Next}
+	return
+	}
+	
 	
 	
 	
@@ -526,6 +468,7 @@
 			GetKeyState,KDE_Button,LButton,P
 			If KDE_Button = U
 			{
+				remove(KDE_id)
 			break
 			}
 			GetKeyState, KDE_EscapeState, Escape, P

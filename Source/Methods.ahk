@@ -1,4 +1,4 @@
-﻿	;If you know what you are doing with AHK feel free to play with the methods below. I've left comments on things that you may want to play with. I have also added a description of each methods function.
+﻿	;If you know what you are doing with AHK feel free to play with the methods below. I've left comments on things that you may want to play with. I have also added a description of each methods function. I can guarantee if you know anything about AHK or code programming practices you will have an aneurysm reading my code. Eventually I will get a round to cleaning it all up and optimizing it more. Right now I'm more focused on features and functionality.
 	ShellMessage(wParam, lParam)
 	{
 		;This detects messages sent by windows itself and preforms actions based on the messages.
@@ -61,13 +61,36 @@
 		;This loads all of the information from the config files.
 		global
 		local temp
+		local temp2
 		local x
 		
 		SetBatchLines, -1
 		;The location of the config files.
 		config := "Config\config.txt"
 		configA := "Config\configAdvanced.txt"
-	
+		
+		dis1 := 0
+		dis2 := 0
+		dis3 := 0
+		SysGet, MonNum, MonitorCount
+		Loop, %MonNum%
+		{
+			SysGet, Temp%A_Index%, Monitor, %A_Index%
+			if (Temp%A_Index%Left = 0)
+			{
+				temp2 := 1
+			} else if (Temp%A_Index%Left < 0)
+			{
+				temp2 := 2
+			} else {
+				temp2 := 3
+			}
+			SysGet, Mon%temp2%, Monitor, %A_Index%
+			Mon%temp2%Width := Mon%temp2%Right - Mon%temp2%Left
+			Mon%temp2%Height := Mon%temp2%Bottom - Mon%temp2%Top
+			dis%temp2% := 1
+		}
+		
 		FileReadLine, enableadv, %configA%, 4
 		if (enableadv = 1)
 		{
@@ -131,7 +154,6 @@
 			}
 		
 			FileReadLine, baryeah, %configA%, 99
-			FileReadLine, autorepos, %configA%, 102
 			tranthresh := 0
 		} else {
 			;Defaults when advanced config is disabled. What each value does can be found in the advancedConfig.txt file. The items below are listed in the order they appear in the text file.
@@ -160,82 +182,60 @@
 			exclusion0 := 1
 			exclusion1 := null
 			baryeah := 0
-			autorepos := 0
 			tranthresh := 0
 		}
 		
-		disp1 := 1
 		FileReadLine, row1, %config%, 4
 		FileReadLine, col1, %config%, 7
 		
-		FileReadLine, tbar1, %config%, 48
-		FileReadLine, bbar1, %config%, 57
-		FileReadLine, rbar1, %config%, 66
-		FileReadLine, lbar1, %config%, 75
+		FileReadLine, tbar1, %config%, 42
+		FileReadLine, bbar1, %config%, 51
+		FileReadLine, rbar1, %config%, 60
+		FileReadLine, lbar1, %config%, 69
 		
-		FileReadLine, dis2, %config%, 12
 		if (dis2 = 1)
 		{
-			FileReadLine, row2, %config%, 15
-			FileReadLine, col2, %config%, 18
+			FileReadLine, row2, %config%, 12
+			FileReadLine, col2, %config%, 15
 			
-			FileReadLine, tbar2, %config%, 51
-			FileReadLine, bbar2, %config%, 60
-			FileReadLine, rbar2, %config%, 69
-			FileReadLine, lbar2, %config%, 78
+			FileReadLine, tbar2, %config%, 45
+			FileReadLine, bbar2, %config%, 54
+			FileReadLine, rbar2, %config%, 63
+			FileReadLine, lbar2, %config%, 72
 		}
 		
-		FileReadLine, dis3, %config%, 23
 		if (dis3 = 1)
 		{
-			FileReadLine, row3, %config%, 26
-			FileReadLine, col3, %config%, 29
+			FileReadLine, row3, %config%, 20
+			FileReadLine, col3, %config%, 23
 			
-			FileReadLine, tbar3, %config%, 54
-			FileReadLine, bbar3, %config%, 63
-			FileReadLine, rbar3, %config%, 72
-			FileReadLine, lbar3, %config%, 81
+			FileReadLine, tbar3, %config%, 48
+			FileReadLine, bbar3, %config%, 57
+			FileReadLine, rbar3, %config%, 66
+			FileReadLine, lbar3, %config%, 75
 		}
 		
-		FileReadLine, hbor, %config%, 34
-		FileReadLine, vbor, %config%, 37
-		FileReadLine, hborex, %config%, 40
-		FileReadLine, vborex, %config%, 43
+		FileReadLine, hbor, %config%, 28
+		FileReadLine, vbor, %config%, 31
+		FileReadLine, hborex, %config%, 34
+		FileReadLine, vborex, %config%, 37
 		
-		FileReadLine, hspeed, %config%, 87
-		FileReadLine, vspeed, %config%, 90
+		FileReadLine, hspeed, %config%, 81
+		FileReadLine, vspeed, %config%, 84
 		
-		FileReadLine, enablesound, %config%, 96
+		FileReadLine, enablesound, %config%, 90
 		if (enablesound = 1)
 		{
-			FileReadLine, vol, %config%, 99
+			FileReadLine, vol, %config%, 93
 			vold := vol * -1
+			FileReadLine, enablebeep, %config%, 98
+			if (enablebeep = 1)
+			{
+				FileReadLine, freq, %config%, 101
+				FileReadLine, dura, %config%, 104
+			}
 		}	
 		
-		FileReadLine, enablebeep, %config%, 104
-		if (enablebeep = 1)
-		{
-			FileReadLine, freq, %config%, 107
-			FileReadLine, dura, %config%, 110
-		}
-		
-		SysGet, MonNum, MonitorCount
-		Loop, %MonNum%
-		{
-			if (monreverse = 1 && A_Index = 2)
-			{
-				temp := 3
-			} 
-			else if (monreverse = 1 && A_Index = 3)
-			{
-				temp := 2
-			} else {
-				temp := A_Index
-			}
-			SysGet, Mon%A_Index%, Monitor, %temp%
-			Mon%A_Index%Width := Mon%A_Index%Right - Mon%A_Index%Left
-			Mon%A_Index%Height := Mon%A_Index%Bottom - Mon%A_Index%Top
-		}
 		if (math = 1)
 		{
 			math()
@@ -301,7 +301,7 @@
 				temp := us%mon%
 				Loop, %temp%
 				{
-					shiftBorder(null, "u", mon)
+					shiftBorder("u", mon)
 				}
 			}
 			if (ds%mon% > 0)
@@ -309,7 +309,7 @@
 				temp := ds%mon%
 				Loop, %temp%
 				{
-					shiftBorder(null, "d", mon)
+					shiftBorder("d", mon)
 				}
 			}
 			if (rs%mon% > 0)
@@ -317,7 +317,7 @@
 				temp := rs%mon%
 				Loop, %temp%
 				{
-					shiftBorder(null, "r", mon)
+					shiftBorder("r", mon)
 				}
 			}
 			if (ls%mon% > 0)
@@ -325,7 +325,7 @@
 				temp := ls%mon%
 				Loop, %temp%
 				{
-					shiftBorder(null, "l", mon)
+					shiftBorder("l", mon)
 				}
 			}
 		}
@@ -669,13 +669,19 @@
 	return
 	}
 	
-	shiftBorder(id, direc, nowin = 0)
+	shiftBorder(direc, nowin = 0)
 	{
 		;This does the border shifting.
 		global
 		
 		local xtemp
 		local mon
+		
+		id := null
+		if (nowin = 0)
+		{
+			id := WinExist("A")
+		}
 		
 		mon := 0
 		if (id != null)
@@ -904,6 +910,66 @@
 	return
 	}
 	
+	centerPanel(direc)
+	{
+		global
+		local xtemp
+		local id
+		local temp
+		local x
+		local mon
+		local wtemp
+		local xtemp2
+		local temp1
+		local temp2
+		local temp3
+		local temp4
+		
+		id := WinExist("A")
+		WinGetPos, xtemp,,,, ahk_id %id%
+		mon := 0
+		if (xtemp >= Mon1Left && xtemp < Mon1Right && row <= row1 && col <= col1)
+		{
+			mon := 1
+		} else if (xtemp < Mon1Left && dis2 = 1 && row <=  row2 && col <=  col2)
+		{
+			mon := 2
+		} else if (xtemp >= Mon1Right && dis3 = 1  && row <=  row3 && col <=  col3)
+		{
+			mon := 3
+		}
+		
+		if (mon != 0)
+		{
+			temp := Mon%mon%_center
+			WinGetPos, xtemp2,, wtemp,, ahk_id %temp%
+			if (Mon%mon%_center != null)
+			{
+				if (direc = "l")
+				{
+					temp1 := Mon%mon%Left + boundary + lbar%mon%
+				} else if (direc = "r"){
+					temp1 := xtemp2 + wtemp + boundary
+				}
+				temp2 := Mon%mon%Top + tbar%mon% + boundary
+				temp3 := (Mon%mon%Width - lbar%mon% - rbar%mon% - wtemp - (4 * boundary)) / 2
+				temp4 := Mon%mon%Height - tbar%mon% - bbar%mon% - (2 * boundary)
+			} else {
+				temp3 := (Mon%mon%Width - lbar%mon% - rbar%mon%) / 2
+				if (direc = "l")
+				{
+					temp1 := Mon%mon%Left + lbar%mon%
+				} else if (direc = "r"){
+					temp1 := Mon%mon%Left + lbar%mon% + temp3
+				}
+				temp2 := Mon%mon%Top + tbar%mon%
+				temp4 := Mon%mon%Height - tbar%mon% - bbar%mon%
+			}
+			WinMove, ahk_id %id%,, temp1, temp2, temp3, temp4
+		}
+	return
+	}
+	
 	exclusion(class)
 	{
 		global
@@ -915,10 +981,4 @@
 			}
 		}
 	return 1
-	}
-	
-	ClipCursor(Confine=True, x1=0 , y1=0, x2=1, y2=1)
-	{
-		VarSetCapacity(R,16,0),  NumPut(x1,&R+0),NumPut(y1,&R+4),NumPut(x2,&R+8),NumPut(y2,&R+12) 
-	return Confine ? DllCall( "ClipCursor", UInt,&R ) : DllCall( "ClipCursor" ) 
 	}

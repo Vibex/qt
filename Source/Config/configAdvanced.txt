@@ -89,14 +89,11 @@ Set this value to 1 if you want to flip the left and right window positions. Oth
 
 
 Exclusion classes. List the classes below and seperate them with a ",". The classes of windows will be ignored when minimizing all windows and on the taskbar
-RainmeterMeterWindow,bbIconBox,bbLeanBar,bbSlit
+RainmeterMeterWindow,bbIconBox,bbLeanBar,bbSlit,BlackboxClass
 
 
 
 BETA
 
 Taskbar. This is a bar to be placed at the top of your main monitor (I may make position customizable in the future). It will display the current running task along with the date and mouse position. Set the value to 1 if you want the bar. Otherwise set it to 0.
-1
-
-Set the value below to 1 if you want to test the auto move window in relation to the newly placed window (really long title) feature. otherwise set this to 0. This feature is still incredibly buggy
-1
+0

@@ -1,3 +1,17 @@
+Version 0.4.0		07/19/2013
+	*You no longer have to tell the script what monitors you have. It will determine them on it's own.
+	*Fixed Hotkeys.txt errors.
+	*Changed the center and screen fill hotkeys.
+	*Changed volume hotkeys to be more intuitive.
+	*Added media hotkeys.
+	*Removed Win + Scrollwheel keys.
+	*Removed quick folder access.
+	*Fixed Alt + F4 Errors with the debug window.
+	*Optimized several methods.
+	*Added a License.
+	*Added Hotkeys to put side panals next to your centered windows or full half screen if you have no centered window.
+	
+
 Version 0.3.2		07/09/2013
 	*Added option to auto center windows when they are created.
 	*Removed debug from advanced options and made it so Win + ` would open it.
@@ -14,7 +28,7 @@ Version 0.3.1		07/07/2013
 	*Replaced opening the Help text files with a custom text viewer.
 	
 
-Version 0.3		07/07/2013
+Version 0.3.0		07/07/2013
 	*Added the need to hold the Ctrl key when doing transparency scrolling.
 	*Win + Scroll Wheel Roll now send PgUp or PgDn key presses.
 	*Win + F1 now opens the Hotkeys.txt file or the containing folder if no file exists.
@@ -43,7 +57,7 @@ Version 0.2.1		06/05/2013
 	*Added descriptions of all the methods and other aspects of the script so others can tinker with it (Plaes still give me credit though!).
 
 
-Version 0.2		06/03/2013
+Version 0.2.0		06/03/2013
 	*Main Mod key changed from Ctrl to Win.
 	*Setting the ground work for improving the taskbar. It still is a massive work in progress, but it is now the main focus of my work (for real this time, not like all the other times I've said this).
 	*Increased usefulness of debug (again, doubt anyone cares).
