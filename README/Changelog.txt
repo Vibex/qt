@@ -1,3 +1,12 @@
+Version 0.5.0		07/23/2013
+	*Finally finished the taskbar. I redid it from scratch and went for a more minimal but also more useful aproach. It's still a work in progress. By the next update it will be able to search a folders contents to launch programs. Currently it can be used to search the internet. See Taskbar Commands.txt for all the commands.
+	*Added Alt Tab Commands by holding the left Mouse Button and scrolling up and down.
+	*Fixed old bugs.
+	*Found new bugs.
+	*Redid configBar.txt
+	*Win + Middle Mouse button minimizes the current window. 
+
+
 Version 0.4.0		07/19/2013
 	*You no longer have to tell the script what monitors you have. It will determine them on it's own.
 	*Fixed Hotkeys.txt errors.

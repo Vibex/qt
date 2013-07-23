@@ -1,108 +1,208 @@
-﻿	InitializeBar(mon, w, h, x)
+﻿	InitializeBar(mon, w, h, x, y)
 	{
 		global
 		CoordMode, Mouse, Screen
 		Gui, Margin, 0, 0
-
-		hpos := 1
-		hflash := 1
-		hclock := 1
 		
 		configB := "Config\Bar\configBar.txt"
 		FileReadLine, updateRate, %configB%, 4
-		FileReadLine, barColour, %configB%, 7
-		FileReadLine, selecColour, %configB%, 10
-		FileReadLine, texColour, %configB%, 13
-		FileReadLine, font, %configB%, 16
-		FileReadLine, fontsize, %configB%, 19
+		FileReadLine, updateRate2, %configB%, 7
+		FileReadLine, font, %configB%, 10
+		FileReadLine, fontsize, %configB%, 13
+		FileReadLine, texColour, %configB%, 16
+		FileReadLine, barColour, %configB%, 19
+		FileReadLine, command, %configB%, 22
+		FileReadLine, defsearch, %configB%, 25
 		
-		noWin := "no window selected"
-		currentWin := noWin
+		Gui, bar%mon%:Color, %barColour%
+		Gui, bar%mon%:+LastFound -Caption +ToolWindow
+		Gui, bar%mon%:Font, s%fontSize% c%texColour%, %font%
 		
-		Gui, bar:Color, %barColour%
-		Gui, bar:+LastFound -Caption +ToolWindow
-		Gui, bar:Font, s%fontSize% c%texColour%, %font%
+		shift := w - 52
+		Gui, bar%mon%:Add, Text, vTitle%mon% x0 y1 w%shift% h%h% Center, no window selected
 		
-		if (hpos = 1)
+		Gui, bar%mon%:Add, Text, vClock%mon% x%shift% y1 h%h%, 00 - 00.00
+		
+		if (mon = 1)
 		{
-			Gui, bar:Add, Text, vPos x4 y1 h%h%, XXXXX, YYYYY
+			Gui, bar1:Add, Text, vText Hidden, Run:
+			Gui, bar1:Add, Edit, vRun Limit Hidden
 		}
 		
-		shift := 84
-		Loop, 9
+		SetTimer, Update%mon%, %updateRate%
+		Gosub, Update%mon%
+		if (clockOn = 0)
 		{
-			Gui, bar:Add, Text, vItem%A_Index% Center, %noWin%
-			GuiControl, Hide, Item%A_Index%
+			SetTimer, UpdateClock, %updaterate2%
 		}
-		
-		if (hclock = 1) 
-		{
-			shift := w - 44 - 68 - 10 + 80
-			Gui, bar:Add, Text, vClock x%shift% y1 h%h%, 00 - 00.00
-		}
-		
-		SetTimer, Update, %updateRate%
-		Gosub, Update
-		Gui, bar:Show, x0 y0 w%w% h%h% NoActivate
+		Gosub, UpdateClock
+		Gui, bar%mon%:Show, x%x% y%y% w%w% h%h%
+		barid%mon% := WinExist("A")
 	return
 	}
  
-	Update:
+	Update1:
 	{
-		if (hpos = 1)
+		GuiControlGet, Title1, bar1:
+		WinGetTitle, temp, ahk_id %curid1%
+		if (Title1 != temp)
 		{
-			MouseGetPos, MouseX, MouseY
-			GuiControl, bar:, Pos, X%MouseX%, Y%MouseY%
+			GuiControl, bar1:, Title1, %temp%
 		}
-		if (hclock = 1)
-		{
-			GuiControl, bar:, Clock, %A_DD% - %A_Hour%.%A_Min%
-		}
-		if (hflash = 1)
-		{
-			GuiControl, bar:, flash, %numwin1%
-		}
-		Gosub, UpdateTitle
 	return
 	}
 	
-	UpdateTitle:
+	Update2:
 	{
-		DetectHiddenWindows, Off
-		WinGet, List, List
-		numwin1 := 0
-		Loop, %List%
+		GuiControlGet, Title2, bar2:
+		WinGetTitle, temp, ahk_id %curid2%
+		if (Title2 != temp)
 		{
-			curwin := List%A_Index%
-			WinGetClass, class, ahk_id %curwin%
-			WinGetPos, xtemp,,,, ahk_id %curwin%
-			WinGetTitle, title, ahk_id %curwin%
-			if (xtemp >= Mon1Left && xtemp < Mon1Right && exclusion(class) = 1 && title != "main.ahk")
+			GuiControl, bar2:, Title2, %temp%
+		}
+	return
+	}
+	
+	Update3:
+	{
+		GuiControlGet, Title3, bar3:
+		WinGetTitle, temp, ahk_id %curid3%
+		if (Title3 != temp)
+		{
+			GuiControl, bar3:, Title3, %temp%
+		}
+	return
+	}
+	
+	UpdateClock:
+	{
+		clockOn := 1
+		GuiControlGet, Clock1, bar1:
+		if (Clock1 != "%A_DD% - %A_Hour%.%A_Min%")
+		{
+			GuiControl, bar1:, Clock1, %A_DD% - %A_Hour%.%A_Min%
+			GuiControl, bar2:, Clock2, %A_DD% - %A_Hour%.%A_Min%
+			GuiControl, bar3:, Clock3, %A_DD% - %A_Hour%.%A_Min%
+		}
+	return
+	}
+	
+	activeWindow()
+	{
+		global
+		temp:= WinExist("A")
+    return (temp = barid1)
+	}
+	
+	visibility()
+	{
+		global
+		itemborder := 2
+		temp1 := itemborder * -1
+		temp2 := barheight + (itemborder * 2)
+		GuiControlGet, visible, bar1:Visible, Run
+		if (visible = 1)
+		{
+			GuiControl, bar1:, Run,
+			GuiControl, bar1:Hide, Run
+			GuiControl, bar1:Hide, Text
+		} else {
+			GuiControl, bar1:Show, Run
+			GuiControl, bar1:Show, Text
+			shift := Mon1Width - 54 - 24
+			GuiControl, bar1:Move, Run, x24 y%temp1% w%shift% h%temp2%
+			GuiControl, bar1:Move, Text, x4 y1 w18 h15 
+			GuiControl, bar1:Focus, Run
+			WinActivate, ahk_id %barid1%
+		}
+	return
+	}
+	
+	#Space::
+	{
+		visibility()
+	return
+	}
+	
+	#If activeWindow()
+	Enter::
+	{
+		Gui, Submit, NoHide
+		GuiControlGet, Run, bar1:
+		if (Run = null)
+		{
+		return
+		}
+		StringSplit, arrtemp, Run , %A_Space%
+		part2 := arrtemp2
+		Loop, %arrtemp0%
+		{
+			x := A_Index + 2
+			if (A_Index + 2 > arrtemp0)
 			{
-				numwin1 += 1
-				numwin1_%A_Index% := curwin
+			break
 			}
+			get := arrtemp%x%
+			part2 := part2 . " " . get
 		}
-		shift := 80
-		size := (Mon1Width - 44 - shift) / numwin1
-		Loop, 9
+		isRun := null
+		isOther := null
+		StringMid, isCommand, arrtemp1, 1, 1
+		if (isCommand = command)
 		{
-			GuiControl, bar:, Item%A_Index%, %noWin%
-			GuiControl, Hide, Item%A_Index%
-		}
-		Loop, %numwin1%
-		{
-			Gui, Submit, NoHide
-			curwin := numwin1_%A_Index%
-			WinGetTitle, Temp, ahk_id %curwin%
-			GuiControl, bar:Move, Item%A_Index%, x%shift% y1 w%size%
-			if(Item%A_Index% != Temp)
+			if (arrtemp1 = command . "qt.pi")
 			{
-				GuiControl, bar:, Item%A_Index%, %temp% - %curwin%
+				isRun := "https://github.com/Vibex/qt.pi"
+			} else if (arrtemp1 = command . "google" || arrtemp1 = command . "g")
+			{
+				StringReplace, part2, part2, %A_Space%, +, 1
+				isRun := "https://www.google.com/search?q=" . part2
+			} else if (arrtemp1 = command . "duckduckgo" || arrtemp1 = command . "d")
+			{
+				StringReplace, part2, part2, %A_Space%, +, 1
+				isRun := "https://duckduckgo.com/?q=" . part2
+			} else if (arrtemp1 = command . "hummingbird" || arrtemp1 = command . "h")
+			{
+				StringReplace, part2, part2, %A_Space%, +, 1
+				isRun := "http://hummingbird.me/search?query=" . part2
+			} else if (arrtemp1 = command . "wikipedia" || arrtemp1 = command . "wiki" || arrtemp1 = command . "w")
+			{
+				StringReplace, part2, part2, %A_Space%, +, 1
+				isRun := "https://en.wikipedia.org/w/index.php?title=Special%3ASearch&profile=default&search=" . part2 . "&fulltext=Search"
+			} else if (arrtemp1 = command . "nyaa" || arrtemp1 = command . "n")
+			{
+				StringReplace, part2, part2, %A_Space%, +, 1
+				isRun := "http://www.nyaa.eu/?page=search&cats=0_0&filter=0&term=" . part2
+			} else if (arrtemp1 = command . "piratebay" || arrtemp1 = command . "p")
+			{
+				isRun := "http://thepiratebay.sx/search/" . part2 . "/0/99/0"
+			} else {
+				if (defsearch = 0)
+				{
+					MsgBox, Command not recognized and no default search set.
+				} else if (defsearch = 1)
+				{
+					StringMid, part2, Run, 2
+					StringReplace, part2, part2, %A_Space%, +, 1
+					isRun := "https://www.google.com/search?q=" . part2
+				} else if (defsearch = 2)
+				{
+					StringMid, part2, Run, 2
+					StringReplace, part2, part2, %A_Space%, +, 1
+					isRun := "https://duckduckgo.com/?q=" . part2
+				} else {
+					StringMid, part2, Run, 2
+					StringReplace, part2, part2, %A_Space%, +, 1
+					isRun := defsearch . part2
+				}
 			}
-			GuiControl, bar:Show, Item%A_Index%,
-			shift := shift + size
+		} else {
+			
 		}
-		DetectHiddenWindows, On
+		if (isRun != null)
+		{
+			run, %isRun%
+		}
+		visibility()
 	return
 	}

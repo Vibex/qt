@@ -26,7 +26,16 @@
 		if (baryeah = 1)
 		{
 			barheight := 15
-			InitializeBar(1, Mon1Width, barheight, Mon1Left)
+			clockOn := 0
+			InitializeBar(1, Mon1Width, barheight, Mon1Left, Mon1Top)
+			if (dis2 = 1)
+			{
+				InitializeBar(2, Mon2Width, barheight, Mon2Left, Mon2Top)
+			}
+			if (dis3 = 1)
+			{
+				InitializeBar(3, Mon3Width, barheight, Mon3Left, Mon3Top)
+			}
 		}
 		
 		previousid := null
@@ -451,12 +460,18 @@
 	}
 	
 	
+	;Simple script, though I would still like to give credit, the below two commands are from http://pixelfuckers.org/submissions/2182
+	~LButton & WheelUp::AltTab
+	~LButton & WheelDown::ShiftAltTab
+	
+	
 	
 	;This script is a modified version of http://www.autohotkey.com/docs/scripts/EasyWindowDrag_%28KDE%29.htm.
 	#LButton::
 	{
 		;Drag window.
 		SetWinDelay, -1
+		SetBatchLines, -1
 		MouseGetPos,KDE_X1,KDE_Y1,KDE_id
 		WinActivate, ahk_id %KDE_id%
 		WinGetPos,KDE_WinXStart,KDE_WinYStart,,,ahk_id %KDE_id%
@@ -491,6 +506,7 @@
 	{
 		;Resize window.
 		SetWinDelay, -1
+		SetBatchLines, -1
 		MouseGetPos,KDE_X1,KDE_Y1,KDE_id
 		WinActivate, ahk_id %KDE_id%
 		WinGetPos,KDE_WinXStart,KDE_WinYStart,KDE_WinWStart,KDE_WinHStart,ahk_id %KDE_id%
@@ -532,11 +548,13 @@
 				{
 					center(mon, KDE_id)
 				}
+				remove(KDE_id)
 			break
 			}
 			GetKeyState, KDE_EscapeState, Escape, P
 			if KDE_EscapeState = D
 			{
+				WinSetTitle, ahk_id %KDE_id%,, %title%
 				WinMove, ahk_id %KDE_id%,, %KDE_WinXStart%, %KDE_WinYStart%, %KDE_WinWStart%, %KDE_WinHStart%
 			break
 			}
@@ -544,18 +562,20 @@
 			WinGetPos,KDE_WinX1,KDE_WinY1,KDE_WinW,KDE_WinH,ahk_id %KDE_id%
 			KDE_X2 -= KDE_X1
 			KDE_Y2 -= KDE_Y1
-			WinMove,ahk_id %KDE_id%,, KDE_WinX1 + (KDE_WinLeft+1)/2*KDE_X2 , KDE_WinY1 +  (KDE_WinUp+1)/2*KDE_Y2 , KDE_WinW - KDE_WinLeft *KDE_X2 , KDE_WinH - KDE_WinUp *KDE_Y2
+			WinMove,ahk_id %KDE_id%,, KDE_WinX1 + (KDE_WinLeft+1)/2*KDE_X2 , KDE_WinY1 +  (KDE_WinUp+1)/2*KDE_Y2 , KDE_WinW - KDE_WinLeft *KDE_X2, KDE_WinH - KDE_WinUp *KDE_Y2
 			KDE_X1 := (KDE_X2 + KDE_X1)
 			KDE_Y1 := (KDE_Y2 + KDE_Y1)
 		}
 	return
 	}
 	
-	;#MButton::
-	;{
-	;	
-	;return
-	;}
+	#MButton::
+	{
+		;Minimize the clicked on window.
+		MouseGetPos,,, idtemp
+		WinMinimize, ahk_id %idtemp%
+	return
+	}
 	
 	
 	

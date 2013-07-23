@@ -51,9 +51,13 @@ Transparency Hotkeys
 Manuel Move Keys
 	Win + Left Mouse Button: Have the window follow your cursor until you release.
 	Win + Right Mouse Button: Have the window be resized by your mouse movement.
-	Win + Middle Mouse Button: Maximize the current window on the current monitor.
+	Win + Middle Mouse Button: Minimize the window beneath the mouse cursor.
 	Esc: Return the window to it's position before using the 3 above mouse commands.
-
+	
+Alt Tab Keys
+	Left Mouse Button + Mouse Wheel Up: Alt + Tab.
+	Left Mouse Button + Mouse Wheel Down: Shift + Alt + Tab.
+	
 
 Function Keys
 	Win + F1: Opens the Hotkeys.txt file, or the containing folder if no file is found.
@@ -64,6 +68,10 @@ Function Keys
 	Win + F8: Minimize all windows.
 	Win + F9: Restore all windows.
 	Win + F11: Fullscreen.
+
+	
+Taskbar Hotkeys
+	Win + Space Bar: Activate command input mode.
 
 
 Other Keys

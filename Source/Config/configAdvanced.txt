@@ -96,4 +96,4 @@ RainmeterMeterWindow,bbIconBox,bbLeanBar,bbSlit,BlackboxClass
 BETA
 
 Taskbar. This is a bar to be placed at the top of your main monitor (I may make position customizable in the future). It will display the current running task along with the date and mouse position. Set the value to 1 if you want the bar. Otherwise set it to 0.
-0
+1

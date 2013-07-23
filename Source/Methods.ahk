@@ -4,11 +4,18 @@
 		;This detects messages sent by windows itself and preforms actions based on the messages.
 		global previousid
 		global currentid
+		global curid1
+		global curid2
+		global curid3
 		global autocenter
 		global titlebaraway
 		global baryeah
 		global tranthresh
 		global nonactivetrans
+		global Mon1Left
+		global Mon1Right
+		global dis2
+		global dis3
 		
 		SetBatchLines, -1
 		WinGetTitle, title, ahk_id %lParam%
@@ -44,7 +51,23 @@
 			{
 				previousid := currentid
 				currentid := lParam
-				Gosub, UpdateTitle
+				
+				if (baryeah = 1)
+				{
+					WinGetPos, xtemp,, wtemp,, ahk_id %lParam%
+					if (xtemp >= Mon1Left && xtemp < Mon1Right)
+					{
+						mon := 1
+					} else if (xtemp < Mon1Left && dis2 = 1)
+					{
+						mon := 2
+					} else if (xtemp >= Mon1Right && dis3 = 1)
+					{
+						mon := 3
+					}
+					curid%mon% := currentid
+					Gosub, Update%mon%
+				}
 			}
 			if (nonactivetrans != 255)
 			{

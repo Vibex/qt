@@ -1,0 +1,13 @@
+***In the configBar.txt file located in the Bar folder inside the Config folder you can change the command symbol. By default the symbol "/".***
+
+Search Commands
+	/google or /g: Search the remaining text on google.
+	/duckduckgo or /d: Search the remaining text on duckduckgo.
+	/hummingbird or /h: Search the remaining text on hummingbird.
+	/wikipedia or /wiki or /w: Search the remaining text on wikipedia.
+	/nyaa or /n: Search the remaining text on nyaa.
+	/piratebay or /p: Search the remaining text on The Pirate Bay.
+	
+	
+Misc Commands
+	/qt.pi: Opens up qt.pi on github.

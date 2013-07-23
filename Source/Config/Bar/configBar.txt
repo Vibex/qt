@@ -1,19 +1,25 @@
 ***These options only matter if you have the taskbar enabled.***
 
-Set this to the update rate in ms (Leave off the ms ending).
-35
+Set this to the update rate in ms for the window title display(Leave off the ms ending).
+1000
 
-This is the default colour of the bar.
-C9C9C9
-
-This is the colour of the selected items on the taskbar.
-B5B5B5
-
-This is the colour of the text on the bar.
-2F2F2F
+Set this to the update rate in ms for the clock display(Leave off the ms ending). While it may seem logical to set this value to 60000 (60 seconds) this will make your clock consistently off unless you started the script exactly as the minute started.
+15000
 
 This is the font used on the bar.
 Haxrcorp 4088
 
 This is the font size.
 9
+
+This is the colour of the text on the bar.
+2F2F2F
+
+This is the default colour of the bar.
+C9C9C9
+
+Set this value to the symbol you want to use to designate commands.
+/
+
+If you set the below value to 1, Google will be the default search engine. If you set it to 2, DuckDuckGo will be the default search engine. If you would rather have no default search engine set the value to 0. If you want a search engine other than Google or DuckDuckGo set the value to the search url for that site.
+1
