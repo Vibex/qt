@@ -1,4 +1,5 @@
 ***In the configBar.txt file located in the Bar folder inside the Config folder you can change the command symbol. By default the symbol "/".***
+***If you do not use a command, the bar will search your specified folder for the file name. If no default search is set, no seacrh will be made.***
 
 Search Commands
 	/google or /g: Search the remaining text on google.

@@ -1,3 +1,8 @@
+Version 0.5.1		07/24/2013
+	*Added search capabilities to the taskbar. It can now search a specified folder for an application, shortcut, picture, or any other type of file and open it directly.
+	*Fixed a bug causing the taskbar to flicker.
+
+
 Version 0.5.0		07/23/2013
 	*Finally finished the taskbar. I redid it from scratch and went for a more minimal but also more useful aproach. It's still a work in progress. By the next update it will be able to search a folders contents to launch programs. Currently it can be used to search the internet. See Taskbar Commands.txt for all the commands.
 	*Added Alt Tab Commands by holding the left Mouse Button and scrolling up and down.

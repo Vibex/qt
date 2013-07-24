@@ -13,6 +13,15 @@
 		FileReadLine, barColour, %configB%, 19
 		FileReadLine, command, %configB%, 22
 		FileReadLine, defsearch, %configB%, 25
+		FileReadLine, progloc, %configB%, 28
+		FileReadLine, otherexe, %configB%, 31
+		if (otherexe != null)
+		{
+			StringSplit, otherexe, otherexe, `,
+		} else {
+			otherexe0 := 1
+			otherexe1 := null	
+		}
 		
 		Gui, bar%mon%:Color, %barColour%
 		Gui, bar%mon%:+LastFound -Caption +ToolWindow
@@ -106,7 +115,9 @@
 			GuiControl, bar1:, Run,
 			GuiControl, bar1:Hide, Run
 			GuiControl, bar1:Hide, Text
+			GuiControl, bar1:Show, Title1
 		} else {
+			GuiControl, bar1:Hide, Title1
 			GuiControl, bar1:Show, Run
 			GuiControl, bar1:Show, Text
 			shift := Mon1Width - 54 - 24
@@ -114,6 +125,31 @@
 			GuiControl, bar1:Move, Text, x4 y1 w18 h15 
 			GuiControl, bar1:Focus, Run
 			WinActivate, ahk_id %barid1%
+		}
+	return
+	}
+	
+	defaultSearch(mode = 2)
+	{
+		global
+		StringMid, part2, Run, %mode%
+		StringReplace, part2, part2, %A_Space%, +, 1
+		if (defsearch = 0)
+		{
+			if (mode = 2)
+			{
+				MsgBox, Command not recognized and no default search set.
+			} else {
+				MsgBox, File not found and no default search set.
+			}
+		} else if (defsearch = 1)
+		{
+			isRun := "https://www.google.com/search?q=" . part2
+		} else if (defsearch = 2)
+		{
+			isRun := "https://duckduckgo.com/?q=" . part2
+		} else {
+			isRun := defsearch . part2
 		}
 	return
 	}
@@ -137,7 +173,7 @@
 		part2 := arrtemp2
 		Loop, %arrtemp0%
 		{
-			x := A_Index + 2
+			x := A_Index + 2 
 			if (A_Index + 2 > arrtemp0)
 			{
 			break
@@ -177,27 +213,32 @@
 			{
 				isRun := "http://thepiratebay.sx/search/" . part2 . "/0/99/0"
 			} else {
-				if (defsearch = 0)
-				{
-					MsgBox, Command not recognized and no default search set.
-				} else if (defsearch = 1)
-				{
-					StringMid, part2, Run, 2
-					StringReplace, part2, part2, %A_Space%, +, 1
-					isRun := "https://www.google.com/search?q=" . part2
-				} else if (defsearch = 2)
-				{
-					StringMid, part2, Run, 2
-					StringReplace, part2, part2, %A_Space%, +, 1
-					isRun := "https://duckduckgo.com/?q=" . part2
-				} else {
-					StringMid, part2, Run, 2
-					StringReplace, part2, part2, %A_Space%, +, 1
-					isRun := defsearch . part2
-				}
+				defaultSearch()
 			}
 		} else {
-			
+			temp1 := progloc . run . ".lnk"
+			temp2 := progloc . run . ".exe"
+			IfExist, %temp1%
+			{
+				isRun := temp1
+			} else IfExist, %temp2%
+			{
+				isRun := temp2
+			} else {
+				Loop, %otherexe0%
+				{
+					temp := progloc . run . otherexe%A_Index%
+					IfExist, %temp%
+					{
+						isRun := temp
+					break
+					}
+				}
+			}
+			if (isRun = null)
+			{
+				defaultSearch(1)
+			}
 		}
 		if (isRun != null)
 		{

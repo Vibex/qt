@@ -23,3 +23,9 @@ Set this value to the symbol you want to use to designate commands.
 
 If you set the below value to 1, Google will be the default search engine. If you set it to 2, DuckDuckGo will be the default search engine. If you would rather have no default search engine set the value to 0. If you want a search engine other than Google or DuckDuckGo set the value to the search url for that site.
 1
+
+Set the below value to the folder in which all your command launch programs are stored. Any .exe or .lnk files in this folder can be called simple by typing out the item name without the extension.
+C:\
+
+If there are extensions other then .exe and .lnk that you would like to use add them below. Seperate them with a ",".
+.ahk
