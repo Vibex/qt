@@ -4,7 +4,8 @@
 		#MaxHotkeysPerInterval 100
 		#WinActivateForce
 		AutoTrim, On
-		SetTitleMatchMode,Slow
+		SetTitleMatchMode, Fast
+		SetTitleMatchMode, 3
 		CoordMode, Mouse, Screen
 		DetectHiddenWindows, On
 		OnExit, DeathToTheScript
@@ -19,7 +20,9 @@
 		SetControlDelay, %cspeed%
 		
 		remove(null, 1)
-		Confine := 0
+		workspace1 := 1
+		workspace2 := 1
+		workspace3 := 1
 		
 		gidDEBUG := null
 		
@@ -61,8 +64,8 @@
 		
 		if (winHook = 1)
 		{
-			Hwnd := WinExist(A_ScriptFullPath)
-			DllCall( "RegisterShellHookWindow", UInt,Hwnd )
+			hWnd := WinExist()
+			DllCall( "RegisterShellHookWindow", UInt,hWnd )
 			MsgNum := DllCall( "RegisterWindowMessage", Str,"SHELLHOOK" )
 			OnMessage( MsgNum, "ShellMessage" )
 		}
@@ -149,32 +152,16 @@
 	
 	
 	
-	#^NumLock::
-	{
-		idtemp := WinExist("A")
-		center(2, idtemp)
-	return
-	}
-	
-	#^NumpadDiv::
-	{
-		idtemp := WinExist("A")
-		center(1, idtemp)
-	return
-	}
-	
-	#^NumpadMult::
-	{
-		idtemp := WinExist("A")
-		center(3, idtemp)
-	return
-	}
-	
-	
-	
 	#^NumpadHome::
 	{
 		centerPanel("l")
+	return
+	}
+	
+	#^NumpadUp::
+	{
+		idtemp := WinExist("A")
+		center(0, idtemp)
 	return
 	}
 	
@@ -217,6 +204,70 @@
 	return
 	}
 	
+	#Tab::
+	{
+		MouseGetPos,xtemp,,
+		if (xtemp >= Mon1Left && xtemp < Mon1Right)
+		{
+			mon := 1
+		} else if (xtemp < Mon1Left && dis2 = 1)
+		{
+			mon := 2
+		} else if (xtemp >= Mon1Right && dis3 = 1)
+		{
+			mon := 3
+		}
+		
+		z := workspace%mon%
+		x := 0
+		Loop, 3
+		{
+			x += 1
+			y := 0
+			Loop, 3
+			{
+				y += 1
+				idtemp := Mon%mon%_%z%_%x%_%y%
+				GroupAdd, allhiden, ahk_id %idtemp%
+				WinHide, ahk_id %idtemp%
+			}
+		}
+		idtemp := Mon%mon%_%z%_center
+		GroupAdd, allhiden, ahk_id %idtemp%
+		WinHide, ahk_id %idtemp%
+		idtemp := Mon%mon%_%z%_full
+		GroupAdd, allhiden, ahk_id %idtemp%
+		WinHide, ahk_id %idtemp%
+		
+		if (workspace%mon% != 3)
+		{
+			workspace%mon% := workspace%mon% + 1
+		} else {
+			workspace%mon% := 1
+		}
+		
+		z := workspace%mon%
+		x := 0
+		Loop, 3
+		{
+			x += 1
+			y := 0
+			Loop, 3
+			{
+				y += 1
+				idtemp := Mon%mon%_%z%_%x%_%y%
+				WinShow, ahk_id %idtemp%
+			}
+		}
+		idtemp := Mon%mon%_%z%_center
+		GroupAdd, allhiden, ahk_id %idtemp%
+		WinShow, ahk_id %idtemp%
+		idtemp := Mon%mon%_%z%_full
+		GroupAdd, allhiden, ahk_id %idtemp%
+		WinShow, ahk_id %idtemp%
+	return
+	}
+	
 	
 	
 	#`::
@@ -231,6 +282,7 @@
 			{
 				center(1, gidDEBUG)
 			} else {
+				remove(gidDebug)
 				x := Mon3Right + 100
 				WinMove, ahk_id %gidDEBUG%,, %x%
 			}
@@ -239,6 +291,7 @@
 			{
 				center(1, gidDEBUG)
 			} else {
+				remove(gidDebug)
 				x := Mon1Right + 100
 				WinMove, ahk_id %gidDEBUG%,, %x%
 			}
@@ -279,7 +332,7 @@
 	
 	;#F3::
 	;{
-		;Will launch in the in-bar search function
+		;Will hide/show taskbar.
 	;return
 	;}
 	
@@ -292,12 +345,15 @@
 	!F4::
 	{
 		idtemp := WinExist("A")
-		if (idtemp != gidDEBUG)
+		if (idtemp = gidDEBUG) {
+			MsgBox, Please use Win + `` to hide the debug window.
+		} else if (idtemp = barid1 || idtemp = barid2 || idtemp = barid3)
 		{
+			MsgBox, You can disable the taskbars in the config files.
+		} else {
+		
 			remove(idtemp)
 			WinKill, ahk_id %idtemp%
-		} else {
-			MsgBox, Please use Win + `` to hide the debug window.
 		}
 	return
 	}
@@ -342,6 +398,7 @@
 	#F11::
 	{
 		;Toggle the fullscreen state
+		work := workspace%mon%
 		idtemp := WinExist("A")
 		WinGetPos, xtemp, ytemp, wtemp, htemp, ahk_id %idtemp%
 		if (xtemp >= Mon1Left && xtemp < Mon1Right)
@@ -366,10 +423,10 @@
 				screenFill(mon, idtemp)
 			} else {
 				titlebegone(idtemp, 2, null)
-				id := mon%mon%_Full
+				id := mon%mon%_%work%_Full
 				WinSet, Style, +0x40000, ahk_id %id%
 				WinSet, Style, -0x40000, ahk_id %idtemp%
-				Mon%mon%_Full := idtemp
+				Mon%mon%_%work%_Full := idtemp
 				WinMove, ahk_id %idtemp%,, (Mon%mon%Left), (Mon%mon%Top), (Mon%mon%Width), (Mon%mon%Height)
 			}
 		}
@@ -465,7 +522,6 @@
 	~LButton & WheelDown::ShiftAltTab
 	
 	
-	
 	;This script is a modified version of http://www.autohotkey.com/docs/scripts/EasyWindowDrag_%28KDE%29.htm.
 	#LButton::
 	{
@@ -531,12 +587,17 @@
 			KDE_WinUp := -1
 		}
 		mon := 0
+		temp := 0
 		Loop, 3
 		{
-			if (Mon%A_Index%_center = KDE_id)
+			temp := temp + 1
+			Loop, 3
 			{
-				mon := A_Index
-			break
+				if (Mon%temp%_%A_Index%_center = KDE_id)
+				{
+					mon := temp
+					work := A_Index
+				}
 			}
 		}
 		Loop
@@ -547,6 +608,7 @@
 				if (mon != 0)
 				{
 					center(mon, KDE_id)
+				break
 				}
 				remove(KDE_id)
 			break
@@ -583,6 +645,10 @@
 	{
 		SetBatchLines, -1
 		DetectHiddenWindows, Off
+		if (A_ExitReason != "Shutdown" && A_ExitReason != "Logoff")
+		{
+			WinShow, ahk_group allhiden
+		}
 		if(A_ExitReason != "Shutdown" && A_ExitReason != "Logoff" && A_ExitReason != "reload")
 		{
 			WinGet, winarr ,List

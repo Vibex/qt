@@ -17,9 +17,7 @@ Move Monitor Keys
 
 
 Center Window Keys
-	Win + Ctrl + Numlock: Centers the window on the left most monitor.
-	Win + Ctrl + Numpad Divide (/): Centers the window on the middle monitor.
-	Win + Ctrl + Numpad Multiply (*): Centers the window on the right most monitor.
+	Win + Ctrl + Numpad Up: Centers the window on the current monitor.
 	Win + Ctrl + Home: Creates a side panel on the left of the centered window. If their is no centered window or the window takes up the full horizontal width, the panel will fill the left of the screen.
 	Win + Ctrl + PgUp: Creates a side panel on the right of the centered window. If their is no centered window or the window takes up the full horizontal width, the panel will fill the left of the screen.
 
@@ -72,6 +70,10 @@ Function Keys
 	
 Taskbar Hotkeys
 	Win + Space Bar: Activate command input mode.
+	
+	
+Workspace Hotkeys
+	Win + Tab: Switch through current monitors workspaces.
 
 
 Other Keys

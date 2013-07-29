@@ -4,17 +4,6 @@
 		CoordMode, Mouse, Screen
 		Gui, Margin, 0, 0
 		
-		configB := "Config\Bar\configBar.txt"
-		FileReadLine, updateRate, %configB%, 4
-		FileReadLine, updateRate2, %configB%, 7
-		FileReadLine, font, %configB%, 10
-		FileReadLine, fontsize, %configB%, 13
-		FileReadLine, texColour, %configB%, 16
-		FileReadLine, barColour, %configB%, 19
-		FileReadLine, command, %configB%, 22
-		FileReadLine, defsearch, %configB%, 25
-		FileReadLine, progloc, %configB%, 28
-		FileReadLine, otherexe, %configB%, 31
 		if (otherexe != null)
 		{
 			StringSplit, otherexe, otherexe, `,
@@ -27,10 +16,12 @@
 		Gui, bar%mon%:+LastFound -Caption +ToolWindow
 		Gui, bar%mon%:Font, s%fontSize% c%texColour%, %font%
 		
-		shift := w - 52
-		Gui, bar%mon%:Add, Text, vTitle%mon% x0 y1 w%shift% h%h% Center, no window selected
+		Gui, bar%mon%:Add, Text, vDate%mon% x4 y1 h%h% w64 Center, 000, 000 00
 		
-		Gui, bar%mon%:Add, Text, vClock%mon% x%shift% y1 h%h%, 00 - 00.00
+		shift := w - 33
+		Gui, bar%mon%:Add, Text, vClock%mon% x%shift% y1 h%h% Center, 00.00
+		shift := shift - 64
+		Gui, bar%mon%:Add, Text, vTitle%mon% x64 y1 w%shift% h%h% Center, 0
 		
 		if (mon = 1)
 		{
@@ -53,10 +44,9 @@
 	Update1:
 	{
 		GuiControlGet, Title1, bar1:
-		WinGetTitle, temp, ahk_id %curid1%
-		if (Title1 != temp)
+		if (Title1 != workspace1)
 		{
-			GuiControl, bar1:, Title1, %temp%
+			GuiControl, bar1:, Title1, % workspace1
 		}
 	return
 	}
@@ -64,10 +54,9 @@
 	Update2:
 	{
 		GuiControlGet, Title2, bar2:
-		WinGetTitle, temp, ahk_id %curid2%
-		if (Title2 != temp)
+		if (Title2 != workspace2)
 		{
-			GuiControl, bar2:, Title2, %temp%
+			GuiControl, bar2:, Title2, % workspace2
 		}
 	return
 	}
@@ -75,10 +64,9 @@
 	Update3:
 	{
 		GuiControlGet, Title3, bar3:
-		WinGetTitle, temp, ahk_id %curid3%
-		if (Title3 != temp)
+		if (Title3 != workspace3)
 		{
-			GuiControl, bar3:, Title3, %temp%
+			GuiControl, bar3:, Title3, % workspace3
 		}
 	return
 	}
@@ -87,11 +75,18 @@
 	{
 		clockOn := 1
 		GuiControlGet, Clock1, bar1:
-		if (Clock1 != "%A_DD% - %A_Hour%.%A_Min%")
+		GuiControlGet, Date1, bar1:
+		if (Clock1 != "%A_Hour%.%A_Min%")
 		{
-			GuiControl, bar1:, Clock1, %A_DD% - %A_Hour%.%A_Min%
-			GuiControl, bar2:, Clock2, %A_DD% - %A_Hour%.%A_Min%
-			GuiControl, bar3:, Clock3, %A_DD% - %A_Hour%.%A_Min%
+			GuiControl, bar1:, Clock1, %A_Hour%.%A_Min%
+			GuiControl, bar2:, Clock2, %A_Hour%.%A_Min%
+			GuiControl, bar3:, Clock3, %A_Hour%.%A_Min%
+		}
+		if (Date1 != "%A_DDDD%, %A_MMMM% %A_DD%")
+		{
+			GuiControl, bar1:, Date1, %A_DDD%, %A_MMM% %A_DD%
+			GuiControl, bar2:, Date2, %A_DDD%, %A_MMM% %A_DD%
+			GuiControl, bar3:, Date3, %A_DDD%, %A_MMM% %A_DD%
 		}
 	return
 	}
@@ -116,8 +111,10 @@
 			GuiControl, bar1:Hide, Run
 			GuiControl, bar1:Hide, Text
 			GuiControl, bar1:Show, Title1
+			GuiControl, bar1:Show, Date1
 		} else {
 			GuiControl, bar1:Hide, Title1
+			GuiControl, bar1:Hide, Date1
 			GuiControl, bar1:Show, Run
 			GuiControl, bar1:Show, Text
 			shift := Mon1Width - 54 - 24
@@ -212,6 +209,46 @@
 			} else if (arrtemp1 = command . "piratebay" || arrtemp1 = command . "p")
 			{
 				isRun := "http://thepiratebay.sx/search/" . part2 . "/0/99/0"
+			} else if (arrtemp1 = command . "logoff")
+			{
+				if (part2 = "-f")
+				{
+					Shutdown, 4
+				} else {
+					Shutdown, 0
+				}
+			} else if (arrtemp1 = command . "shutdown")
+			{
+				if (part2 = "-f")
+				{
+					Shutdown, 5
+				} else {
+					Shutdown, 1
+				}
+			} else if (arrtemp1 = command . "reboot" || arrtemp1 = command . "restart")
+			{
+				if (part2 = "-f")
+				{
+					Shutdown, 6
+				} else {
+					Shutdown, 2
+				}
+			} else if (arrtemp1 = command . "hibernate")
+			{
+				if (part2 = "-f")
+				{
+					DllCall("PowrProf\SetSuspendState", "int", 1, "int", 1, "int", 0)
+				} else {
+					DllCall("PowrProf\SetSuspendState", "int", 1, "int", 0, "int", 0)
+				}
+			} else if (arrtemp1 = command . "suspend" || arrtemp1 = command . "sleep")
+			{
+				if (part2 = "-f")
+				{
+					DllCall("PowrProf\SetSuspendState", "int", 0, "int", 1, "int", 0)
+				} else {
+					DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)
+				}
 			} else {
 				defaultSearch()
 			}

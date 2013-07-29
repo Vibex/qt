@@ -8,7 +8,16 @@ Search Commands
 	/wikipedia or /wiki or /w: Search the remaining text on wikipedia.
 	/nyaa or /n: Search the remaining text on nyaa.
 	/piratebay or /p: Search the remaining text on The Pirate Bay.
+
 	
+Power Commands
+***After and command put "-f" to force the computer to enter the state. This can cause the loss of data.***
+	/logoff: Logs off the current user.
+	/shutdown: Shuts the computer down.
+	/reboot or /restart: Restarts the computer.
+	/hibernate: Puts the computer into hibernate (backsup open programs onto harddrive and shuts off comouter).
+	/suspend or /sleep: Puts the computer to sleep (power saving mode, but power is still used. If power is lost can cause corruption and loss of data)
 	
+
 Misc Commands
 	/qt.pi: Opens up qt.pi on github.

@@ -1,3 +1,13 @@
+Version 0.6.0		07/29/2013
+	*Removed the option to switch monitor locations becausee it did nothing as of the last update (It was fixed by automatic monitor detection).
+	*Centering windows is now only a single hotkey (Win + Ctrl + Numpad Up) and centers it on whatever monitor you are on.
+	*Added power commands to the taskbar. You can restart, shutdown, logoff, hibernate, or sleep from the taskbar.
+	*Added virtual desktops that are individually changeable on a monitor by monitor basis 9Win + Tab to shift through workspaces).
+	*Redid the apperance of the bar. No longer displays title. Instead it shows the workspace number. The Date is displayed on the left of the bar and the time is on the right.
+	*Moved option loading for the taskbar to the initial load method.
+	
+
+
 Version 0.5.1		07/24/2013
 	*Added search capabilities to the taskbar. It can now search a specified folder for an application, shortcut, picture, or any other type of file and open it directly.
 	*Fixed a bug causing the taskbar to flicker.

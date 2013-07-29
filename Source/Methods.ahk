@@ -4,30 +4,28 @@
 		;This detects messages sent by windows itself and preforms actions based on the messages.
 		global previousid
 		global currentid
-		global curid1
-		global curid2
-		global curid3
 		global autocenter
 		global titlebaraway
 		global baryeah
 		global tranthresh
 		global nonactivetrans
-		global Mon1Left
-		global Mon1Right
-		global dis2
-		global dis3
+		global barid1
+		global barid2
+		global barid3
 		
 		SetBatchLines, -1
 		WinGetTitle, title, ahk_id %lParam%
 		WinGetClass, class , ahk_id %lParam%
-		WinGet, Style, Style, ahk_id %lParam%
-		mon := 0
 		If (wParam = 1)
 		{
 			;Window created
 			if (autocenter != 0 && Title != "Adobe Flash Player")
 			{
-				Center(autocenter, lParam)
+				WinGet, id, id, ahk_group allhiden
+				if (id != lParam)
+				{
+					Center(autocenter, lParam)
+				}
 			}
 			if (titlebaraway = 1)
 			{
@@ -51,23 +49,6 @@
 			{
 				previousid := currentid
 				currentid := lParam
-				
-				if (baryeah = 1)
-				{
-					WinGetPos, xtemp,, wtemp,, ahk_id %lParam%
-					if (xtemp >= Mon1Left && xtemp < Mon1Right)
-					{
-						mon := 1
-					} else if (xtemp < Mon1Left && dis2 = 1)
-					{
-						mon := 2
-					} else if (xtemp >= Mon1Right && dis3 = 1)
-					{
-						mon := 3
-					}
-					curid%mon% := currentid
-					Gosub, Update%mon%
-				}
 			}
 			if (nonactivetrans != 255)
 			{
@@ -91,6 +72,7 @@
 		;The location of the config files.
 		config := "Config\config.txt"
 		configA := "Config\configAdvanced.txt"
+		configB := "Config\Bar\configBar.txt"
 		
 		dis1 := 0
 		dis2 := 0
@@ -165,9 +147,7 @@
 			
 			FileReadLine, winHook, %configA%, 82
 			
-			FileReadLine, monreverse, %configA%, 87
-			
-			FileReadLine, exclude, %configA%, 92
+			FileReadLine, exclude, %configA%, 87
 			if (exclude != null)
 			{
 				StringSplit, exclusion, exclude, `,
@@ -176,7 +156,21 @@
 				exclusion1 := null	
 			}
 		
-			FileReadLine, baryeah, %configA%, 99
+			FileReadLine, baryeah, %configA%, 94
+			if (baryeah = 1)
+			{
+				FileReadLine, updateRate, %configB%, 4
+				FileReadLine, updateRate2, %configB%, 7
+				FileReadLine, font, %configB%, 10
+				FileReadLine, fontsize, %configB%, 13
+				FileReadLine, texColour, %configB%, 16
+				FileReadLine, barColour, %configB%, 19
+				FileReadLine, command, %configB%, 22
+				FileReadLine, defsearch, %configB%, 25
+				FileReadLine, progloc, %configB%, 28
+				FileReadLine, otherexe, %configB%, 31
+			}
+			
 			tranthresh := 0
 		} else {
 			;Defaults when advanced config is disabled. What each value does can be found in the advancedConfig.txt file. The items below are listed in the order they appear in the text file.
@@ -387,11 +381,11 @@
 	return
 	}
 	
-	setId(mon, id, row, col)
+	setId(mon, work, id, row, col)
 	{
 		;This sets the id to the grid.
 		global
-		mon%mon%_%row%_%col% := id
+		mon%mon%_%work%_%row%_%col% := id
 	return
 	}
 	
@@ -426,9 +420,10 @@
 		}
 		if (mon != 0)
 		{
+			work := workspace%mon%
 			findPos(mon, row, col)
 			remove(id)
-			setId(mon, id, row, col)
+			setId(mon, work, id, row, col)
 			if (A_TimeSincePriorHotkey < 400 && A_TimeSincePriorHotkey <> -1 && A_PriorHotkey = A_ThisHotkey)
 			{
 				if ((row - 1) > 0)
@@ -462,13 +457,13 @@
 				GoSub, UpdateDebug
 				WinMove, ahk_id %id%,, (v + b + (hbor * col)  + hborex + lbar%mon% + Mon%mon%Left), (g + f + (vbor * row) + vborex + tbar%mon% + Mon%mon%Top), (rcol),  (rrow)
 			} else {
-				expand(mon, id, row, col, rcol, rrow)
+				expand(mon, work, id, row, col, rcol, rrow)
 			}
 		}
 	return
 	}
 	
-	repos(mon, id, row, col)
+	repos(mon, work, id, row, col)
 	{
 		;This does the automatic repositioning of windows. It's still very much in development.
 		global
@@ -480,21 +475,21 @@
 		
 		trow := row + 1
 		tcol := col + 1
-		test := InStr(mon%mon%_%row%_%tcol%, mon%mon%_%row%_%col%)
+		test := InStr(mon%mon%_%work%_%row%_%tcol%, mon%mon%_%work%_%row%_%col%)
 		if (test != 0)
 		{
-			move(mon%mon%_%row%_%col%, row, tcol)
+			move(mon%mon%_%work%_%row%_%col%, row, tcol)
 		return
 		}
-		test := InStr(mon%mon%_%trow%_%col%, mon%mon%_%row%_%col%)
+		test := InStr(mon%mon%_%work%_%trow%_%col%, mon%mon%_%work%_%row%_%col%)
 		if (test != 0)
 		{
-			move(mon%mon%_%row%_%col%, trow, col)
+			move(mon%mon%_%work%_%row%_%col%, trow, col)
 		}
 	return
 	}
 	
-	expand(mon, id, row, col, tw, th)
+	expand(mon, work, id, row, col, tw, th)
 	{
 		;This does the resizing of the windows to fit the full grid.
 		global
@@ -518,48 +513,48 @@
 		tcol2 := col + 2
 		if (tcol1 <= col%mon%)
 		{
-			if (mon%mon%_%row%_%tcol1% = null)
+			if (mon%mon%_%work%_%row%_%tcol1% = null)
 			{
 				tw := tw + col%mon%%tcol1% + hbor
-				mon%mon%_%row%_%tcol1% := full . id
+				mon%mon%_%work%_%row%_%tcol1% := full . id
 				path1 := 1
-				if (trow1 <= row%mon% && mon%mon%_%trow1%_%tcol1% = null && mon%mon%_%trow1%_%col% = null)
+				if (trow1 <= row%mon% && mon%mon%_%work%_%trow1%_%tcol1% = null && mon%mon%_%work%_%trow1%_%col% = null)
 				{
 					th := th + row%mon%%trow1% + vbor
-					mon%mon%_%trow1%_%tcol1% := full . id
-					mon%mon%_%trow1%_%col% := full . id
+					mon%mon%_%work%_%trow1%_%tcol1% := full . id
+					mon%mon%_%work%_%trow1%_%col% := full . id
 				}
 			}
 		}
 		if (tcol2 <= col%mon%)
 		{
-			if (mon%mon%_%row%_%tcol2% = null)
+			if (mon%mon%_%work%_%row%_%tcol2% = null)
 			{
 				tw := tw + col%mon%%tcol2% + hbor
-				mon%mon%_%row%_%tcol2% := full . id
+				mon%mon%_%work%_%row%_%tcol2% := full . id
 				path2 := 1
-				if (trow2 <= row%mon% && mon%mon%_%trow2%_%tcol2% = null && mon%mon%_%trow2%_%col% = null)
+				if (trow2 <= row%mon% && mon%mon%_%work%_%trow2%_%tcol2% = null && mon%mon%_%work%_%trow2%_%col% = null)
 				{
 					th := th + row%mon%%trow2% + vbor
-					mon%mon%_%trow1%_%tcol2% := full . id
-					mon%mon%_%trow2%_%tcol1% := full . id
-					mon%mon%_%trow2%_%tcol2% := full . id
-					mon%mon%_%trow2%_%col% := full . id
+					mon%mon%_%work%_%trow1%_%tcol2% := full . id
+					mon%mon%_%work%_%trow2%_%tcol1% := full . id
+					mon%mon%_%work%_%trow2%_%tcol2% := full . id
+					mon%mon%_%work%_%trow2%_%col% := full . id
 				}
 			}
 		}
-		if (trow1 <= row%mon% && path1 != 1 && mon%mon%_%trow1%_%col% = null)
+		if (trow1 <= row%mon% && path1 != 1 && mon%mon%_%work%_%trow1%_%col% = null)
 		{
 			th := th + row%mon%%trow1% + vbor
-			mon%mon%_%trow1%_%col% := full . id
+			mon%mon%_%work%_%trow1%_%col% := full . id
 		}
-		if (trow2 <= row%mon% && path2 != 1 && mon%mon%_%trow2%_%col% = null)
+		if (trow2 <= row%mon% && path2 != 1 && mon%mon%_%work%_%trow2%_%col% = null)
 		{
 			th := th + row%mon%%trow2% + vbor
-			mon%mon%_%trow2%_%col% := full . id
+			mon%mon%_%work%_%trow2%_%col% := full . id
 			if (path1 = 1)
 			{
-				mon%mon%_%trow2%_%tcol1% := full . id
+				mon%mon%_%work%_%trow2%_%tcol1% := full . id
 			}
 		}
 		if ((row - 1) > 0)
@@ -599,26 +594,45 @@
 	{
 		;This centers the window on the screen and resizes it if need be.
 		global
+		local work
 		
 		remove(id)
 		WinGetPos, xtemp,, widthtemp, heighttemp, ahk_id %id%
-		Mon%mon%_center := id
-		if (heighttemp > Mon%mon%CusHeight)
-		{			
+		if (mon = 0)
+		{
+			MouseGetPos,xtemp,,
+			if (xtemp >= Mon1Left && xtemp < Mon1Right)
+			{
+				mon := 1
+			} else if (xtemp < Mon1Left && dis2 = 1)
+			{
+				mon := 2
+			} else if (xtemp >= Mon1Right && dis3 = 1)
+			{
+				mon := 3
+			}
+		}
+		work := workspace%mon%
+		if (mon != 0)
+		{
+			Mon%mon%_%work%_center := id
+			if (heighttemp > Mon%mon%CusHeight)
+			{			
+				if (widthtemp > Mon%mon%CusWidth)
+				{
+					WinMove, ahk_id %id%,, (Mon%mon%Left + lbar%mon% + hbor + hborex), (Mon%mon%Top + tbar%mon% + vbor + vborex), (Mon%mon%CusWidth), (Mon%mon%CusHeight)
+				return
+				}				
+				WinMove, ahk_id %id%,, (Mon%mon%Left + (lbar%mon% / 2) - (rbar%mon% / 2) + hbor + hborex + ((Mon%mon%Width / 2) - (widthtemp / 2))), (Mon%mon%Top + tbar%mon% + vbor + vborex), (widthtemp), (Mon%mon%CusHeight)
+			return
+			}			
 			if (widthtemp > Mon%mon%CusWidth)
 			{
-				WinMove, ahk_id %id%,, (Mon%mon%Left + lbar%mon% + hbor + hborex), (Mon%mon%Top + tbar%mon% + vbor + vborex), (Mon%mon%CusWidth), (Mon%mon%CusHeight)
+				WinMove, ahk_id %id%,, (Mon%mon%Left + lbar%mon% + hbor + hborex), (Mon%mon%Top + (tbar%mon% / 2) - (bbar%mon% / 2) + vbor + vborex + ((Mon%mon%Height / 2) - (heighttemp / 2))), (Mon%mon%CusWidth), (heighttemp)
 			return
-			}				
-			WinMove, ahk_id %id%,, (Mon%mon%Left + (lbar%mon% / 2) - (rbar%mon% / 2) + hbor + hborex + ((Mon%mon%Width / 2) - (widthtemp / 2))), (Mon%mon%Top + tbar%mon% + vbor + vborex), (widthtemp), (Mon%mon%CusHeight)
-		return
-		}			
-		if (widthtemp > Mon%mon%CusWidth)
-		{
-			WinMove, ahk_id %id%,, (Mon%mon%Left + lbar%mon% + hbor + hborex), (Mon%mon%Top + (tbar%mon% / 2) - (bbar%mon% / 2) + vbor + vborex + ((Mon%mon%Height / 2) - (heighttemp / 2))), (Mon%mon%CusWidth), (heighttemp)
-		return
-		}	
-		WinMove, ahk_id %id%,, (Mon%mon%Left + (lbar%mon% / 2) - (rbar%mon% / 2) + hbor + hborex + ((Mon%mon%Width / 2) - (widthtemp / 2))), (Mon%mon%Top + (tbar%mon% / 2) - (bbar%mon% / 2) + vbor + vborex + ((Mon%mon%Height / 2) - (heighttemp / 2)))
+			}	
+			WinMove, ahk_id %id%,, (Mon%mon%Left + (lbar%mon% / 2) - (rbar%mon% / 2) + hbor + hborex + ((Mon%mon%Width / 2) - (widthtemp / 2))), (Mon%mon%Top + (tbar%mon% / 2) - (bbar%mon% / 2) + vbor + vborex + ((Mon%mon%Height / 2) - (heighttemp / 2)))
+		}
 	return
 	}
 	
@@ -656,6 +670,7 @@
 		local x
 		local y
 		local mon
+		local work
 		
 		x := 0
 		Loop, 3
@@ -665,28 +680,30 @@
 			Loop, 3
 			{
 				y += 1
-				if (mon1_%x%_%y% = id ||  mon1_%x%_%y% = full . id || all != 0)
+				mon := 0
+				Loop, 3
 				{
-					mon1_%x%_%y% := null
+					mon += 1
+					work := 0
+					Loop, 3
+					{
+						work += 1
+						if (mon%mon%_%work%_%x%_%y% = id ||  mon%mon%_%work%_%x%_%y% = full . id || all != 0)
+						{
+							mon%mon%_%work%_%x%_%y% := null
+						}
+					}
 				}
-				if (mon2_%x%_%y% = id ||  mon2_%x%_%y% = full . id || all != 0)
+				if (mon%x%_%y%_center = id || all = 1)
 				{
-					mon2_%x%_%y% := null
+					mon%x%_%y%_center := null
 				}
-				if (mon3_%x%_%y% = id ||  mon3_%x%_%y% = full . id || all != 0)
+				if (mon%x%_%y%_Full = id || all = 1)
 				{
-					mon3_%x%_%y% := null
+					idtemp := mon%x%_%y%_Full
+					WinSet, Style, +0x40000, ahk_id %idtemp%
+					mon%x%_%y%_Full := null
 				}
-			}
-			if (mon%x%_center = id || all = 1)
-			{
-				mon%x%_center := null
-			}
-			if (mon%x%_Full = id || all = 1)
-			{
-				idtemp := mon%x%_Full
-				WinSet, Style, +0x40000, ahk_id %idtemp%
-				mon%x%_Full := null
 			}
 		}
 	return
@@ -785,6 +802,9 @@
 		local y
 		local z
 		local test
+		local work
+		
+		work := workspace%mon%
 		
 		x := 4
 		Loop, 3
@@ -794,7 +814,7 @@
 			Loop, 3
 			{
 				y -= 1
-				z := mon%mon%_%x%_%y%
+				z := mon%mon%_%work%_%x%_%y%
 				test := InStr(z, full)
 				if (test = 0 && z != null)
 				{
@@ -811,6 +831,9 @@
 		global
 		local x
 		local y
+		local work
+		
+		work := workspace%mon%
 		
 		x := 0
 		Loop, 3
@@ -820,7 +843,7 @@
 			Loop, 3
 			{
 				y += 1
-				if (id = mon%mon%_%x%_%y%)
+				if (id = mon%mon%_%work%_%x%_%y%)
 				{
 					rx := x
 					ry := y
@@ -947,6 +970,9 @@
 		local temp2
 		local temp3
 		local temp4
+		local work
+		
+		work := workspace%mon%
 		
 		id := WinExist("A")
 		WinGetPos, xtemp,,,, ahk_id %id%
@@ -964,9 +990,9 @@
 		
 		if (mon != 0)
 		{
-			temp := Mon%mon%_center
+			temp := Mon%mon%_%work%_center
 			WinGetPos, xtemp2,, wtemp,, ahk_id %temp%
-			if (Mon%mon%_center != null)
+			if (Mon%mon%_%work%_center != null)
 			{
 				if (direc = "l")
 				{

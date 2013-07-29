@@ -83,11 +83,6 @@ Set this value to 1 to enable window hooking. Set to 0 otherwise. If this is 0 i
 
 
 
-Set this value to 1 if you want to flip the left and right window positions. Otherwise set it to 0.
-0
-
-
-
 Exclusion classes. List the classes below and seperate them with a ",". The classes of windows will be ignored when minimizing all windows and on the taskbar
 
 

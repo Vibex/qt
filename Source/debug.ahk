@@ -42,9 +42,10 @@
 				Y += 1
 				Loop, 3
 				{
-					if (mon%A_Index%_%X%_%Y% != null)
+					work := workspace%A_Index%
+					if (mon%A_Index%_%work%_%X%_%Y% != null)
 					{
-						test := InStr(mon%A_Index%_%X%_%Y%, full)
+						test := InStr(mon%A_Index%_%work%_%X%_%Y%, full)
 						if (test != 0)
 						{
 							temp%A_Index%%x%_%Y% := "F"
@@ -67,7 +68,7 @@
 			}
 		}
 		merge := temptotal1 . "`n" . temptotal2 . "`n" . temptotal3
-		merge := "0.5.0`n`n" . merge . "`nBatch Lines: " . A_BatchLines . "`nKey Delay: " . A_KeyDelay . "ms" . "`nWin Delay: " . A_WinDelay . "ms" . "`nControl Delay: " . A_ControlDelay . "ms"
+		merge := "0.6.0`n`n" . merge . "`nBatch Lines: " . A_BatchLines . "`nKey Delay: " . A_KeyDelay . "ms" . "`nWin Delay: " . A_WinDelay . "ms" . "`nControl Delay: " . A_ControlDelay . "ms"
 		if (MainDebug != merge)
 		{
 			GuiControl,, MainDebug, %merge%
