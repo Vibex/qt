@@ -1,3 +1,8 @@
+Version 0.6.1		07/29/2013
+	*Made it easier to add new hotkey layouts by seperating them into their own .ahk file. The current one that I have provided doesn't really work because it interfears with Win + L. In the future I will make better layouts (or you can make your own!).
+	*Minor bug fixes and stuff.
+
+
 Version 0.6.0		07/29/2013
 	*Removed the option to switch monitor locations becausee it did nothing as of the last update (It was fixed by automatic monitor detection).
 	*Centering windows is now only a single hotkey (Win + Ctrl + Numpad Up) and centers it on whatever monitor you are on.

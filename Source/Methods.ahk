@@ -1,4 +1,31 @@
 ﻿	;If you know what you are doing with AHK feel free to play with the methods below. I've left comments on things that you may want to play with. I have also added a description of each methods function. I can guarantee if you know anything about AHK or code programming practices you will have an aneurysm reading my code. Eventually I will get a round to cleaning it all up and optimizing it more. Right now I'm more focused on features and functionality.
+	
+	DeathToTheScript:
+	{
+		SetBatchLines, -1
+		DetectHiddenWindows, Off
+		if (A_ExitReason != "Shutdown" && A_ExitReason != "Logoff")
+		{
+			WinShow, ahk_group allhiden
+		}
+		if(A_ExitReason != "Shutdown" && A_ExitReason != "Logoff" && A_ExitReason != "reload")
+		{
+			WinGet, winarr ,List
+			Loop, %winarr%
+			{
+				idtemp := winarr%A_Index%
+				WinGetClass, class, ahk_id %idtemp%
+				if (exclusion(class) = 1)
+				{
+					titleBeGone(idtemp, 3)
+				}
+				trans(idtemp, 255)
+			}
+		}
+	ExitApp
+	Sleep 1000
+	}
+	
 	ShellMessage(wParam, lParam)
 	{
 		;This detects messages sent by windows itself and preforms actions based on the messages.
@@ -389,253 +416,6 @@
 	return
 	}
 	
-	move(id, row, col)
-	{
-		;This is the main method that actually does the movement of the windows.
-		global
-		local xtemp
-		local mon
-		local expand
-		local d
-		local g
-		local f
-		local v
-		local b
-		
-		if (id = null)
-		{
-			id := WinExist("A")
-		}
-		WinGetPos, xtemp,,,, ahk_id %id%
-		mon := 0
-		if (xtemp >= Mon1Left && xtemp < Mon1Right && row <= row1 && col <= col1)
-		{
-			mon := 1
-		} else if (xtemp < Mon1Left && dis2 = 1 && row <=  row2 && col <=  col2)
-		{
-			mon := 2
-		} else if (xtemp >= Mon1Right && dis3 = 1  && row <=  row3 && col <=  col3)
-		{
-			mon := 3
-		}
-		if (mon != 0)
-		{
-			work := workspace%mon%
-			findPos(mon, row, col)
-			remove(id)
-			setId(mon, work, id, row, col)
-			if (A_TimeSincePriorHotkey < 400 && A_TimeSincePriorHotkey <> -1 && A_PriorHotkey = A_ThisHotkey)
-			{
-				if ((row - 1) > 0)
-				{
-					d := row - 1
-					g := row%mon%%d%
-				} else {
-					g := 0
-				}
-				if ((row - 2) > 0)
-				{
-					d := row - 2
-					f := row%mon%%d%
-				} else {
-					f := 0
-				}
-				if ((col - 1) > 0)
-				{
-					d := col - 1
-					v := col%mon%%d%
-				} else {
-					v := 0
-				}
-				if ((col - 2) > 0)
-				{
-					d := col - 2
-					b := col%mon%%d%
-				} else {
-					b := 0
-				}
-				GoSub, UpdateDebug
-				WinMove, ahk_id %id%,, (v + b + (hbor * col)  + hborex + lbar%mon% + Mon%mon%Left), (g + f + (vbor * row) + vborex + tbar%mon% + Mon%mon%Top), (rcol),  (rrow)
-			} else {
-				expand(mon, work, id, row, col, rcol, rrow)
-			}
-		}
-	return
-	}
-	
-	repos(mon, work, id, row, col)
-	{
-		;This does the automatic repositioning of windows. It's still very much in development.
-		global
-		local trow
-		local tcol
-		local trown
-		local tcoln
-		local test
-		
-		trow := row + 1
-		tcol := col + 1
-		test := InStr(mon%mon%_%work%_%row%_%tcol%, mon%mon%_%work%_%row%_%col%)
-		if (test != 0)
-		{
-			move(mon%mon%_%work%_%row%_%col%, row, tcol)
-		return
-		}
-		test := InStr(mon%mon%_%work%_%trow%_%col%, mon%mon%_%work%_%row%_%col%)
-		if (test != 0)
-		{
-			move(mon%mon%_%work%_%row%_%col%, trow, col)
-		}
-	return
-	}
-	
-	expand(mon, work, id, row, col, tw, th)
-	{
-		;This does the resizing of the windows to fit the full grid.
-		global
-		local path1
-		local path2
-		local trow1
-		local trow2
-		local tcol1
-		local tcol2
-		local d
-		local g
-		local f
-		local v
-		local b
-		
-		path1 := 0
-		path2 := 0
-		trow1 := row + 1
-		tcol1 := col + 1
-		trow2 := row + 2
-		tcol2 := col + 2
-		if (tcol1 <= col%mon%)
-		{
-			if (mon%mon%_%work%_%row%_%tcol1% = null)
-			{
-				tw := tw + col%mon%%tcol1% + hbor
-				mon%mon%_%work%_%row%_%tcol1% := full . id
-				path1 := 1
-				if (trow1 <= row%mon% && mon%mon%_%work%_%trow1%_%tcol1% = null && mon%mon%_%work%_%trow1%_%col% = null)
-				{
-					th := th + row%mon%%trow1% + vbor
-					mon%mon%_%work%_%trow1%_%tcol1% := full . id
-					mon%mon%_%work%_%trow1%_%col% := full . id
-				}
-			}
-		}
-		if (tcol2 <= col%mon%)
-		{
-			if (mon%mon%_%work%_%row%_%tcol2% = null)
-			{
-				tw := tw + col%mon%%tcol2% + hbor
-				mon%mon%_%work%_%row%_%tcol2% := full . id
-				path2 := 1
-				if (trow2 <= row%mon% && mon%mon%_%work%_%trow2%_%tcol2% = null && mon%mon%_%work%_%trow2%_%col% = null)
-				{
-					th := th + row%mon%%trow2% + vbor
-					mon%mon%_%work%_%trow1%_%tcol2% := full . id
-					mon%mon%_%work%_%trow2%_%tcol1% := full . id
-					mon%mon%_%work%_%trow2%_%tcol2% := full . id
-					mon%mon%_%work%_%trow2%_%col% := full . id
-				}
-			}
-		}
-		if (trow1 <= row%mon% && path1 != 1 && mon%mon%_%work%_%trow1%_%col% = null)
-		{
-			th := th + row%mon%%trow1% + vbor
-			mon%mon%_%work%_%trow1%_%col% := full . id
-		}
-		if (trow2 <= row%mon% && path2 != 1 && mon%mon%_%work%_%trow2%_%col% = null)
-		{
-			th := th + row%mon%%trow2% + vbor
-			mon%mon%_%work%_%trow2%_%col% := full . id
-			if (path1 = 1)
-			{
-				mon%mon%_%work%_%trow2%_%tcol1% := full . id
-			}
-		}
-		if ((row - 1) > 0)
-		{
-			d := row - 1
-			g := row%mon%%d%
-		} else {
-			g := 0
-		}
-		if ((row - 2) > 0)
-		{
-			d := row - 2
-			f := row%mon%%d%
-		} else {
-			f := 0
-		}
-		if ((col - 1) > 0)
-		{
-			d := col - 1
-			v := col%mon%%d%
-		} else {
-			v := 0
-		}
-		if ((col - 2) > 0)
-		{
-			d := col - 2
-			b := col%mon%%d%
-		} else {
-			b := 0
-		}
-		GoSub, UpdateDebug
-		WinMove, ahk_id %id%,, (v + b + (hbor * col) + hborex + lbar%mon% + Mon%mon%Left), (g + f + (vbor * row) + vborex + tbar%mon% + Mon%mon%Top), (tw),  (th)
-	return
-	}
-	
-	center(mon, id)
-	{
-		;This centers the window on the screen and resizes it if need be.
-		global
-		local work
-		
-		remove(id)
-		WinGetPos, xtemp,, widthtemp, heighttemp, ahk_id %id%
-		if (mon = 0)
-		{
-			MouseGetPos,xtemp,,
-			if (xtemp >= Mon1Left && xtemp < Mon1Right)
-			{
-				mon := 1
-			} else if (xtemp < Mon1Left && dis2 = 1)
-			{
-				mon := 2
-			} else if (xtemp >= Mon1Right && dis3 = 1)
-			{
-				mon := 3
-			}
-		}
-		work := workspace%mon%
-		if (mon != 0)
-		{
-			Mon%mon%_%work%_center := id
-			if (heighttemp > Mon%mon%CusHeight)
-			{			
-				if (widthtemp > Mon%mon%CusWidth)
-				{
-					WinMove, ahk_id %id%,, (Mon%mon%Left + lbar%mon% + hbor + hborex), (Mon%mon%Top + tbar%mon% + vbor + vborex), (Mon%mon%CusWidth), (Mon%mon%CusHeight)
-				return
-				}				
-				WinMove, ahk_id %id%,, (Mon%mon%Left + (lbar%mon% / 2) - (rbar%mon% / 2) + hbor + hborex + ((Mon%mon%Width / 2) - (widthtemp / 2))), (Mon%mon%Top + tbar%mon% + vbor + vborex), (widthtemp), (Mon%mon%CusHeight)
-			return
-			}			
-			if (widthtemp > Mon%mon%CusWidth)
-			{
-				WinMove, ahk_id %id%,, (Mon%mon%Left + lbar%mon% + hbor + hborex), (Mon%mon%Top + (tbar%mon% / 2) - (bbar%mon% / 2) + vbor + vborex + ((Mon%mon%Height / 2) - (heighttemp / 2))), (Mon%mon%CusWidth), (heighttemp)
-			return
-			}	
-			WinMove, ahk_id %id%,, (Mon%mon%Left + (lbar%mon% / 2) - (rbar%mon% / 2) + hbor + hborex + ((Mon%mon%Width / 2) - (widthtemp / 2))), (Mon%mon%Top + (tbar%mon% / 2) - (bbar%mon% / 2) + vbor + vborex + ((Mon%mon%Height / 2) - (heighttemp / 2)))
-		}
-	return
-	}
-	
 	grid(row, col)
 	{
 		;This resizes the grid to a new row by col value.
@@ -794,37 +574,6 @@
 	return
 	}
 	
-	auto(mon)
-	{
-		;This automatically places windows when shifting borders.
-		global
-		local x
-		local y
-		local z
-		local test
-		local work
-		
-		work := workspace%mon%
-		
-		x := 4
-		Loop, 3
-		{
-			x -= 1
-			y := 4
-			Loop, 3
-			{
-				y -= 1
-				z := mon%mon%_%work%_%x%_%y%
-				test := InStr(z, full)
-				if (test = 0 && z != null)
-				{
-					move(z, x, y)
-				}
-			}
-		}
-	return
-	}
-	
 	cord(mon, id)
 	{
 		;Finds the grid position.
@@ -853,16 +602,6 @@
 		}
 		rx := 0
 		ry := 0
-	return
-	}
-	
-	screenFill(mon, id)
-	{
-		;Fills the entire screen with a window.
-		global
-		
-		remove(id)
-		WinMove, ahk_id %id%,, (hbor + Mon%mon%Left + hborex + lbar%mon%), (tbar%mon% + vbor + Mon%mon%Top + vborex), (Mon%mon%Width - hbor - hbor - hborex - hborex - lbar%mon% - rbar%mon%), (Mon%mon%Height - vbor - vbor - vborex - vborex - tbar%mon% - bbar%mon%)
 	return
 	}
 	
@@ -956,65 +695,345 @@
 	return
 	}
 	
-	centerPanel(direc)
+	workspaceSwitch(workspace = 0)
 	{
 		global
-		local xtemp
-		local id
-		local temp
-		local x
-		local mon
-		local wtemp
-		local xtemp2
-		local temp1
-		local temp2
-		local temp3
-		local temp4
-		local work
 		
-		work := workspace%mon%
-		
-		id := WinExist("A")
-		WinGetPos, xtemp,,,, ahk_id %id%
-		mon := 0
-		if (xtemp >= Mon1Left && xtemp < Mon1Right && row <= row1 && col <= col1)
+		MouseGetPos,xtemp,,
+		if (xtemp >= Mon1Left && xtemp < Mon1Right)
 		{
 			mon := 1
-		} else if (xtemp < Mon1Left && dis2 = 1 && row <=  row2 && col <=  col2)
+		} else if (xtemp < Mon1Left && dis2 = 1)
 		{
 			mon := 2
-		} else if (xtemp >= Mon1Right && dis3 = 1  && row <=  row3 && col <=  col3)
+		} else if (xtemp >= Mon1Right && dis3 = 1)
 		{
 			mon := 3
 		}
 		
-		if (mon != 0)
+		z := workspace%mon%
+		x := 0
+		Loop, 3
 		{
-			temp := Mon%mon%_%work%_center
-			WinGetPos, xtemp2,, wtemp,, ahk_id %temp%
-			if (Mon%mon%_%work%_center != null)
+			x += 1
+			y := 0
+			Loop, 3
 			{
-				if (direc = "l")
-				{
-					temp1 := Mon%mon%Left + boundary + lbar%mon%
-				} else if (direc = "r"){
-					temp1 := xtemp2 + wtemp + boundary
-				}
-				temp2 := Mon%mon%Top + tbar%mon% + boundary
-				temp3 := (Mon%mon%Width - lbar%mon% - rbar%mon% - wtemp - (4 * boundary)) / 2
-				temp4 := Mon%mon%Height - tbar%mon% - bbar%mon% - (2 * boundary)
-			} else {
-				temp3 := (Mon%mon%Width - lbar%mon% - rbar%mon%) / 2
-				if (direc = "l")
-				{
-					temp1 := Mon%mon%Left + lbar%mon%
-				} else if (direc = "r"){
-					temp1 := Mon%mon%Left + lbar%mon% + temp3
-				}
-				temp2 := Mon%mon%Top + tbar%mon%
-				temp4 := Mon%mon%Height - tbar%mon% - bbar%mon%
+				y += 1
+				idtemp := Mon%mon%_%z%_%x%_%y%
+				GroupAdd, allhiden, ahk_id %idtemp%
+				WinHide, ahk_id %idtemp%
 			}
-			WinMove, ahk_id %id%,, temp1, temp2, temp3, temp4
+		}
+		idtemp := Mon%mon%_%z%_center
+		GroupAdd, allhiden, ahk_id %idtemp%
+		WinHide, ahk_id %idtemp%
+		idtemp := Mon%mon%_%z%_full
+		GroupAdd, allhiden, ahk_id %idtemp%
+		WinHide, ahk_id %idtemp%
+		
+		if (workspace = 0)
+		{
+			if (workspace%mon% != 3)
+			{
+				workspace%mon% := workspace%mon% + 1
+			} else {
+				workspace%mon% := 1
+			}
+		} else {
+			workspace%mon% := workspace
+		}
+		
+		z := workspace%mon%
+		x := 0
+		Loop, 3
+		{
+			x += 1
+			y := 0
+			Loop, 3
+			{
+				y += 1
+				idtemp := Mon%mon%_%z%_%x%_%y%
+				WinShow, ahk_id %idtemp%
+			}
+		}
+		idtemp := Mon%mon%_%z%_center
+		GroupAdd, allhiden, ahk_id %idtemp%
+		WinShow, ahk_id %idtemp%
+		idtemp := Mon%mon%_%z%_full
+		GroupAdd, allhiden, ahk_id %idtemp%
+		WinShow, ahk_id %idtemp%
+	return
+	}
+	
+	functionKey(key)
+	{
+		global
+		
+		if (key = 1)
+		{
+			IfExist, README.exe
+			{
+				Run, README.exe
+			} else IfExist, README.ahk
+			{
+				IfExist, README.txt
+				{
+					Run, README.ahk
+				} else {
+					Run, explore %A_WorkingDir%
+				}
+			} else {
+				Run, explore %A_WorkingDir%
+			}
+		} else if (key = 2)
+		{
+			idtemp := WinExist("A")
+			WinGetTitle, title, ahk_id %idtemp%
+			InputBox, newName, Rename "%title%" - qt.pi, Rename the current window.`n(Curently custom fonts are not available in AHK input boxes. As soon as this is available`, I will implement it. Otherwise I will write a GUI to do this more nicely.),,,,,,,, %title%
+			WinSetTitle, ahk_id %idtemp%,, %newName%
+		} else if (key = 3)
+		{
+			;Will hide/show taskbar.
+		} else if (key = 4)
+		{
+			ExitApp
+		} else if (key = "A4")
+		{
+			idtemp := WinExist("A")
+			if (idtemp = gidDEBUG) {
+				MsgBox, Please use Win + `` to hide the debug window.
+			} else if (idtemp = barid1 || idtemp = barid2 || idtemp = barid3)
+			{
+				MsgBox, You can disable the taskbars in the config files.
+			} else {
+				remove(idtemp)
+				WinKill, ahk_id %idtemp%
+			}
+		} else if (key = 5)
+		{
+			Reload
+			Sleep 1000
+		} else if (key = 6)
+		{
+			
+		} else if (key = 7)
+		{
+			
+		} else if (key = 8)
+		{
+			DetectHiddenWindows, Off
+			WinGet, winarr ,List
+			Loop, %winarr%
+			{
+				idtemp := winarr%A_Index%
+				WinGetClass, class, ahk_id %idtemp%
+				if (exclusion(class) = 1)
+				{
+					WinMinimize, ahk_id %idtemp%
+				}
+			}
+		} else if (key = 9)
+		{
+			DetectHiddenWindows, Off
+			WinGet, winarr ,List
+			Loop, %winarr%
+			{
+				idtemp := winarr%A_Index%
+				WinRestore, ahk_id %idtemp%
+			}
+		} else if (key = 10)
+		{
+			
+		} else if (key = 11)
+		{
+			work := workspace%mon%
+			idtemp := WinExist("A")
+			WinGetPos, xtemp, ytemp, wtemp, htemp, ahk_id %idtemp%
+			if (xtemp >= Mon1Left && xtemp < Mon1Right)
+			{
+				mon := 1
+			} else if (xtemp < Mon1Left && dis2 = 1)
+			{
+				mon := 2
+			} else if (xtemp >= Mon1Right && dis3 = 1)
+			{
+				mon := 3
+			}
+			if (mon != 0)
+			{
+				remove(idtemp)
+				if (xtemp = Mon%mon%Left && ytemp = Mon%mon%Top && wtemp = Mon%mon%Width && htemp = Mon%mon%Height)
+				{
+					if (titlebaraway = 0)
+					{
+						titlebegone(idtemp, 3)
+					}
+					screenFill(mon, idtemp)
+				} else {
+					titlebegone(idtemp, 2, null)
+					id := mon%mon%_%work%_Full
+					WinSet, Style, +0x40000, ahk_id %id%
+					WinSet, Style, -0x40000, ahk_id %idtemp%
+					Mon%mon%_%work%_Full := idtemp
+					WinMove, ahk_id %idtemp%,, (Mon%mon%Left), (Mon%mon%Top), (Mon%mon%Width), (Mon%mon%Height)
+				}
+			}
+		} else if (key = 12)
+		{
+			
+		} else {
+			msgbox, Click F13 to win!
+		}
+	return
+	}
+	
+	debug()
+	{
+		global
+		
+		WinGetPos, xtemp,,,, ahk_id %gidDEBUG%
+		if (gidDEBUG = null)
+		{
+			createDebug()
+		} else if (dis3 = 1)
+		{
+			if (xtemp > Mon3Right)
+			{
+				center(1, gidDEBUG)
+			} else {
+				remove(gidDebug)
+				x := Mon3Right + 100
+				WinMove, ahk_id %gidDEBUG%,, %x%
+			}
+		} else {
+			if (xtemp > Mon1Right)
+			{
+				center(1, gidDEBUG)
+			} else {
+				remove(gidDebug)
+				x := Mon1Right + 100
+				WinMove, ahk_id %gidDEBUG%,, %x%
+			}
+		}
+	return
+	}
+	
+	mini()
+	{
+		idtemp := WinExist("A")
+		WinMinimize, ahk_id %idtemp%
+	return
+	}
+	
+	;This script is a modified version of http://www.autohotkey.com/docs/scripts/EasyWindowDrag_%28KDE%29.htm.
+	LDrag()
+	{
+		global
+		
+		SetWinDelay, -1
+		SetBatchLines, -1
+		MouseGetPos,KDE_X1,KDE_Y1,KDE_id
+		WinActivate, ahk_id %KDE_id%
+		WinGetPos,KDE_WinXStart,KDE_WinYStart,,,ahk_id %KDE_id%
+		
+		KDE_WinX1 := KDE_WinXStart
+		KDE_WinY1 := KDE_WinYStart
+		Loop
+		{
+			GetKeyState,KDE_Button,LButton,P
+			If KDE_Button = U
+			{
+				remove(KDE_id)
+			break
+			}
+			GetKeyState, KDE_EscapeState, Escape, P
+			if KDE_EscapeState = D
+			{
+				WinMove, ahk_id %KDE_id%,, %KDE_WinXStart%, %KDE_WinYStart%
+			break
+			}
+			MouseGetPos,KDE_X2,KDE_Y2
+			KDE_X2 -= KDE_X1
+			KDE_Y2 -= KDE_Y1
+			KDE_WinX2 := (KDE_WinX1 + KDE_X2)
+			KDE_WinY2 := (KDE_WinY1 + KDE_Y2)
+			WinMove,ahk_id %KDE_id%,,%KDE_WinX2%,%KDE_WinY2%
+		}
+	return
+	}
+	
+	;This script is a modified version of http://www.autohotkey.com/docs/scripts/EasyWindowDrag_%28KDE%29.htm.
+	RDrag()
+	{
+		global
+		
+		SetWinDelay, -1
+		SetBatchLines, -1
+		MouseGetPos,KDE_X1,KDE_Y1,KDE_id
+		WinActivate, ahk_id %KDE_id%
+		WinGetPos,KDE_WinXStart,KDE_WinYStart,KDE_WinWStart,KDE_WinHStart,ahk_id %KDE_id%
+		KDE_WinX1 := KDE_WinXStart
+		KDE_WinY1 := KDE_WinYStart
+		KDE_WinW := KDE_WinWStart
+		KDE_WinH := KDE_WinHStart
+		If (KDE_X1 < KDE_WinX1 + KDE_WinW / 2)
+		{
+			KDE_WinLeft := 1
+		}
+		Else
+		{
+			KDE_WinLeft := -1
+		}
+		If (KDE_Y1 < KDE_WinY1 + KDE_WinH / 2)
+		{
+			KDE_WinUp := 1
+		}
+		Else
+		{
+			KDE_WinUp := -1
+		}
+		mon := 0
+		temp := 0
+		Loop, 3
+		{
+			temp := temp + 1
+			Loop, 3
+			{
+				if (Mon%temp%_%A_Index%_center = KDE_id)
+				{
+					mon := temp
+					work := A_Index
+				}
+			}
+		}
+		Loop
+		{
+			GetKeyState,KDE_Button,RButton,P ; Break if button has been released.
+			If KDE_Button = U
+			{
+				if (mon != 0)
+				{
+					center(mon, KDE_id)
+				break
+				}
+				remove(KDE_id)
+			break
+			}
+			GetKeyState, KDE_EscapeState, Escape, P
+			if KDE_EscapeState = D
+			{
+				WinSetTitle, ahk_id %KDE_id%,, %title%
+				WinMove, ahk_id %KDE_id%,, %KDE_WinXStart%, %KDE_WinYStart%, %KDE_WinWStart%, %KDE_WinHStart%
+			break
+			}
+			MouseGetPos,KDE_X2,KDE_Y2
+			WinGetPos,KDE_WinX1,KDE_WinY1,KDE_WinW,KDE_WinH,ahk_id %KDE_id%
+			KDE_X2 -= KDE_X1
+			KDE_Y2 -= KDE_Y1
+			WinMove,ahk_id %KDE_id%,, KDE_WinX1 + (KDE_WinLeft+1)/2*KDE_X2 , KDE_WinY1 +  (KDE_WinUp+1)/2*KDE_Y2 , KDE_WinW - KDE_WinLeft *KDE_X2, KDE_WinH - KDE_WinUp *KDE_Y2
+			KDE_X1 := (KDE_X2 + KDE_X1)
+			KDE_Y1 := (KDE_Y2 + KDE_Y1)
 		}
 	return
 	}

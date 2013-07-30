@@ -1,0 +1,81 @@
+Hotkeys ***Double click to set it to the cordinates without expanding.***
+	Win + I: Set to the cordinates in the grid 1,1.
+	Win + O: Set to the cordinates in the grid 2,1.
+	Win + P: Set to the cordinates in the grid 3,1.
+	Win + K: Set to the cordinates in the grid 1,2.
+	Win + L: Set to the cordinates in the grid 2,2.
+	Win + ;: Set to the cordinates in the grid 3,2.
+	Win + ,: Set to the cordinates in the grid 1,3.
+	Win + .: Set to the cordinates in the grid 2,3.
+	Win + /: Set to the cordinates in the grid 3,3.
+
+
+Move Monitor Keys
+	Win + 8: Move to the left most monitor.
+	Win + 9: Move to the middle monitor.
+	Win + 0: Move to the right most monitor.
+
+
+Center Window Keys
+	Win + Ctrl + O: Centers the window on the current monitor.
+	Win + Ctrl + I: Creates a side panel on the left of the centered window. If their is no centered window or the window takes up the full horizontal width, the panel will fill the left of the screen.
+	Win + Ctrl + P: Creates a side panel on the right of the centered window. If their is no centered window or the window takes up the full horizontal width, the panel will fill the left of the screen.
+
+
+Shift Borders Keys
+	Win + Ctrl + Up: Shift the borders up.
+	Win + Ctrl + Down: Shift the borders down.
+	Win + Ctrl + Left: Shift the borders left.
+	Win + Ctrl + Right: Shift the borders right.
+
+	
+Music Keys
+	Win + Insert: Play/Pause.
+	Win + Home: Previous track.
+	Win + PgUp: Next Track.
+
+	
+Transparency Hotkeys
+	Win + Ctrl + Scroll Wheel Up: Increase the opacity of the selected window.
+	Win + Ctrl + Scroll Wheel Down: Decrease the opacity of the selected window.
+
+
+Manuel Move Keys
+	Win + Left Mouse Button: Have the window follow your cursor until you release.
+	Win + Right Mouse Button: Have the window be resized by your mouse movement.
+	Win + Middle Mouse Button: Minimize the window beneath the mouse cursor.
+	Esc: Return the window to it's position before using the 3 above mouse commands.
+	
+Alt Tab Keys
+	Left Mouse Button + Mouse Wheel Up: Alt + Tab.
+	Left Mouse Button + Mouse Wheel Down: Shift + Alt + Tab.
+	
+
+Function Keys
+	Win + F1: Opens the Hotkeys.txt file, or the containing folder if no file is found.
+	Win + F2: Rename the selected window.
+	Win +  F4: Kill qt.pi.
+	Alt + F4: Kill the window and remove it from the grid.
+	Win +  F5: Reload the script.
+	Win + F8: Minimize all windows.
+	Win + F9: Restore all windows.
+	Win + F11: Fullscreen.
+
+	
+Taskbar Hotkeys
+	Win + Space Bar: Activate command input mode.
+	
+	
+Workspace Hotkeys
+	Win + Tab: Switch through current monitors workspaces.
+
+
+Other Keys
+	Win + Ctrl + L: Remove the titlebar from the current window.
+	Win + W: Remove all stored window data.
+	Win + T: Toggle always on top on the current window.
+	Win + M: Minimize the current window.
+	
+	
+Dev Hotkeys
+	Win + `: Opens the debug window.

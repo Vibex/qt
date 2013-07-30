@@ -68,7 +68,7 @@
 			}
 		}
 		merge := temptotal1 . "`n" . temptotal2 . "`n" . temptotal3
-		merge := "0.6.0`n`n" . merge . "`nBatch Lines: " . A_BatchLines . "`nKey Delay: " . A_KeyDelay . "ms" . "`nWin Delay: " . A_WinDelay . "ms" . "`nControl Delay: " . A_ControlDelay . "ms"
+		merge := "0.6.1`n`n" . merge . "`nBatch Lines: " . A_BatchLines . "`nKey Delay: " . A_KeyDelay . "ms" . "`nWin Delay: " . A_WinDelay . "ms" . "`nControl Delay: " . A_ControlDelay . "ms"
 		if (MainDebug != merge)
 		{
 			GuiControl,, MainDebug, %merge%
