@@ -29,46 +29,52 @@
 		}
 		if (mon != 0)
 		{
-			work := workspace%mon%
-			findPos(mon, row, col)
-			remove(id)
-			setId(mon, work, id, row, col)
-			if (A_TimeSincePriorHotkey < 400 && A_TimeSincePriorHotkey <> -1 && A_PriorHotkey = A_ThisHotkey)
+			if (Mon%mon%_mode = 1)
 			{
-				if ((row - 1) > 0)
+				work := workspace%mon%
+				findPos(mon, row, col)
+				remove(id)
+				setId(mon, work, id, row, col)
+				if (A_TimeSincePriorHotkey < 400 && A_TimeSincePriorHotkey <> -1 && A_PriorHotkey = A_ThisHotkey)
 				{
-					d := row - 1
-					g := row%mon%%d%
+					if ((row - 1) > 0)
+					{
+						d := row - 1
+						g := row%mon%%d%
+					} else {
+						g := 0
+					}
+					if ((row - 2) > 0)
+					{
+						d := row - 2
+						f := row%mon%%d%
+					} else {
+						f := 0
+					}
+					if ((col - 1) > 0)
+					{
+						d := col - 1
+						v := col%mon%%d%
+					} else {
+						v := 0
+					}
+					if ((col - 2) > 0)
+					{
+						d := col - 2
+						b := col%mon%%d%
+					} else {
+						b := 0
+					}
+					WinMove, ahk_id %id%,, (v + b + (hbor * col)  + hborex + lbar%mon% + Mon%mon%Left), (g + f + (vbor * row) + vborex + tbar%mon% + Mon%mon%Top), (rcol),  (rrow)
 				} else {
-					g := 0
+					expand(mon, work, id, row, col, rcol, rrow)
 				}
-				if ((row - 2) > 0)
-				{
-					d := row - 2
-					f := row%mon%%d%
-				} else {
-					f := 0
-				}
-				if ((col - 1) > 0)
-				{
-					d := col - 1
-					v := col%mon%%d%
-				} else {
-					v := 0
-				}
-				if ((col - 2) > 0)
-				{
-					d := col - 2
-					b := col%mon%%d%
-				} else {
-					b := 0
-				}
-				GoSub, UpdateDebug
-				WinMove, ahk_id %id%,, (v + b + (hbor * col)  + hborex + lbar%mon% + Mon%mon%Left), (g + f + (vbor * row) + vborex + tbar%mon% + Mon%mon%Top), (rcol),  (rrow)
-			} else {
-				expand(mon, work, id, row, col, rcol, rrow)
+			} else if (Mon%mon%_mode = 2)
+			{
+				screenFill(mon)
 			}
 		}
+		GoSub, UpdateDebug
 	return
 	}
 	
@@ -210,16 +216,7 @@
 		if (mon = 0)
 		{
 			MouseGetPos,xtemp,,
-			if (xtemp >= Mon1Left && xtemp < Mon1Right)
-			{
-				mon := 1
-			} else if (xtemp < Mon1Left && dis2 = 1)
-			{
-				mon := 2
-			} else if (xtemp >= Mon1Right && dis3 = 1)
-			{
-				mon := 3
-			}
+			mon := getMon(xtemp)
 		}
 		work := workspace%mon%
 		if (mon != 0)
@@ -245,7 +242,7 @@
 	return
 	}
 	
-	centerPanel(direc)
+	halfSide(direc)
 	{
 		global
 		local xtemp
@@ -265,44 +262,22 @@
 		
 		id := WinExist("A")
 		WinGetPos, xtemp,,,, ahk_id %id%
-		mon := 0
-		if (xtemp >= Mon1Left && xtemp < Mon1Right && row <= row1 && col <= col1)
-		{
-			mon := 1
-		} else if (xtemp < Mon1Left && dis2 = 1 && row <=  row2 && col <=  col2)
-		{
-			mon := 2
-		} else if (xtemp >= Mon1Right && dis3 = 1  && row <=  row3 && col <=  col3)
-		{
-			mon := 3
-		}
+		mon := getMon(xtemp)
 		
 		if (mon != 0)
 		{
-			temp := Mon%mon%_%work%_center
-			WinGetPos, xtemp2,, wtemp,, ahk_id %temp%
-			if (Mon%mon%_%work%_center != null)
+			remove(id)
+			temp3 := (Mon%mon%Width - lbar%mon% - rbar%mon%) / 2
+			if (direc = "l")
 			{
-				if (direc = "l")
-				{
-					temp1 := Mon%mon%Left + boundary + lbar%mon%
-				} else if (direc = "r"){
-					temp1 := xtemp2 + wtemp + boundary
-				}
-				temp2 := Mon%mon%Top + tbar%mon% + boundary
-				temp3 := (Mon%mon%Width - lbar%mon% - rbar%mon% - wtemp - (4 * boundary)) / 2
-				temp4 := Mon%mon%Height - tbar%mon% - bbar%mon% - (2 * boundary)
-			} else {
-				temp3 := (Mon%mon%Width - lbar%mon% - rbar%mon%) / 2
-				if (direc = "l")
-				{
-					temp1 := Mon%mon%Left + lbar%mon%
-				} else if (direc = "r"){
-					temp1 := Mon%mon%Left + lbar%mon% + temp3
-				}
-				temp2 := Mon%mon%Top + tbar%mon%
-				temp4 := Mon%mon%Height - tbar%mon% - bbar%mon%
+				Mon%mon%_%work%_Left := id
+				temp1 := Mon%mon%Left + lbar%mon%
+			} else if (direc = "r") {
+				Mon%mon%_%work%_Right := id
+				temp1 := Mon%mon%Left + lbar%mon% + temp3
 			}
+			temp2 := Mon%mon%Top + tbar%mon%
+			temp4 := Mon%mon%Height - tbar%mon% - bbar%mon%
 			WinMove, ahk_id %id%,, temp1, temp2, temp3, temp4
 		}
 	return
@@ -339,12 +314,18 @@
 	return
 	}
 	
-	screenFill(mon, id)
+	screenFill(mon, remove = 1)
 	{
 		;Fills the entire screen with a window.
 		global
+		local id
 		
-		remove(id)
+		id := WinExist("A")
+		
+		if (remove = 1)
+		{
+			remove(id)
+		}
 		WinMove, ahk_id %id%,, (hbor + Mon%mon%Left + hborex + lbar%mon%), (tbar%mon% + vbor + Mon%mon%Top + vborex), (Mon%mon%Width - hbor - hbor - hborex - hborex - lbar%mon% - rbar%mon%), (Mon%mon%Height - vbor - vbor - vborex - vborex - tbar%mon% - bbar%mon%)
 	return
 	}

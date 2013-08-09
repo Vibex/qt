@@ -1,3 +1,13 @@
+Version 0.6.2		08/08/2013
+	*Improved the efficency of the taskbar.
+	*Added more support for fonts other then Haxrcorp variants.
+	*Removed my personal settings from the source.
+	*Removed the center panels and made the hotkeys just set the window to half the monitors size.
+	*Removed Win + M to minimize.
+	*Added monocle mode.
+	*General bug fixes.
+	
+
 Version 0.6.1		07/29/2013
 	*Made it easier to add new hotkey layouts by seperating them into their own .ahk file. The current one that I have provided doesn't really work because it interfears with Win + L. In the future I will make better layouts (or you can make your own!).
 	*Minor bug fixes and stuff.

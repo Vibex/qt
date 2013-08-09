@@ -1,1 +1,0 @@
-To change your hotkeys to one of the additional 2 layouts copy and paste the chosen layout into the source and remove the ending letter from the name. Once this is done you can either compile the code or just run it by doubleclicking main.ahk.

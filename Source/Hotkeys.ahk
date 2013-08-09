@@ -1,4 +1,4 @@
-#NumpadHome::
+	#NumpadHome::
 	{
         move(null, 1, 1)
 	return
@@ -56,22 +56,19 @@
 	
 	#NumLock::
 	{
-		idtemp := WinExist("A")
-		screenFill(2, idtemp)
+		screenFill(2)
 	return
 	}
 	
 	#NumpadDiv::
 	{
-		idtemp := WinExist("A")
-		screenFill(1, idtemp)
+		screenFill(1)
 	return
 	}
 	
 	#NumpadMult::
 	{
-		idtemp := WinExist("A")
-		screenFill(3, idtemp)
+		screenFill(3)
 	return
 	}
 	
@@ -79,7 +76,7 @@
 	
 	#^NumpadHome::
 	{
-		centerPanel("l")
+		halfSide("l")
 	return
 	}
 	
@@ -92,7 +89,7 @@
 	
 	#^NumpadPgUp::
 	{
-		centerPanel("r")
+		halfSide("r")
 	return
 	}
 	
@@ -109,15 +106,8 @@
 	
 	#O::
 	{
-		;Toggle the always on yop state.
 		idtemp := WinExist("A")
 		WinSet, AlwaysOnTop,, ahk_id %idtemp%
-	return
-	}
-	
-	#M::
-	{
-		mini()
 	return
 	}
 	
@@ -130,6 +120,20 @@
 	#Tab::
 	{
 		workspaceSwitch()
+	return
+	}
+	
+	
+	
+	#T::
+	{
+		mode(1)
+	return
+	}
+	
+	#M::
+	{
+		mode(2)
 	return
 	}
 	
@@ -154,12 +158,6 @@
 		functionKey(2)
 	return
 	}
-	
-	;#F3::
-	;{
-		functionKey(3)
-	;return
-	;}
 	
 	#F4::
 	{

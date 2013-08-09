@@ -12,7 +12,6 @@
 		null := ""
 		full := "This string is full and should fix all the problems I am having"
 		
-		boundary := 20
 		reload()
 		SetBatchLines, %bspeed%
 		SetWinDelay, %wspeed%
@@ -23,12 +22,16 @@
 		workspace1 := 1
 		workspace2 := 1
 		workspace3 := 1
+		mon1_mode := 1
+		mon2_mode := 1
+		mon3_mode := 1
 		
 		gidDEBUG := null
 		
 		if (baryeah = 1)
 		{
-			barheight := 15
+			
+			barheight := Fnt_GetFontHeight(font)
 			clockOn := 0
 			InitializeBar(1, Mon1Width, barheight, Mon1Left, Mon1Top)
 			if (dis2 = 1)
@@ -77,3 +80,4 @@
 	#Include MoveMethods.ahk
 	#Include Bar.ahk
 	#Include Debug.ahk
+	#Include Fnt.ahk

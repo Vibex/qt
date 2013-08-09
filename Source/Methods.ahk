@@ -376,6 +376,23 @@
 	return
 	}
 	
+	getMon(pos)
+	{
+		global
+		
+		if (pos >= Mon1Left && pos < Mon1Right)
+		{
+			return 1
+		} else if (pos < Mon1Left && dis2 = 1)
+		{
+			return 2
+		} else if (pos >= Mon1Right && dis3 = 1)
+		{
+			return 3
+		}
+		return 0
+	}
+	
 	findPos(mon, x, y)
 	{
 		;This determines the grid parameters to use.
@@ -422,22 +439,9 @@
 		global
 		
 		MouseGetPos, pos
-		if (pos < Mon1Left && dis2 = 1)
-		{
-			row2 := row
-			col2 := col
-			math()
-		return
-		}
-		if (pos >= Mon1Right && dis3 = 1)
-		{
-			row3 := row
-			col3 := col
-			math()
-		return
-		}
-		row1 := row
-		col1 := col
+		mon := getMon(pos)
+		row%mon% := row
+		col%mon% := col
 		math()
 		autoShift()
 	return
@@ -478,6 +482,14 @@
 				{
 					mon%x%_%y%_center := null
 				}
+				if (mon%x%_%y%_Left = id || all = 1)
+				{
+					mon%x%_%y%_Left := null
+				}
+				if (mon%x%_%y%_Right = id || all = 1)
+				{
+					mon%x%_%y%_Right := null
+				}
 				if (mon%x%_%y%_Full = id || all = 1)
 				{
 					idtemp := mon%x%_%y%_Full
@@ -507,16 +519,7 @@
 		if (id != null)
 		{
 			WinGetPos, xtemp,,,, ahk_id %id%
-			if (xtemp >= Mon1Left && xtemp < Mon1Right)
-			{
-				mon := 1
-			} else if (xtemp < Mon1Left && dis2 = 1)
-			{
-				mon := 2
-			} else if (xtemp >= Mon1Right && dis3 = 1)
-			{
-				mon := 3
-			}
+			mon := getMon(xtemp)
 		} else {
 			mon := nowin
 		}
@@ -698,71 +701,127 @@
 	workspaceSwitch(workspace = 0)
 	{
 		global
+		local xtemp
+		local mon
+		local z
+		local x
+		local y
 		
 		MouseGetPos,xtemp,,
-		if (xtemp >= Mon1Left && xtemp < Mon1Right)
-		{
-			mon := 1
-		} else if (xtemp < Mon1Left && dis2 = 1)
-		{
-			mon := 2
-		} else if (xtemp >= Mon1Right && dis3 = 1)
-		{
-			mon := 3
-		}
+		mon := getMon(xtemp)
 		
-		z := workspace%mon%
-		x := 0
-		Loop, 3
+		if (mon != 0)
 		{
-			x += 1
-			y := 0
+			z := workspace%mon%
+			x := 0
 			Loop, 3
 			{
-				y += 1
-				idtemp := Mon%mon%_%z%_%x%_%y%
-				GroupAdd, allhiden, ahk_id %idtemp%
-				WinHide, ahk_id %idtemp%
+				x += 1
+				y := 0
+				Loop, 3
+				{
+					y += 1
+					idtemp := Mon%mon%_%z%_%x%_%y%
+					GroupAdd, allhiden, ahk_id %idtemp%
+					WinHide, ahk_id %idtemp%
+				}
 			}
-		}
-		idtemp := Mon%mon%_%z%_center
-		GroupAdd, allhiden, ahk_id %idtemp%
-		WinHide, ahk_id %idtemp%
-		idtemp := Mon%mon%_%z%_full
-		GroupAdd, allhiden, ahk_id %idtemp%
-		WinHide, ahk_id %idtemp%
-		
-		if (workspace = 0)
-		{
-			if (workspace%mon% != 3)
+			idtemp := Mon%mon%_%z%_center
+			GroupAdd, allhiden, ahk_id %idtemp%
+			WinHide, ahk_id %idtemp%
+			
+			idtemp := Mon%mon%_%z%_full
+			GroupAdd, allhiden, ahk_id %idtemp%
+			WinHide, ahk_id %idtemp%
+			
+			idtemp := Mon%mon%_%z%_Left
+			GroupAdd, allhiden, ahk_id %idtemp%
+			WinHide, ahk_id %idtemp%
+			
+			idtemp := Mon%mon%_%z%_Right
+			GroupAdd, allhiden, ahk_id %idtemp%
+			WinHide, ahk_id %idtemp%
+			
+			if (workspace = 0)
 			{
-				workspace%mon% := workspace%mon% + 1
+				if (workspace%mon% != 3)
+				{
+					workspace%mon% := workspace%mon% + 1
+				} else {
+					workspace%mon% := 1
+				}
 			} else {
-				workspace%mon% := 1
+				workspace%mon% := workspace
 			}
-		} else {
-			workspace%mon% := workspace
-		}
-		
-		z := workspace%mon%
-		x := 0
-		Loop, 3
-		{
-			x += 1
-			y := 0
+			
+			z := workspace%mon%
+			x := 0
 			Loop, 3
 			{
-				y += 1
-				idtemp := Mon%mon%_%z%_%x%_%y%
-				WinShow, ahk_id %idtemp%
+				x += 1
+				y := 0
+				Loop, 3
+				{
+					y += 1
+					idtemp := Mon%mon%_%z%_%x%_%y%
+					WinShow, ahk_id %idtemp%
+				}
+			}
+			idtemp := Mon%mon%_%z%_center
+			GroupAdd, allhiden, ahk_id %idtemp%
+			WinShow, ahk_id %idtemp%
+			
+			idtemp := Mon%mon%_%z%_full
+			GroupAdd, allhiden, ahk_id %idtemp%
+			WinShow, ahk_id %idtemp%
+			
+			idtemp := Mon%mon%_%z%_Left
+			GroupAdd, allhiden, ahk_id %idtemp%
+			WinShow, ahk_id %idtemp%
+			
+			idtemp := Mon%mon%_%z%_Right
+			GroupAdd, allhiden, ahk_id %idtemp%
+			WinShow, ahk_id %idtemp%
+			
+			updateTitle(mon)
+		}
+	return
+	}
+	
+	mode(mode)
+	{
+		global
+		local xtemp
+		local mon1
+		local mon2
+		
+		DetectHiddenWindows, Off
+		
+		MouseGetPos,xtemp,,
+		mon1 := getMon(xtemp)
+		
+		Mon%mon1%_mode := mode
+		if (mode = 1)
+		{
+			auto(mon1)
+		} else {
+			WinGet, winarr ,List
+			Loop, %winarr%
+			{
+				idtemp := winarr%A_Index%
+				WinGetPos, xtemp, ytemp, wtemp, htemp, ahk_id %idtemp%
+				if (idtemp = barid1 || idtemp = barid2 || idtemp = barid3)
+				{
+					break
+				}
+				mon2 := getMon(xtemp)
+				if (mon1 = mon2)
+				{
+					screenfill(mon1, 0)
+				}
 			}
 		}
-		idtemp := Mon%mon%_%z%_center
-		GroupAdd, allhiden, ahk_id %idtemp%
-		WinShow, ahk_id %idtemp%
-		idtemp := Mon%mon%_%z%_full
-		GroupAdd, allhiden, ahk_id %idtemp%
-		WinShow, ahk_id %idtemp%
+		
 	return
 	}
 	
@@ -828,7 +887,7 @@
 			{
 				idtemp := winarr%A_Index%
 				WinGetClass, class, ahk_id %idtemp%
-				if (exclusion(class) = 1)
+				if (exclusion(class) = 1 && idtemp != barid1 && idtemp != barid2 && idtemp != barid3)
 				{
 					WinMinimize, ahk_id %idtemp%
 				}
@@ -921,7 +980,7 @@
 	
 	mini()
 	{
-		idtemp := WinExist("A")
+		MouseGetPos,,, idtemp
 		WinMinimize, ahk_id %idtemp%
 	return
 	}
@@ -980,17 +1039,13 @@
 		If (KDE_X1 < KDE_WinX1 + KDE_WinW / 2)
 		{
 			KDE_WinLeft := 1
-		}
-		Else
-		{
+		} else {
 			KDE_WinLeft := -1
 		}
 		If (KDE_Y1 < KDE_WinY1 + KDE_WinH / 2)
 		{
 			KDE_WinUp := 1
-		}
-		Else
-		{
+		} else {
 			KDE_WinUp := -1
 		}
 		mon := 0
@@ -1047,6 +1102,10 @@
 			{
 				return 0
 			}
+		}
+		if (class = "BlackboxClass" || class = "bbSlit" || class = "bbLeanBar" || class = "bbIconBox" || class = "Progman" || class = "Shell_TrayWnd" || class = "DV2ControlHost" || class = "Button") 
+		{
+			return 0
 		}
 	return 1
 	}

@@ -1,7 +1,7 @@
 ﻿	InitializeBar(mon, w, h, x, y)
 	{
 		global
-		CoordMode, Mouse, Screen
+		
 		Gui, Margin, 0, 0
 		
 		if (otherexe != null)
@@ -16,12 +16,14 @@
 		Gui, bar%mon%:+LastFound -Caption +ToolWindow
 		Gui, bar%mon%:Font, s%fontSize% c%texColour%, %font%
 		
-		Gui, bar%mon%:Add, Text, vDate%mon% x4 y1 h%h% w64 Center, 000, 000 00
+		dateSize := Fnt_GetStringWidth(font, "000, 000 00")
+		Gui, bar%mon%:Add, Text, vDate%mon% x0 y1 h%h% w%dateSize% Center, 000, 000 00
 		
-		shift := w - 33
+		clockSize := Fnt_GetStringWidth(font, "00.00")
+		shift := w - clocksize
 		Gui, bar%mon%:Add, Text, vClock%mon% x%shift% y1 h%h% Center, 00.00
-		shift := shift - 64
-		Gui, bar%mon%:Add, Text, vTitle%mon% x64 y1 w%shift% h%h% Center, 0
+		shift := shift - dateSize
+		Gui, bar%mon%:Add, Text, vTitle%mon% x%dateSize% y1 w%shift% h%h% Center, % workspace%mon%
 		
 		if (mon = 1)
 		{
@@ -29,8 +31,6 @@
 			Gui, bar1:Add, Edit, vRun Limit Hidden
 		}
 		
-		SetTimer, Update%mon%, %updateRate%
-		Gosub, Update%mon%
 		if (clockOn = 0)
 		{
 			SetTimer, UpdateClock, %updaterate2%
@@ -41,32 +41,14 @@
 	return
 	}
  
-	Update1:
+	updateTitle(mon)
 	{
-		GuiControlGet, Title1, bar1:
-		if (Title1 != workspace1)
+		global
+		
+		GuiControlGet, Title%mon%, bar%mon%:
+		if (Title%mon% != workspace%mon%)
 		{
-			GuiControl, bar1:, Title1, % workspace1
-		}
-	return
-	}
-	
-	Update2:
-	{
-		GuiControlGet, Title2, bar2:
-		if (Title2 != workspace2)
-		{
-			GuiControl, bar2:, Title2, % workspace2
-		}
-	return
-	}
-	
-	Update3:
-	{
-		GuiControlGet, Title3, bar3:
-		if (Title3 != workspace3)
-		{
-			GuiControl, bar3:, Title3, % workspace3
+			GuiControl, bar%mon%:, Title%mon%, % workspace%mon%
 		}
 	return
 	}
