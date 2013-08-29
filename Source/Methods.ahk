@@ -26,19 +26,37 @@
 	Sleep 1000
 	}
 	
+	winConfine:
+	{
+		SetBatchLines, -1
+		WinGetPos, xtemp, ytemp, wtemp, htemp, A
+		MouseGetPos,mxtemp,mytemp
+		if (mxtemp > xtemp + wtemp)
+		{
+			x := xtemp + wtemp
+		} else if (mxtemp < xtemp)
+		{
+			x := xtemp
+		} else {
+			x := mxtemp
+		}
+		if (mytemp < ytemp)
+		{
+			y := ytemp
+		} else if (mytemp > ytemp + htemp)
+		{
+			y := ytemp + htemp
+		} else {
+			y := mytemp
+		}
+		MouseMove, x, y, 0
+	return
+	}
+	
 	ShellMessage(wParam, lParam)
 	{
 		;This detects messages sent by windows itself and preforms actions based on the messages.
-		global previousid
-		global currentid
-		global autocenter
-		global titlebaraway
-		global baryeah
-		global tranthresh
-		global nonactivetrans
-		global barid1
-		global barid2
-		global barid3
+		global previousid,  currentid,  autocenter,  titlebaraway,  baryeah,  tranthresh,  nonactivetrans,  barid1,  barid2,  barid3
 		
 		SetBatchLines, -1
 		WinGetTitle, title, ahk_id %lParam%
@@ -91,19 +109,21 @@
 	{
 		;This loads all of the information from the config files.
 		global
-		local temp
-		local temp2
-		local x
+		local temp, temp2, temp3, x
 		
 		SetBatchLines, -1
 		;The location of the config files.
-		config := "Config\config.txt"
-		configA := "Config\configAdvanced.txt"
-		configB := "Config\Bar\configBar.txt"
+		config := "Data\config.txt"
+		
+		tranthresh := 0
+		custran := 85
+		nonactivetrans := 255
+		
 		
 		dis1 := 0
 		dis2 := 0
 		dis3 := 0
+		
 		SysGet, MonNum, MonitorCount
 		Loop, %MonNum%
 		{
@@ -121,172 +141,197 @@
 			Mon%temp2%Width := Mon%temp2%Right - Mon%temp2%Left
 			Mon%temp2%Height := Mon%temp2%Bottom - Mon%temp2%Top
 			dis%temp2% := 1
-		}
-		
-		FileReadLine, enableadv, %configA%, 4
-		if (enableadv = 1)
-		{
-			FileReadLine, bspeed, %configA%, 7
-			if (bspeed = "WARP DRIVE")
-			{
-				bspeed := -1
-			}
-			FileReadLine, wspeed, %configA%, 10
-			if (wspeed = "WARP DRIVE")
-			{
-				wspeed := -1
-			}
-			FileReadLine, kspeed, %configA%, 13
-			if (kspeed = "WARP DRIVE")
-			{
-				kspeed := -1
-			}
-			
-			FileReadLine, cspeed, %configA%, 16
-			if (cspeed = "WARP DRIVE")
-			{
-				cspeed := -1
-			}
-			
-			FileReadLine, titleFix, %configA%, 19
-			
-			FileReadLine, us1, %configA%, 24
-			FileReadLine, ds1, %configA%, 27
-			FileReadLine, rs1, %configA%, 30
-			FileReadLine, ls1, %configA%, 33
-			
-			FileReadLine, us2, %configA%, 38
-			FileReadLine, ds2, %configA%, 41
-			FileReadLine, rs2, %configA%, 44
-			FileReadLine, ls2, %configA%, 47
-			
-			FileReadLine, us3, %configA%, 52
-			FileReadLine, ds3, %configA%, 55
-			FileReadLine, rs3, %configA%, 58
-			FileReadLine, ls3, %configA%, 61
-			
-			FileReadLine, custran, %configA%, 66
-			FileReadLine, nonactivetrans, %configA%, 69
+		}	
 
-			
-			FileReadLine, titlebaraway, %configA%, 74
-			FileReadLine, autocenter, %configA%, 77
-			
-			FileReadLine, winHook, %configA%, 82
-			
-			FileReadLine, exclude, %configA%, 87
-			if (exclude != null)
-			{
-				StringSplit, exclusion, exclude, `,
-			} else {
-				exclusion0 := 1
-				exclusion1 := null	
-			}
+		FileReadLine, baryeah, %config%, 128
 		
-			FileReadLine, baryeah, %configA%, 94
-			if (baryeah = 1)
-			{
-				FileReadLine, updateRate, %configB%, 4
-				FileReadLine, updateRate2, %configB%, 7
-				FileReadLine, font, %configB%, 10
-				FileReadLine, fontsize, %configB%, 13
-				FileReadLine, texColour, %configB%, 16
-				FileReadLine, barColour, %configB%, 19
-				FileReadLine, command, %configB%, 22
-				FileReadLine, defsearch, %configB%, 25
-				FileReadLine, progloc, %configB%, 28
-				FileReadLine, otherexe, %configB%, 31
-			}
-			
-			tranthresh := 0
-		} else {
-			;Defaults when advanced config is disabled. What each value does can be found in the advancedConfig.txt file. The items below are listed in the order they appear in the text file.
-			bspeed := "10ms"
-			wspeed := 100
-			kspeed := 10
-			cspeed := 20
-			titlefix := 0
-			us1 := 0
-			ds1 := 0
-			rs1 := 0
-			ls1 := 0
-			us2 := 0
-			ds2 := 0
-			rs2 := 0
-			ls2 := 0
-			us3 := 0
-			ds3 := 0
-			rs3 := 0
-			ls3 := 0
-			custran := 85
-			titlebaraway := 0
-			autocenter := 0
-			winHook := 1
-			monreverse := 0
-			exclusion0 := 1
-			exclusion1 := null
-			baryeah := 0
-			tranthresh := 0
+		FileReadLine, row1, %config%, 10
+		FileReadLine, col1, %config%, 13
+		
+		FileReadLine, tbar1, %config%, 74
+		FileReadLine, bbar1, %config%, 77
+		FileReadLine, rbar1, %config%, 80
+		FileReadLine, lbar1, %config%, 83
+		
+		FileReadLine, hbor, %config%, 33
+		FileReadLine, vbor, %config%, 36
+		FileReadLine, hborex, %config%, 39
+		FileReadLine, vborex, %config%, 42
+		
+		FileReadLine, barheight1, %config%, 155
+		if (barheight1 = 0)
+		{
+			barheight1 := Fnt_GetFontHeight(font)
 		}
-		
-		FileReadLine, row1, %config%, 4
-		FileReadLine, col1, %config%, 7
-		
-		FileReadLine, tbar1, %config%, 42
-		FileReadLine, bbar1, %config%, 51
-		FileReadLine, rbar1, %config%, 60
-		FileReadLine, lbar1, %config%, 69
 		
 		if (dis2 = 1)
 		{
-			FileReadLine, row2, %config%, 12
-			FileReadLine, col2, %config%, 15
+			FileReadLine, row2, %config%, 17
+			FileReadLine, col2, %config%, 20
 			
-			FileReadLine, tbar2, %config%, 45
-			FileReadLine, bbar2, %config%, 54
-			FileReadLine, rbar2, %config%, 63
-			FileReadLine, lbar2, %config%, 72
+			FileReadLine, tbar2, %config%, 87
+			FileReadLine, bbar2, %config%, 90
+			FileReadLine, rbar2, %config%, 93
+			FileReadLine, lbar2, %config%, 96
+			
+			FileReadLine, hbor2, %config%, 46
+			FileReadLine, vbor2, %config%, 49
+			FileReadLine, hborex2, %config%, 52
+			FileReadLine, vborex2, %config%, 55
+			
+			FileReadLine, barheight2, %config%, 158
+			if (barheight2 = 0)
+			{
+				barheight2 := Fnt_GetFontHeight(font)
+			}
 		}
 		
 		if (dis3 = 1)
 		{
-			FileReadLine, row3, %config%, 20
-			FileReadLine, col3, %config%, 23
+			FileReadLine, row3, %config%, 24
+			FileReadLine, col3, %config%, 27
 			
-			FileReadLine, tbar3, %config%, 48
-			FileReadLine, bbar3, %config%, 57
-			FileReadLine, rbar3, %config%, 66
-			FileReadLine, lbar3, %config%, 75
+			FileReadLine, tbar3, %config%, 100
+			FileReadLine, bbar3, %config%, 103
+			FileReadLine, rbar3, %config%, 106
+			FileReadLine, lbar3, %config%, 109
+			
+			FileReadLine, hbor3, %config%, 59
+			FileReadLine, vbor3, %config%, 62
+			FileReadLine, hborex3, %config%, 65
+			FileReadLine, vborex3, %config%, 68
+			
+			FileReadLine, barheight3, %config%, 161
+			if (barheight3 = 0)
+			{
+				barheight3 := Fnt_GetFontHeight(font)
+			}
 		}
 		
-		FileReadLine, hbor, %config%, 28
-		FileReadLine, vbor, %config%, 31
-		FileReadLine, hborex, %config%, 34
-		FileReadLine, vborex, %config%, 37
+		if (baryeah = 1)
+		{
+			Loop, 3
+			{
+				tbar%A_Index% += barheight%A_Index%
+			}
+		}
 		
-		FileReadLine, hspeed, %config%, 81
-		FileReadLine, vspeed, %config%, 84
+		FileReadLine, hspeed, %config%, 117
+		FileReadLine, vspeed, %config%, 120
 		
-		FileReadLine, enablesound, %config%, 90
+		if (baryeah = 1)
+		{
+			FileReadLine, updateRate, %config%, 134
+			FileReadLine, font, %config%, 140
+			FileReadLine, fontsize, %config%, 143
+			FileReadLine, texColour, %config%, 146
+			FileReadLine, barColour, %config%, 149
+			FileReadLine, downShift, %config%, 152
+			
+			FileReadLine, command, %config%, 168
+			FileReadLine, defsearch, %config%, 171
+			FileReadLine, progloc, %config%, 174
+			FileReadLine, otherexe, %config%, 177
+			if (otherexe != null)
+			{
+				StringSplit, otherexe, otherexe, `,
+			} else {
+				otherexe0 := 1
+				otherexe1 := null	
+			}
+			
+			Loop, 3
+			{
+				if (A_Index = 1)
+				{
+					temp3 := 183
+				} else if (A_Index = 2)
+				{
+					temp3 := 186
+				} else {
+					temp3 := 189
+				}
+				
+				FileReadLine, workname%A_Index%, %config%, %temp3%
+				if (workname%A_Index% != null)
+				{
+					StringSplit, workname%A_Index%, workname%A_Index%, `,
+				} else {
+					workname%A_Index%0 := 3
+					workname%A_Index%1 := 1
+					workname%A_Index%2 := 2
+					workname%A_Index%3 := 3
+				}
+			}
+			
+			FileReadLine, barlayout1, %config%, 196
+			FileReadLine, barlayout2, %config%, 199
+			FileReadLine, barlayout3, %config%, 202
+		}
+		
+		FileReadLine, enablesound, %config%, 210
 		if (enablesound = 1)
 		{
-			FileReadLine, vol, %config%, 93
+			FileReadLine, vol, %config%, 213
 			vold := vol * -1
-			FileReadLine, enablebeep, %config%, 98
+			FileReadLine, enablebeep, %config%, 216
 			if (enablebeep = 1)
 			{
-				FileReadLine, freq, %config%, 101
-				FileReadLine, dura, %config%, 104
+				FileReadLine, freq, %config%, 219
+				FileReadLine, dura, %config%, 222
 			}
 		}	
+		
+		FileReadLine, titlebaraway, %config%, 228
+		
+		FileReadLine, autocenter, %config%, 234
+		
+		FileReadLine, winHook, %config%, 242
+		
+		FileReadLine, exclude, %config%, 248
+		if (exclude != null)
+		{
+			StringSplit, exclusion, exclude, `,
+		} else {
+			exclusion0 := 1
+			exclusion1 := null	
+		}
+		
+		FileReadLine, bspeed, %config%, 254
+		if (bspeed = "WARP DRIVE")
+		{
+			bspeed := -1
+		}
+		FileReadLine, wspeed, %config%, 257
+		if (wspeed = "WARP DRIVE")
+		{
+			wspeed := -1
+		}
+		FileReadLine, kspeed, %config%, 260
+		if (kspeed = "WARP DRIVE")
+		{
+			kspeed := -1
+		}
+		FileReadLine, cspeed, %config%, 263
+		if (cspeed = "WARP DRIVE")
+		{
+			cspeed := -1
+		}
+		
+		FileReadLine, titleFix, %config%, 269
+		
+		FileReadLine, RowSize1, %config%, 275
+		FileReadLine, ColSize1, %config%, 278
+		
+		FileReadLine, RowSize2, %config%, 281
+		FileReadLine, ColSize2, %config%, 284
+		
+		FileReadLine, RowSize3, %config%, 287
+		FileReadLine, ColSize3, %config%, 290
 		
 		if (math = 1)
 		{
 			math()
-		}
-		if (autoshift = 1)
-		{
-			autoShift()
 		}
 	return
 	}
@@ -296,35 +341,87 @@
 		;This preforms some random math to determine some values.
 		global
 		
-		Mon1CusWidth := (Mon1Width - hbor - (col1 * hbor) - hborex - hborex - lbar1 - rbar1)
-		Mon1CusHeight := (Mon1Height - vbor - (row1 * vbor) - vborex - vborex - tbar1 - bbar1)
-		row11 := Mon1CusHeight / row1
-		row12 := Mon1CusHeight / row1
-		row13 := Mon1CusHeight / row1
-		col11 := Mon1CusWidth / col1
-		col12 := Mon1CusWidth / col1
-		col13 := Mon1CusWidth / col1
+		mathValues(1)
 		if (dis2 = 1)
 		{
-			Mon2CusWidth := (Mon2Width - hbor - (col2 * hbor) - hborex - hborex - lbar2 - rbar2)
-			Mon2CusHeight := (Mon2Height - vbor - (row2 * vbor) - vborex - vborex - tbar2 - bbar2)
-			row21 := Mon2CusHeight / row2
-			row22 := Mon2CusHeight / row2
-			row23 := Mon2CusHeight / row2
-			col21 := Mon2CusWidth / col2
-			col22 := Mon2CusWidth / col2
-			col23 := Mon2CusWidth / col2
+			mathValues(2)
 		}
 		if (dis3 = 1)
 		{
-			Mon3CusWidth := (Mon3Width - hbor - (col3 * hbor) - hborex - hborex - lbar3 - rbar3)
-			Mon3CusHeight := (Mon3Height - vbor - (row3 * vbor) - vborex - vborex - tbar3 - bbar3)
-			row31 := Mon3CusHeight / row3
-			row32 := Mon3CusHeight / row3
-			row33 := Mon3CusHeight / row3
-			col31 := Mon3CusWidth / col3
-			col32 := Mon3CusWidth / col3
-			col33 := Mon3CusWidth / col3
+			mathValues(3)
+		}
+	return
+	}
+	
+	mathValues(mon)
+	{
+		global
+		local result, temp1
+		
+		Mon%mon%CusWidth := (Mon%mon%Width - hbor - (col%mon% * hbor) - hborex - hborex - lbar%mon% - rbar%mon%)
+		Mon%mon%CusHeight := (Mon%mon%Height - vbor - (row%mon% * vbor) - vborex - vborex - tbar%mon% - bbar%mon%)
+		
+		if (rowsize%mon% = 0)
+		{
+			Loop, 3
+			{
+				row%mon%%A_Index% := Mon%mon%CusHeight / row%mon%
+				if (A_Index = 1)
+				{
+					result := mod(row%mon%1, 1)				
+					if (result != 0)
+					{
+						Row%mon%1 += 1
+					}
+				}
+			}
+		} else {
+			temp1 := row%mon% - 1
+			Row%mon%1 := rowsize%mon%
+			if (temp1 > 1)
+			{
+				Row%mon%2 := (Mon%mon%CusHeight - row%mon%1) / 2
+				Row%mon%3 := (Mon%mon%CusHeight - row%mon%1) / 2
+				result := mod(row%mon%2, 1)				
+				if (result != 0)
+				{
+					Row%mon%1 += 1
+				}
+			} else {
+				Row%mon%2 := Mon%mon%CusHeight - row%mon%1
+				Row%mon%3 := 0
+			}
+		}
+		if (colsize%mon% = 0)
+		{
+			Loop, 3
+			{
+				col%mon%%A_Index% := Mon%mon%CusWidth / col%mon%
+				if (A_Index = 1)
+				{
+					result := mod(col%mon%1, 1)				
+					if (result != 0)
+					{
+						Col%mon%1 += 1
+					}
+				}	
+			}
+		} else {
+			temp1 := col%mon% - 1
+			col%mon%1 := colsize%mon%
+			if (temp1 > 1)
+			{
+				Col%mon%2 := (Mon%mon%CusWidth - col%mon%1) / 2
+				Col%mon%3 := (Mon%mon%CusWidth - col%mon%1) / 2
+				result := mod(Col%mon%2, 1)				
+				if (result != 0)
+				{
+					Col%mon%1 += 1
+				}
+			} else {
+				Col%mon%2 := Mon%mon%CusWidth - Col%mon%1
+				Col%mon%3 := 0
+			}
 		}
 	return
 	}
@@ -333,8 +430,7 @@
 	{
 		;This will automatically shift your window grid when the script is called.
 		global
-		local mon
-		local temp
+		local mon, temp
 		
 		mon := 0
 		Loop, 3
@@ -429,6 +525,7 @@
 	{
 		;This sets the id to the grid.
 		global
+		
 		mon%mon%_%work%_%row%_%col% := id
 	return
 	}
@@ -437,6 +534,7 @@
 	{
 		;This resizes the grid to a new row by col value.
 		global
+		local mon, pos
 		
 		MouseGetPos, pos
 		mon := getMon(pos)
@@ -451,10 +549,7 @@
 	{
 		;Removes the window from the grid (or all items if all = 1).
 		global
-		local x
-		local y
-		local mon
-		local work
+		local x, y, mon, work
 		
 		x := 0
 		Loop, 3
@@ -505,9 +600,7 @@
 	{
 		;This does the border shifting.
 		global
-		
-		local xtemp
-		local mon
+		local xtemp, mon
 		
 		id := null
 		if (nowin = 0)
@@ -581,12 +674,9 @@
 	{
 		;Finds the grid position.
 		global
-		local x
-		local y
-		local work
+		local x, y, work
 		
 		work := workspace%mon%
-		
 		x := 0
 		Loop, 3
 		{
@@ -681,6 +771,10 @@
 		;This controls the transparency on windows.
 		global custran
 		
+		if (id = null)
+		{
+			id := WinExist("A")
+		}
 		WinGet, tran, Transparent, ahk_id %id%
 		if direc is not integer
 		{
@@ -701,11 +795,7 @@
 	workspaceSwitch(workspace = 0)
 	{
 		global
-		local xtemp
-		local mon
-		local z
-		local x
-		local y
+		local xtemp, mon, z, x, y
 		
 		MouseGetPos,xtemp,,
 		mon := getMon(xtemp)
@@ -791,9 +881,7 @@
 	mode(mode)
 	{
 		global
-		local xtemp
-		local mon1
-		local mon2
+		local xtemp, mon1, mon2
 		
 		DetectHiddenWindows, Off
 		
@@ -950,6 +1038,7 @@
 	debug()
 	{
 		global
+		local xtemp, x
 		
 		WinGetPos, xtemp,,,, ahk_id %gidDEBUG%
 		if (gidDEBUG = null)
@@ -980,8 +1069,8 @@
 	
 	mini()
 	{
-		MouseGetPos,,, idtemp
-		WinMinimize, ahk_id %idtemp%
+		MouseGetPos,,, id
+		WinMinimize, ahk_id %id%
 	return
 	}
 	
@@ -989,13 +1078,14 @@
 	LDrag()
 	{
 		global
+		local KDE_X1, KDE_Y1, KDE_id, KDE_WinXStart, KDE_WinYStart, KDE_WinX1, KDE_WinY1, KDE_Button, KDE_EscapeState, KDE_X2, KDE_Y2
 		
 		SetWinDelay, -1
 		SetBatchLines, -1
+		
 		MouseGetPos,KDE_X1,KDE_Y1,KDE_id
 		WinActivate, ahk_id %KDE_id%
 		WinGetPos,KDE_WinXStart,KDE_WinYStart,,,ahk_id %KDE_id%
-		
 		KDE_WinX1 := KDE_WinXStart
 		KDE_WinY1 := KDE_WinYStart
 		Loop
@@ -1026,9 +1116,11 @@
 	RDrag()
 	{
 		global
+		local KDE_X1, KDE_Y1, KDE_ID, KDE_WinXStart, KDE_WinYStart, KDE_WinWStart, KDE_WinHStart, KDE_WinX1, KDE_WinY1, KDE_WinW, KDE_WinH, KDE_WinLeft, KDE_WinUp, mon, temp, KDE_Button, KDE_EscapeState, KDE_X2, KDE_Y2,
 		
 		SetWinDelay, -1
 		SetBatchLines, -1
+		
 		MouseGetPos,KDE_X1,KDE_Y1,KDE_id
 		WinActivate, ahk_id %KDE_id%
 		WinGetPos,KDE_WinXStart,KDE_WinYStart,KDE_WinWStart,KDE_WinHStart,ahk_id %KDE_id%
@@ -1064,7 +1156,7 @@
 		}
 		Loop
 		{
-			GetKeyState,KDE_Button,RButton,P ; Break if button has been released.
+			GetKeyState,KDE_Button, RButton, P
 			If KDE_Button = U
 			{
 				if (mon != 0)
@@ -1078,7 +1170,6 @@
 			GetKeyState, KDE_EscapeState, Escape, P
 			if KDE_EscapeState = D
 			{
-				WinSetTitle, ahk_id %KDE_id%,, %title%
 				WinMove, ahk_id %KDE_id%,, %KDE_WinXStart%, %KDE_WinYStart%, %KDE_WinWStart%, %KDE_WinHStart%
 			break
 			}
@@ -1096,6 +1187,7 @@
 	exclusion(class)
 	{
 		global
+		
 		Loop, %exclusion0%
 		{
 			if(class = exclusion%A_Index%)
@@ -1108,4 +1200,19 @@
 			return 0
 		}
 	return 1
+	}
+	
+	confine()
+	{
+		global
+		
+		if (confine = 0)
+		{
+			setTimer, winConfine, 1
+			Confine := 1
+		} else {
+			setTimer, winConfine, off
+			confine := 0
+		}
+	return
 	}

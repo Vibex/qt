@@ -1,3 +1,11 @@
+Version 0.7.0		08/28/2013
+	*Removed the icons. If I end up getting aroung to implementing them to the bar I will add them back.
+	*Changed the bar around a lot. Now you can have custom layouts (further updates and extra information on how to do this will come in a future update).
+	*Added direct shortcuts to workspaces via Win + #.
+	*Can bind the mouse to a window with Win + Scrolllock.
+	*Redid the way the config files are setup. It is far more efficient and cleaner then before. All the files were condensed into one. This will make it easier for me to write a GUI based setup program in the future.
+
+
 Version 0.6.2		08/08/2013
 	*Improved the efficency of the taskbar.
 	*Added more support for fonts other then Haxrcorp variants.

@@ -1,40 +1,19 @@
 ﻿	InitializeBar(mon, w, h, x, y)
 	{
 		global
+		local work
 		
 		Gui, Margin, 0, 0
 		
-		if (otherexe != null)
+		if (barColour != "auto")
 		{
-			StringSplit, otherexe, otherexe, `,
-		} else {
-			otherexe0 := 1
-			otherexe1 := null	
+			Gui, bar%mon%:Color, %barColour%
 		}
-		
-		Gui, bar%mon%:Color, %barColour%
 		Gui, bar%mon%:+LastFound -Caption +ToolWindow
 		Gui, bar%mon%:Font, s%fontSize% c%texColour%, %font%
 		
-		dateSize := Fnt_GetStringWidth(font, "000, 000 00")
-		Gui, bar%mon%:Add, Text, vDate%mon% x0 y1 h%h% w%dateSize% Center, 000, 000 00
+		makeBar(mon, w, h, x, y)
 		
-		clockSize := Fnt_GetStringWidth(font, "00.00")
-		shift := w - clocksize
-		Gui, bar%mon%:Add, Text, vClock%mon% x%shift% y1 h%h% Center, 00.00
-		shift := shift - dateSize
-		Gui, bar%mon%:Add, Text, vTitle%mon% x%dateSize% y1 w%shift% h%h% Center, % workspace%mon%
-		
-		if (mon = 1)
-		{
-			Gui, bar1:Add, Text, vText Hidden, Run:
-			Gui, bar1:Add, Edit, vRun Limit Hidden
-		}
-		
-		if (clockOn = 0)
-		{
-			SetTimer, UpdateClock, %updaterate2%
-		}
 		Gosub, UpdateClock
 		Gui, bar%mon%:Show, x%x% y%y% w%w% h%h%
 		barid%mon% := WinExist("A")
@@ -44,11 +23,13 @@
 	updateTitle(mon)
 	{
 		global
+		local work
 		
 		GuiControlGet, Title%mon%, bar%mon%:
-		if (Title%mon% != workspace%mon%)
+		work := workspace%mon%
+		if (Title%mon% != workname%mon%%work%)
 		{
-			GuiControl, bar%mon%:, Title%mon%, % workspace%mon%
+			GuiControl, bar%mon%:, Title%mon%, % workname%mon%%work%
 		}
 	return
 	}
@@ -83,9 +64,7 @@
 	visibility()
 	{
 		global
-		itemborder := 2
-		temp1 := itemborder * -1
-		temp2 := barheight + (itemborder * 2)
+		
 		GuiControlGet, visible, bar1:Visible, Run
 		if (visible = 1)
 		{
@@ -94,14 +73,16 @@
 			GuiControl, bar1:Hide, Text
 			GuiControl, bar1:Show, Title1
 			GuiControl, bar1:Show, Date1
+			GuiControl, bar1:Show, Clock1
 		} else {
 			GuiControl, bar1:Hide, Title1
 			GuiControl, bar1:Hide, Date1
+			GuiControl, bar1:Hide, Clock1
 			GuiControl, bar1:Show, Run
 			GuiControl, bar1:Show, Text
-			shift := Mon1Width - 54 - 24
-			GuiControl, bar1:Move, Run, x24 y%temp1% w%shift% h%temp2%
-			GuiControl, bar1:Move, Text, x4 y1 w18 h15 
+			shift := Mon1Width - 24
+			GuiControl, bar1:Move, Run, x24 y%downShift% h%barheight% w%shift%
+			GuiControl, bar1:Move, Text, x4 y%downShift% w18 h%barheight% 
 			GuiControl, bar1:Focus, Run
 			WinActivate, ahk_id %barid1%
 		}
@@ -266,3 +247,148 @@
 		visibility()
 	return
 	}
+	
+	makeBar(mon, w, h, x, y)
+	{
+		global
+		local active, centerborder1, centerborder2, center, left, right, leftlen, rightlen, center, centerlen
+		
+		active := barlayout%mon%
+		left_%mon% := 0
+		right_%mon% := 0
+		center_%mon% := 0
+		centerborder1 := InStr(active, "[")
+		centerborder2 := InStr(active, "]")
+		StringMid, left, active, centerborder1,, L
+		StringMid, right, active, centerborder2
+		StringLen, leftlen, left
+		StringLen, rightlen, right
+		StringTrimLeft, center, active, %leftlen%
+		StringTrimRight, center, center, %rightlen%
+		StringLen, centerlen, center
+		
+		StringSplit, left, left, %A_Space%
+		determine(mon, w, h, x, y, "left", left0)
+		
+		StringSplit, right, right, %A_Space%
+		determine(mon, w, h, x, y, "right", right0)
+		
+		StringSplit, center, center, %A_Space%
+		determine(mon, w, h, x, y, "center", center0)
+		
+		if (mon = 1)
+		{
+			Gui, bar1:Add, Text, vText Hidden, Run:
+			Gui, bar1:Add, Edit, vRun Limit Hidden
+		}
+	return
+	}
+	
+	determine(mon, w, h, x, y, pos, repeat)
+	{
+		global
+		local testcal, testwork, testclock
+		
+		Loop, %repeat%
+		{
+			testclock := InStr(%pos%%A_Index%, "clock(")
+			testcal := InStr(%pos%%A_Index%, "cal(")
+			testwork := InStr(%pos%%A_Index%, "work(")
+			
+			if (testclock != 0)
+			{
+				clock(mon, w, h, x, y, pos)
+			} else if (testcal != 0)
+			{
+				cal(mon, w, h, x, y, pos)
+			} else if (testwork != 0)
+			{
+				work(mon, w, h, x, y, pos)
+			}
+		}
+	return
+	}
+	
+	clock(mon, w, h, x, y, pos)
+	{
+		global
+		local clockSize, temp
+		
+		if (pos != "center")
+		{
+			clockSize := Fnt_GetStringWidth(font, "00.00")
+			if (pos = "left")
+			{
+				temp := %pos%_%mon%
+			} else if (pos = "right")
+			{
+				temp := w - %pos%_%mon% - clockSize
+			}
+		} else {
+			clockSize := (w - left_%mon% - right_%mon%) / center0
+			temp := left_%mon% + center_%mon%
+		}
+		Gui, bar%mon%:Add, Text, vClock%mon% x%temp% y%downShift% h%h% w%clockSize% Center, 00.00
+		%pos%_%mon% += clockSize
+		if (clockOn = 0)
+		{
+			SetTimer, UpdateClock, %updaterate%
+			Gosub, UpdateClock
+		}
+	return
+	}
+	
+	cal(mon, w, h, x, y, pos)
+	{
+		global
+		local dateSize, temp
+		
+		if (pos != "center")
+		{
+			dateSize := Fnt_GetStringWidth(font, "000, 000 00")
+			if (pos = "left")
+			{
+				temp := %pos%_%mon%
+			} else if (pos = "right")
+			{
+				temp := w - %pos%_%mon% - dateSize
+			}
+		} else {
+			dateSize := (w - left_%mon% - right_%mon%) / center0
+			temp := left_%mon% + center_%mon%
+		}
+		Gui, bar%mon%:Add, Text, vDate%mon% x%temp% y%downShift% h%h% w%dateSize% Center, 000, 000 00
+		%pos%_%mon% += dateSize
+		if (clockOn = 0)
+		{
+			SetTimer, UpdateClock, %updaterate%
+			Gosub, UpdateClock
+		}
+	return
+	}
+	
+	work(mon, w, h, x, y, pos)
+	{
+		global
+		local workSize, temp, work
+		
+		work := workspace%mon%
+		if (pos != "center")
+		{
+			workSize := Fnt_GetStringWidth(font, "00000000")
+			if (pos = "left")
+			{
+				temp := %pos%_%mon%
+			} else if (pos = "right")
+			{
+				temp := w - %pos%_%mon% - workSize
+			}
+		} else {
+			workSize := (w - left_%mon% - right_%mon%) / center0
+			temp := left_%mon% + center_%mon%
+		}
+		Gui, bar%mon%:Add, Text, vTitle%mon% x%temp% y%downShift% w%workSize% h%h% Center, % workname%mon%%work%
+		%pos%_%mon% += workSize
+	return
+	}
+	

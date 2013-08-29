@@ -123,6 +123,30 @@
 	return
 	}
 	
+	#1::
+	{
+		workspaceSwitch(1)
+	return
+	}
+	
+	#2::
+	{
+		workspaceSwitch(2)
+	return
+	}
+	
+	#3::
+	{
+		workspaceSwitch(3)
+	return
+	}
+	
+	#ScrollLock::
+	{
+		confine()
+	return
+	}
+	
 	
 	
 	#T::
@@ -266,15 +290,13 @@
 	
 	#^WheelUp::
 	{
-		idtemp := WinExist("A")
-		trans(idtemp, "u")
+		trans(null, "u")
 	return
 	}
 	
 	#^WheelDown::
 	{
-		idtemp := WinExist("A")
-		trans(idtemp, "d")
+		trans(null, "d")
 	return
 	}
 	

@@ -1,3 +1,0 @@
-The current beta features are:
-	*Adding a setup application to customize options rather than/as well as a the .txt file. Still in concept.
-	*The auto moving of windows when changing the size of windows with the arrow keys. About 5% complete but isn't ready for testing yet. Not ready for testing yet.

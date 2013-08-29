@@ -25,22 +25,23 @@
 		mon1_mode := 1
 		mon2_mode := 1
 		mon3_mode := 1
+		confine := 0
+		confineid := null
+		clockOn := -1
 		
 		gidDEBUG := null
 		
 		if (baryeah = 1)
 		{
-			
-			barheight := Fnt_GetFontHeight(font)
 			clockOn := 0
-			InitializeBar(1, Mon1Width, barheight, Mon1Left, Mon1Top)
+			InitializeBar(1, Mon1Width, barheight1, Mon1Left, Mon1Top)
 			if (dis2 = 1)
 			{
-				InitializeBar(2, Mon2Width, barheight, Mon2Left, Mon2Top)
+				InitializeBar(2, Mon2Width, barheight2, Mon2Left, Mon2Top)
 			}
 			if (dis3 = 1)
 			{
-				InitializeBar(3, Mon3Width, barheight, Mon3Left, Mon3Top)
+				InitializeBar(3, Mon3Width, barheight3, Mon3Left, Mon3Top)
 			}
 		}
 		

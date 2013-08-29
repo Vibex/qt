@@ -74,6 +74,9 @@ Taskbar Hotkeys
 	
 Workspace Hotkeys
 	Win + Tab: Switch through current monitors workspaces.
+	Win + 1: Switch to the first workspace.
+	Win + 2: Switch to the second workspace.
+	Win + 3: Switch to the third workspace.
 
 
 Other Keys
@@ -81,6 +84,7 @@ Other Keys
 	Win + W: Remove all stored window data.
 	Win + O: Toggle always on top on the current window.
 	Win + M: Minimize the current window.
+	Win + Scrolllock: Bind the mouse to the window.
 	
 	
 Dev Hotkeys
