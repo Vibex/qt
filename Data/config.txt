@@ -288,3 +288,12 @@ Set the below value to the height of the first row. Set it to 0 to maintain it's
 
 Set the below value to the width of the first column. Set it to 0 to maintain it's proportions with the other columns. #
 0
+
+
+
+
+Set this value to the thicknes of your window borders to hide the double border between windows. This will remove your gaps between windows. Set this to 0 otherwise.
+2
+
+Set this value to the default transparency of your windows. Set it to 255 for none.
+255

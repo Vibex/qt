@@ -61,12 +61,12 @@
     return (temp = barid1)
 	}
 	
-	visibility()
+	visibility(hide = 0, switch = 1)
 	{
 		global
 		
 		GuiControlGet, visible, bar1:Visible, Run
-		if (visible = 1)
+		if (visible = 1 || hide = 1)
 		{
 			GuiControl, bar1:, Run,
 			GuiControl, bar1:Hide, Run
@@ -74,15 +74,17 @@
 			GuiControl, bar1:Show, Title1
 			GuiControl, bar1:Show, Date1
 			GuiControl, bar1:Show, Clock1
+			if (switch = 1)
+			{
+				WinActivate, ahk_id %previd%
+			}
 		} else {
+			previd := WinExist("A")
 			GuiControl, bar1:Hide, Title1
 			GuiControl, bar1:Hide, Date1
 			GuiControl, bar1:Hide, Clock1
 			GuiControl, bar1:Show, Run
 			GuiControl, bar1:Show, Text
-			shift := Mon1Width - 24
-			GuiControl, bar1:Move, Run, x24 y%downShift% h%barheight% w%shift%
-			GuiControl, bar1:Move, Text, x4 y%downShift% w18 h%barheight% 
 			GuiControl, bar1:Focus, Run
 			WinActivate, ahk_id %barid1%
 		}
@@ -251,7 +253,7 @@
 	makeBar(mon, w, h, x, y)
 	{
 		global
-		local active, centerborder1, centerborder2, center, left, right, leftlen, rightlen, center, centerlen
+		local active, centerborder1, centerborder2, center, left, right, leftlen, rightlen, center, centerlen, shift, borderoff, tempheight
 		
 		active := barlayout%mon%
 		left_%mon% := 0
@@ -278,8 +280,12 @@
 		
 		if (mon = 1)
 		{
-			Gui, bar1:Add, Text, vText Hidden, Run:
-			Gui, bar1:Add, Edit, vRun Limit Hidden
+			border := 2
+			shift := Mon1Width - 31 + border
+			borderoff := -1 * border
+			tempheight := barheight1 + (2 * border)
+			Gui, bar1:Add, Text, vText Hidden x6 y%downShift% w26 h%barheight1%, Run:
+			Gui, bar1:Add, Edit, vRun Hidden Limit x31 y%borderoff% h%tempheight% w%shift%
 		}
 	return
 	}

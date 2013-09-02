@@ -56,7 +56,7 @@
 	ShellMessage(wParam, lParam)
 	{
 		;This detects messages sent by windows itself and preforms actions based on the messages.
-		global previousid,  currentid,  autocenter,  titlebaraway,  baryeah,  tranthresh,  nonactivetrans,  barid1,  barid2,  barid3
+		global previousid,  currentid,  autocenter,  titlebaraway,  baryeah,  tranthresh,  nonactivetrans,  barid1
 		
 		SetBatchLines, -1
 		WinGetTitle, title, ahk_id %lParam%
@@ -100,12 +100,16 @@
 				trans(currentid, 255)
 				trans(previousid, nonactivetrans)
 			}
+			if (lParam != barid1)
+			{
+				visibility(1, 0)
+			}
 		return
 		}
 	return
 	}
 	
-	reload(math = 1, autoShift = 1)
+	reload(math = 1)
 	{
 		;This loads all of the information from the config files.
 		global
@@ -329,6 +333,17 @@
 		FileReadLine, RowSize3, %config%, 287
 		FileReadLine, ColSize3, %config%, 290
 		
+		FileReadLine, noedge, %config%, 296
+		FileReadLine, nonactivetrans, %config%, 299
+		
+		if (noedge != 0)
+		{
+			hbor := -1 * noedge
+			vbor := -1 * noedge
+			hborex := noedge
+			vborex := noedge
+		}
+		
 		if (math = 1)
 		{
 			math()
@@ -421,6 +436,29 @@
 			} else {
 				Col%mon%2 := Mon%mon%CusWidth - Col%mon%1
 				Col%mon%3 := 0
+			}
+		}
+	return
+	}
+	
+	allWindowEffect()
+	{
+		global
+		local winarr, idtemp, class
+		
+		DetectHiddenWindows, Off
+		WinGet, winarr ,List
+		Loop, %winarr%
+		{
+			idtemp := winarr%A_Index%
+			WinGetClass, class, ahk_id %idtemp%
+			if (exclusion(class) = 1)
+			{
+				if (titlebaraway = 1)
+				{
+					titleBeGone(idtemp, 2)
+				}
+				trans(idtemp, nonactivetrans)
 			}
 		}
 	return
@@ -727,11 +765,10 @@
 	return
 	}
 	
-	titleBeGone(id, mode = 1, titleFixmode = 0)
+	titleBeGone(id, mode = 1, titleFixMode = 0)
 	{
 		;Controls the titlebar on the window. The way it does this is based on the mode.
 		global
-		local widthtemp
 		
 		WinSet, Style, -0x800000, ahk_id %id%
 		if (mode = 1)
@@ -745,19 +782,29 @@
 			WinSet, Style, +0xC00000, ahk_id %id%
 			WinSet, Style, +0x40000, ahk_id %id%
 		}
+		
+		redraw(id, titleFixMode)
+	return
+	}
+	
+	redraw(id, titleFixMode = 0)
+	{
+		global
+		local widthtemp
+		
 		WinSet, Redraw,, ahk_id %id%
 		if (titleFixMode = 0)
 		{
-			titleFixMode = titleFix
+			titleFixMode := titleFix
 		}
+		
 		if (titleFixMode = 1)
 		{
 			WinGetPos,,, widthtemp,, ahk_id %id%
 			WinMove, ahk_id %id%,,,, (widthtemp - 1)
 			WinMove, ahk_id %id%,,,, (widthtemp)
 		return
-		}
-		if (titleFixMode = 2)
+		} else if (titleFixMode = 2)
 		{
 			WinMinimize, ahk_id %id%
 			WinActivate, ahk_id %id%
@@ -800,7 +847,7 @@
 		MouseGetPos,xtemp,,
 		mon := getMon(xtemp)
 		
-		if (mon != 0)
+		if (mon != 0 && workspace != workspace%mon%)
 		{
 			z := workspace%mon%
 			x := 0

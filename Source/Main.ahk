@@ -19,15 +19,21 @@
 		SetControlDelay, %cspeed%
 		
 		remove(null, 1)
+		
 		workspace1 := 1
 		workspace2 := 1
 		workspace3 := 1
+		
 		mon1_mode := 1
 		mon2_mode := 1
 		mon3_mode := 1
+		
 		confine := 0
 		confineid := null
+		
 		clockOn := -1
+		previd := null
+		visible := 0
 		
 		gidDEBUG := null
 		
@@ -48,23 +54,7 @@
 		previousid := null
 		currentid := WinExist("A")
 		
-		WinGet, winarr ,List
-		Loop, %winarr%
-		{
-			idtemp := winarr%A_Index%
-			WinGetClass, class, ahk_id %idtemp%
-			if (exclusion(class) = 1)
-			{
-				if (titlebaraway = 1)
-				{
-					titleBeGone(idtemp, 2)
-				}
-				if (nonactivetrans = 255)
-				{
-					trans(idtemp, nonactivetrans)
-				}
-			}
-		}
+		allWindowEffect()
 		
 		if (winHook = 1)
 		{
