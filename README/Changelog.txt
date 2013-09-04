@@ -1,8 +1,12 @@
+Version 0.7.2		09/03/2013
+	*Cleaned up the MoveMethods file. Fixed some bugs.
+	*Found some new bugs. Woking to fix them in the next patch
+
+
 Version 0.7.1		09/2/2013
 	*Added transparency options back in the config file (I didn't mean to remove them).
 	*Small changes to improve the taskbar.
 	*Added the ability to hide the borders between windows by making them overlap (doesn't look good on default windows. Use a custom VS or windows classic).
-	*
 
 
 Version 0.7.0		08/28/2013

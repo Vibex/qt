@@ -64,6 +64,7 @@
 	visibility(hide = 0, switch = 1)
 	{
 		global
+		local visible
 		
 		GuiControlGet, visible, bar1:Visible, Run
 		if (visible = 1 || hide = 1)

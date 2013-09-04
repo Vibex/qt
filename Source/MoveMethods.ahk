@@ -2,14 +2,7 @@
 	{
 		;This is the main method that actually does the movement of the windows.
 		global
-		local xtemp
-		local mon
-		local expand
-		local d
-		local g
-		local f
-		local v
-		local b
+		local xtemp, mon, d, g, f, v, b
 		
 		if (id = null)
 		{
@@ -82,24 +75,20 @@
 	{
 		;This does the automatic repositioning of windows. It's still very much in development.
 		global
-		local trow
-		local tcol
-		local trown
-		local tcoln
-		local test
+		local trow, tcol, test
 		
 		trow := row + 1
 		tcol := col + 1
 		test := InStr(mon%mon%_%work%_%row%_%tcol%, mon%mon%_%work%_%row%_%col%)
-		if (test != 0)
+		if (test = 0)
 		{
-			move(mon%mon%_%work%_%row%_%col%, row, tcol)
+			move(mon%mon%_%work%_%row%_%tcol%, row, tcol)
 		return
 		}
 		test := InStr(mon%mon%_%work%_%trow%_%col%, mon%mon%_%work%_%row%_%col%)
-		if (test != 0)
+		if (test = 0)
 		{
-			move(mon%mon%_%work%_%row%_%col%, trow, col)
+			move(mon%mon%_%work%_%trow%_%col%, trow, col)
 		}
 	return
 	}
@@ -108,17 +97,7 @@
 	{
 		;This does the resizing of the windows to fit the full grid.
 		global
-		local path1
-		local path2
-		local trow1
-		local trow2
-		local tcol1
-		local tcol2
-		local d
-		local g
-		local f
-		local v
-		local b
+		local path1, path2, trow1, trow2, tcol1, tcol2, d, g, f, v, b
 		
 		path1 := 0
 		path2 := 0
@@ -126,36 +105,30 @@
 		tcol1 := col + 1
 		trow2 := row + 2
 		tcol2 := col + 2
-		if (tcol1 <= col%mon%)
+		if (tcol1 <= col%mon% && mon%mon%_%work%_%row%_%tcol1% = null)
 		{
-			if (mon%mon%_%work%_%row%_%tcol1% = null)
+			tw := tw + col%mon%%tcol1% + hbor
+			mon%mon%_%work%_%row%_%tcol1% := full . id
+			path1 := 1
+			if (trow1 <= row%mon% && mon%mon%_%work%_%trow1%_%tcol1% = null && mon%mon%_%work%_%trow1%_%col% = null)
 			{
-				tw := tw + col%mon%%tcol1% + hbor
-				mon%mon%_%work%_%row%_%tcol1% := full . id
-				path1 := 1
-				if (trow1 <= row%mon% && mon%mon%_%work%_%trow1%_%tcol1% = null && mon%mon%_%work%_%trow1%_%col% = null)
-				{
-					th := th + row%mon%%trow1% + vbor
-					mon%mon%_%work%_%trow1%_%tcol1% := full . id
-					mon%mon%_%work%_%trow1%_%col% := full . id
-				}
+				th := th + row%mon%%trow1% + vbor
+				mon%mon%_%work%_%trow1%_%tcol1% := full . id
+				mon%mon%_%work%_%trow1%_%col% := full . id
 			}
 		}
-		if (tcol2 <= col%mon%)
+		if (tcol2 <= col%mon% && mon%mon%_%work%_%row%_%tcol2% = null && path1 = 1)
 		{
-			if (mon%mon%_%work%_%row%_%tcol2% = null)
+			tw := tw + col%mon%%tcol2% + hbor
+			mon%mon%_%work%_%row%_%tcol2% := full . id
+			path2 := 1
+			if (trow2 <= row%mon% && mon%mon%_%work%_%trow2%_%tcol2% = null && mon%mon%_%work%_%trow2%_%col% = null)
 			{
-				tw := tw + col%mon%%tcol2% + hbor
-				mon%mon%_%work%_%row%_%tcol2% := full . id
-				path2 := 1
-				if (trow2 <= row%mon% && mon%mon%_%work%_%trow2%_%tcol2% = null && mon%mon%_%work%_%trow2%_%col% = null)
-				{
-					th := th + row%mon%%trow2% + vbor
-					mon%mon%_%work%_%trow1%_%tcol2% := full . id
-					mon%mon%_%work%_%trow2%_%tcol1% := full . id
-					mon%mon%_%work%_%trow2%_%tcol2% := full . id
-					mon%mon%_%work%_%trow2%_%col% := full . id
-				}
+				th := th + row%mon%%trow2% + vbor
+				mon%mon%_%work%_%trow1%_%tcol2% := full . id
+				mon%mon%_%work%_%trow2%_%tcol1% := full . id
+				mon%mon%_%work%_%trow2%_%tcol2% := full . id
+				mon%mon%_%work%_%trow2%_%col% := full . id
 			}
 		}
 		if (trow1 <= row%mon% && path1 != 1 && mon%mon%_%work%_%trow1%_%col% = null)
@@ -165,11 +138,16 @@
 		}
 		if (trow2 <= row%mon% && path2 != 1 && mon%mon%_%work%_%trow2%_%col% = null)
 		{
-			th := th + row%mon%%trow2% + vbor
-			mon%mon%_%work%_%trow2%_%col% := full . id
-			if (path1 = 1)
+			
+			if (path1 = 1 && mon%mon%_%work%_%trow2%_%tcol1% =null)
 			{
 				mon%mon%_%work%_%trow2%_%tcol1% := full . id
+				th := th + row%mon%%trow2% + vbor
+				mon%mon%_%work%_%trow2%_%col% := full . id
+			} else if (path1 = 0)
+			{
+				th := th + row%mon%%trow2% + vbor
+				mon%mon%_%work%_%trow2%_%col% := full . id
 			}
 		}
 		if ((row - 1) > 0)
@@ -245,18 +223,7 @@
 	halfSide(direc)
 	{
 		global
-		local xtemp
-		local id
-		local temp
-		local x
-		local mon
-		local wtemp
-		local xtemp2
-		local temp1
-		local temp2
-		local temp3
-		local temp4
-		local work
+		local xtemp, id, mon, temp1, temp2, temp3, temp4, work
 		
 		work := workspace%mon%
 		
@@ -287,11 +254,7 @@
 	{
 		;This automatically places windows when shifting borders.
 		global
-		local x
-		local y
-		local z
-		local test
-		local work
+		local x, y, z, test, work
 		
 		work := workspace%mon%
 		

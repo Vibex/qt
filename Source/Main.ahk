@@ -12,6 +12,8 @@
 		null := ""
 		full := "This string is full and should fix all the problems I am having"
 		
+		qtVersion := "0.7.2"
+		
 		reload()
 		SetBatchLines, %bspeed%
 		SetWinDelay, %wspeed%
@@ -33,7 +35,6 @@
 		
 		clockOn := -1
 		previd := null
-		visible := 0
 		
 		gidDEBUG := null
 		

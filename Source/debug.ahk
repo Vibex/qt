@@ -5,7 +5,7 @@
 		demon := 1
 		Gui, +Resize
 		Gui, Add, Edit, vMainDebug WantTab W200 H200 X0 Y0, 
-		Gui, Show,, %A_AhkVersion% - de.pi
+		Gui, Show,, %qtVersion% - qt.pi
 		gidDEBUG:= WinExist("A")
 		titleBeGone(gidDEBUG)
 		center(1, gidDEBUG)
@@ -67,8 +67,7 @@
 				}
 			}
 		}
-		merge := temptotal1 . "`n" . temptotal2 . "`n" . temptotal3
-		merge := "0.6.2`n`n" . merge . "`nBatch Lines: " . A_BatchLines . "`nKey Delay: " . A_KeyDelay . "ms" . "`nWin Delay: " . A_WinDelay . "ms" . "`nControl Delay: " . A_ControlDelay . "ms"
+		merge := qtVersion . "`n`n" . temptotal1 . "`n" . temptotal2 . "`n" . temptotal3
 		if (MainDebug != merge)
 		{
 			GuiControl,, MainDebug, %merge%
