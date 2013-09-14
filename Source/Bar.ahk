@@ -172,6 +172,10 @@
 			{
 				StringReplace, part2, part2, %A_Space%, +, 1
 				isRun := "http://www.nyaa.eu/?page=search&cats=0_0&filter=0&term=" . part2
+			} else if (arrtemp1 = command . "animebyt" || arrtemp1 = command . "a")
+			{
+				StringReplace, part2, part2, %A_Space%, +, 1
+				isRun := "https://animebytes.tv/torrents.php?searchstr=" . part2
 			} else if (arrtemp1 = command . "piratebay" || arrtemp1 = command . "p")
 			{
 				isRun := "http://thepiratebay.sx/search/" . part2 . "/0/99/0"

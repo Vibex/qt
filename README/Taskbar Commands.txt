@@ -8,6 +8,7 @@ Search Commands
 	/wikipedia or /wiki or /w: Search the remaining text on wikipedia.
 	/nyaa or /n: Search the remaining text on nyaa.
 	/piratebay or /p: Search the remaining text on The Pirate Bay.
+	/animebyt or /a: Search the remaining text on AnimeByt.
 
 	
 Power Commands

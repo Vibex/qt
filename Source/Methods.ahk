@@ -100,11 +100,6 @@
 				trans(currentid, 255)
 				trans(previousid, nonactivetrans)
 			}
-			Sleep, 100
-			if (lParam != barid1)
-			{
-				visibility(1, 0)
-			}
 		return
 		}
 	return

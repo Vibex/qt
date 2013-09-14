@@ -1,3 +1,8 @@
+Version 0.7.3		09/14/2013
+	*Added AnimeByt to the taskbar search.
+	*Minor bug fix.
+
+
 Version 0.7.2		09/03/2013
 	*Cleaned up the MoveMethods file. Fixed some bugs.
 	*Found some new bugs. Woking to fix them in the next patch
