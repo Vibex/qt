@@ -1,5 +1,0 @@
-BUGS
-	*Currently sometimes when hiding the titlebar on a window a black bar will appear at the bottom of the window. Fixes for this can be activated in the configAdvanced.txt file.
-	*For some reason when using the transparency scroll, the first time you scroll in a while, the window will instantly go 100% transparent. No idea why this is hapening.
-	*If you have Adobe Flash Open the taskbar will not change the title on the bar. I think this is because it doesn't like losing focus so it tricks windows into thinking it's still active.
-	*It is very buggy to use both the workspace manager and the auto center option in unison.
