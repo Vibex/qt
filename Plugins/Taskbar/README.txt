@@ -36,6 +36,6 @@ workT(Mode): This command displays the current workspace. If you enter no parame
 textT(Text): This command displays whatever text you input as the parameter.
 
 When making a layout you must write it in the form "cmd()&[cmd()]&cmd()". The & signify the addition of another command. The "[" and "]" represent the items that will be centered on the taskbar. The items on the outside of the brackets will be shifted all the way to the edge of there respective sides. An example woul be:
-workT(Full)&[]&clockT()
-To then set this as a bar layout use the command taskLayout(m,x) where x is your layout and m is the monitor you are assigning the layout to. For example you could write this:
-taskLayout(2,workT(Full)&[]&clockT())
+workT(Full)&[clockT()]&calT()
+To then set this as a bar layout use the command taskLayout(m,x) where m is the monitor you are assigning the layout to and x is your layout. For example you could write this:
+taskLayout(2,workT(Full)&[clockT()]&calT())

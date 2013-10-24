@@ -360,7 +360,7 @@ UpdateWork:
 			temp := A_Space
 			Loop, 9
 			{
-				if(A_Index = Mon%mon%.workspace){
+				if(A_Index = Mon%mon%.Workspace){
 					temp := temp . "#"
 				} else {
 					temp := temp . A_Index
@@ -374,6 +374,26 @@ UpdateWork:
 			
 		}
 	}
+	return
+}
+
+fooT(mon, w, h, x, y, pos, input){
+	global
+	local size, temp
+	
+	if(pos != "center"){
+		size := Fnt_GetStringWidth(font, input)
+		if(pos = "left"){
+			temp := %pos%_%mon%
+		} else if(pos = "right"){
+			temp := w - %pos%_%mon% - size
+		}
+	} else {
+		size := (w - left_%mon% - right_%mon%) / center0
+		temp := left_%mon% + center_%mon%
+	}
+	Gui, bar%mon%:Add, Text, vText%mon% x%temp% y%downShift% w%size% h%h% Center, % input
+	%pos%_%mon% += size
 	return
 }
 
@@ -417,7 +437,7 @@ taskEnable(temp){
 	
 	Loop, %monNum%
 	{
-		barLayout%A_Index% := "workT(Full)&[]&clockT()"
+		barLayout%A_Index% := "workT(Full)&[clockT()]&calT()"
 	}
 	
 	command := "/"
