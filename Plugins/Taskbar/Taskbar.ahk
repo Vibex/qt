@@ -33,22 +33,27 @@ visibility(hide = 0, switch = 1, clip := 0){
 	
 	GuiControlGet, visible, bar1:Visible, Run
 	if(visible = 1 || hide = 1){
+		toggleItems("hide")
+	} else {
+		toggleItems("show")
+	}
+	return
+}
+
+toggleItems(mode){
+	global
+	local temp
+	
+	if(mode = "hide"){
 		GuiControl, bar1:, Run,
 		GuiControl, bar1:Hide, Run
 		GuiControl, bar1:Hide, Text
-		GuiControl, bar1:Show, Work1
-		GuiControl, bar1:Show, Date1
-		GuiControl, bar1:Show, Clock1
-		GuiControl, bar1:Show, Text1
-		if(switch = 1){
-			WinActivate, ahk_id %previd%
+		Loop, %bar1_0%
+		{
+			temp := bar1_%A_Index%
+			GuiControl, bar1:Show, %temp%
 		}
 	} else {
-		previd := WinExist("A")
-		GuiControl, bar1:Hide, Work1
-		GuiControl, bar1:Hide, Date1
-		GuiControl, bar1:Hide, Clock1
-		GuiControl, bar1:Hide, Text1
 		GuiControl, bar1:Show, Run
 		if(clip = 1){
 			GuiControl, bar1:, Run, %clipboard%
@@ -56,6 +61,11 @@ visibility(hide = 0, switch = 1, clip := 0){
 		GuiControl, bar1:Show, Text
 		GuiControl, bar1:Focus, Run
 		WinActivate, ahk_id %barid1%
+		Loop, %bar1_0%
+		{
+			temp := bar1_%A_Index%
+			GuiControl, bar1:Hide, %temp%
+		}
 	}
 	return
 }
@@ -252,10 +262,11 @@ determine(mon, w, h, x, y, pos, repeat){
 
 clockT(mon, w, h, x, y, pos, input){
 	global
-	local size, temp
+	local size, size2, temp, temp2
 	
 	if(pos != "center"){
 		size := Fnt_GetStringWidth(font, "00.00")
+		size2 := Fnt_GetStringWidth(fontS, "a")
 		if(pos = "left"){
 			temp := %pos%_%mon%
 		} else if(pos = "right"){
@@ -266,7 +277,11 @@ clockT(mon, w, h, x, y, pos, input){
 		temp := left_%mon% + center_%mon%
 	}
 	Gui, bar%mon%:Add, Text, vClock%mon% x%temp% y%downShift% h%h% w%size% Center, 00.00
-	%pos%_%mon% += size
+	%pos%_%mon% += size + size2
+	bar%mon%_0 += 1
+	temp2 := bar%mon%_0
+	bar%mon%_%temp2% := "Clock" . mon
+	
 	if(clockOn = 0){
 		SetTimer, UpdateClock, %updateRate%
 		Gosub, UpdateClock
@@ -276,7 +291,7 @@ clockT(mon, w, h, x, y, pos, input){
 
 calT(mon, w, h, x, y, pos, input){
 	global
-	local size, temp
+	local size, temp, temp2
 	
 	if(pos != "center"){
 		size := Fnt_GetStringWidth(font, "000, 000 00")
@@ -291,6 +306,10 @@ calT(mon, w, h, x, y, pos, input){
 	}
 	Gui, bar%mon%:Add, Text, vDate%mon% x%temp% y%downShift% h%h% w%size% Center, 000, 000 00
 	%pos%_%mon% += size
+	bar%mon%_0 += 1
+	temp2 := bar%mon%_0
+	bar%mon%_%temp2% := "Date" . mon
+	
 	if(clockOn = 0){
 		SetTimer, UpdateClock, %updateRate%
 		Gosub, UpdateClock
@@ -301,14 +320,14 @@ calT(mon, w, h, x, y, pos, input){
 UpdateClock:
 {
 	clockOn := 1
-	GuiControlGet, clock, bar1:, Clock1, Text
-	GuiControlGet, date, bar1:, Date1, Text
 	Loop, %monNum%
 	{
+		GuiControlGet, clock, bar%A_Index%:, Clock%A_Index%, Text
+		GuiControlGet, date, bar%A_Index%:, Date%A_Index%, Text
 		if(clock != A_Hour . "." . A_Min){
 			GuiControl, bar%A_Index%:, Clock%A_Index%, %A_Hour%.%A_Min%
 		}
-		if(date != A_DDDD . ", " . A_MMMM . " " . A_DD){
+		if(date != A_DDD . ", " . A_MMM . " " . A_DD){
 			GuiControl, bar%A_Index%:, Date%A_Index%, %A_DDD%, %A_MMM% %A_DD%
 		}
 	}
@@ -317,7 +336,7 @@ UpdateClock:
 
 workT(mon, w, h, x, y, pos, input){
 	global
-	local size, temp, work
+	local size, temp, temp2, work
 	
 	if(input = "full"){
 		work%mon%Mode := "full"
@@ -342,6 +361,10 @@ workT(mon, w, h, x, y, pos, input){
 		Gui, bar%mon%:Add, Text, vWork%mon% x%temp% y%downShift% w%size% h%h% Center, 1
 	}
 	%pos%_%mon% += size
+	bar%mon%_0 += 1
+	temp2 := bar%mon%_0
+	bar%mon%_%temp2% := "Work" . mon
+	
 	if(workOn = 0){
 		SetTimer, UpdateWork, %updateRate%
 		Gosub, UpdateWork
@@ -377,29 +400,9 @@ UpdateWork:
 	return
 }
 
-fooT(mon, w, h, x, y, pos, input){
-	global
-	local size, temp
-	
-	if(pos != "center"){
-		size := Fnt_GetStringWidth(font, input)
-		if(pos = "left"){
-			temp := %pos%_%mon%
-		} else if(pos = "right"){
-			temp := w - %pos%_%mon% - size
-		}
-	} else {
-		size := (w - left_%mon% - right_%mon%) / center0
-		temp := left_%mon% + center_%mon%
-	}
-	Gui, bar%mon%:Add, Text, vText%mon% x%temp% y%downShift% w%size% h%h% Center, % input
-	%pos%_%mon% += size
-	return
-}
-
 textT(mon, w, h, x, y, pos, input){
 	global
-	local size, temp
+	local size, temp, temp2
 	
 	if(pos != "center"){
 		size := Fnt_GetStringWidth(font, input)
@@ -414,6 +417,9 @@ textT(mon, w, h, x, y, pos, input){
 	}
 	Gui, bar%mon%:Add, Text, vText%mon% x%temp% y%downShift% w%size% h%h% Center, % input
 	%pos%_%mon% += size
+	bar%mon%_0 += 1
+	temp2 := bar%mon%_0
+	bar%mon%_%temp2% := "Text" . mon
 	return
 }
 
@@ -431,6 +437,10 @@ taskEnable(temp){
 	fontSize := 6
 	fontColour := "000000"
 	
+	fontS := "Symbol"
+	fontSSize := 6
+	fontColour := "000000"
+	
 	barheight := 15
 	downShift := 0
 	taskColour := "auto"
@@ -438,6 +448,7 @@ taskEnable(temp){
 	Loop, %monNum%
 	{
 		barLayout%A_Index% := "workT(Full)&[clockT()]&calT()"
+		bar%A_Index%_0 = 0
 	}
 	
 	command := "/"

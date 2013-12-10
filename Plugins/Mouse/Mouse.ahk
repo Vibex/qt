@@ -15,8 +15,7 @@
 		GetKeyState,KDE_Button,LButton,P
 		If KDE_Button = U
 		{
-			mon := mon(KDE_id)
-			Mon%mon%.remove(KDE_id)
+			removeAll(KDE_id)
 			break
 		}
 		GetKeyState, KDE_EscapeState, Escape, P
@@ -64,15 +63,14 @@
 		GetKeyState,KDE_Button, RButton, P
 		If KDE_Button = U
 		{
-			mon := mon(KDE_id)
-			Mon%mon%.remove(KDE_id)
-		break
+			removeAll(KDE_id)
+			break
 		}
 		GetKeyState, KDE_EscapeState, Escape, P
 		if KDE_EscapeState = D
 		{
 			WinMove, ahk_id %KDE_id%,, %KDE_WinXStart%, %KDE_WinYStart%, %KDE_WinWStart%, %KDE_WinHStart%
-		break
+			break
 		}
 		MouseGetPos,KDE_X2,KDE_Y2
 		WinGetPos,KDE_WinX1,KDE_WinY1,KDE_WinW,KDE_WinH,ahk_id %KDE_id%

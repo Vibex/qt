@@ -8,5 +8,5 @@ After that add these two commands to your config file.
 toggleBar(Position, Size): The first parameter is the position of your Windows Taskbar. 1 is the top, 2 is the bottom, 3 is the left, and 4 is the right. All of these positions are assumed to be on the first monitor. The second parameter is the size of the taskbar.
 
 
-Explorer adds 2 new key:
+Explorer adds 1 new key:
 # + H: Toggle the Windows taskbar.

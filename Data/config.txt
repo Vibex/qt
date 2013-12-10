@@ -1,24 +1,11 @@
-;These are my default qt Settings. You can alter them to suit your needs. Also you can disable plugins by removing there include lines from the main script.
-
 ;qt Settings
 exclusion(BlackboxClass,bbSlit,bbLeanBar,bbIconBox,Progman,Shell_TrayWnd,DV2ControlHost,Button)
-negborder(2)
 removeTitle()
-speed(10ms, 10, 0)
-stack(5,6)
-
-;Media Plugin
-nircmd(2000,0,1000,100)
-
-;Explorer Plugin
-toggleBar(2,27)
+speed(30ms, 20, 1)
 
 ;Taskbar Plugin
 taskEnable()
-taskFont(uushi,6,FAF0E6)
-taskOption(15,0,2A2B37)
-taskLayout(1,workT(full)&[]&clockT())
-taskLayout(2,workT(full)&[]&clockT())
-taskCommand(/,2,C:\Users\Vibex\Documents\qt.pi\)
-taskRun(.ahk,.appref-ms)
+taskFont(Haxrcorp 4088,12,000000)
+taskOption(15,3,FFFFFF)
+taskCommand(/,1,C:)
 taskActivate()

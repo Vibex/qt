@@ -1,4 +1,5 @@
 qt.pi (or qt for short) is a simple WM built in Auto Hot Key (AHK). I tried to keep it as minimal as possible (currently under 550 lines) while still being simple to use and easy to expand on. By default it has five layouts, top stack, bottom stack, left stack, right stack, and monocle. More layouts can easily be added if you ave a basic understanding of AHK. If you need help in development please read over the Plugins tutorial.
+Colemak layout uses the keys that corespond position wise to QWERTY.
 
 
 qt has 16 default hotkeys, though more can be added with plugins. The default hotkeys are (# = The Windows Key):
@@ -47,3 +48,18 @@ Add hotkeys to move windows around in the window list. (# + Ctrl + Left: Move Wi
 Add hotkeys to move windows around in the window list. (# + Left: Activate window to the left. # + Right: Activate window to the right. # + Up: Activate the first window. # + Dow: Activate the last window)
 Add Foobar2000 Support (Taskbar Plugin)
 Add Icon Support (Taskbar Plugin)
+
+
+Updates:
+	0.1.1
+		Added Colemak Layout
+		Added Plugin to toggle Borders around Windows
+		Added Colemak Layout to Split Plugin
+		Added Icons to be used in future releases
+		Added return statement information to the main config methods
+		Improved Mouse Plugin
+		Improved Taskbar Plugin
+		Improved Window removal detection
+		
+	0.1.0
+		Original Release

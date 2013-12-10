@@ -391,7 +391,7 @@ lStack(mon, id){
 	return
 }
 
-#R::
+#P::
 {
 	mode("rStack")
 	return
@@ -419,7 +419,7 @@ rStack(mon, id){
 	return
 }
 
-#E::
+#F::
 {
 	mode("tStack")
 	return
@@ -579,6 +579,6 @@ varExist(ByRef v){
 }
 
 #include Plugins\Mouse\Mouse.ahk
-#include Plugins\Split\Split.ahk
+#include Plugins\Split\SplitColemak.ahk
 #include Plugins\Taskbar\Fnt.ahk
 #include Plugins\Taskbar\Taskbar.ahk
