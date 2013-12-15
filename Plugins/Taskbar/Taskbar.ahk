@@ -121,7 +121,7 @@ Enter::
 			StringReplace, part2, part2, %A_Space%, +, 1
 			isRun := "https://animebytes.tv/torrents.php?searchstr=" . part2
 		} else if(arrtemp1 = command . "piratebay" || arrtemp1 = command . "p"){
-			isRun := "http://thepiratebay.sx/search/" . part2 . "/0/99/0"
+			isRun := "http://thepiratebay.se/search/" . part2 . "/0/99/0"
 		} else if(arrtemp1 = command . "logoff"){
 			if(part2 = "-f"){
 				Shutdown, 4
@@ -435,10 +435,6 @@ taskEnable(temp){
 	
 	font := "uushi"
 	fontSize := 6
-	fontColour := "000000"
-	
-	fontS := "Symbol"
-	fontSSize := 6
 	fontColour := "000000"
 	
 	barheight := 15
