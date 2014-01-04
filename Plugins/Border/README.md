@@ -10,7 +10,7 @@ Install
 
 To install add the following lines of code to the bottom of Main.ahk.
 
-#include Plugins\\Border\\Border.ahk
+-   #include Plugins\\Border\\Border.ahk
 
 After that add this command to your config file.
 

@@ -6,7 +6,7 @@ CoordMode, Mouse, Screen
 DetectHiddenWindows, On
 OnExit, DeathToTheScript
 	
-qtVer := "0.1.1"
+qtVer := "0.2.0"
 
 config()
 SetBatchLines, %bspeed%
@@ -62,13 +62,19 @@ class monitor{
 		this.UH := this.H - this.TBound - this.BBound
 	}
 	
-	add(aHwnd){
-		this.WindowNum[this.Workspace] += 1
-		this.Window[this.Workspace, this.WindowNum[this.Workspace]] := aHwnd
+	add(aHwnd, pos = 0){
+		if(pos = 0){
+			this.WindowNum[this.Workspace] += 1
+			this.Window[this.Workspace, this.WindowNum[this.Workspace]] := aHwnd
+		} else {
+			this.Remove(aHwnd)
+			this.WindowNum[this.Workspace] += 1
+			this.Window[this.Workspace].Insert(pos, aHwnd)
+		}
 		updatePos(this.MonNum)
 	}
 	
-	remove(aHwnd){
+	remove(aHwnd, hold = 0){
 		temp := this.WindowNum[this.Workspace]
 		Mode := 1
 		Loop, %temp%
@@ -85,12 +91,19 @@ class monitor{
 		{
 			this.Window[this.Workspace, this.WindowNum] := ""
 			this.WindowNum[this.Workspace] -= 1
-			%aHwnd%_Tag := 0
-			updatePos(this.MonNum)
-			IfWinExist, ahk_id %aHwnd%
-			{
-				title(2, aHwnd)
+			if(hold = 0){
+				updatePos(this.MonNum)
+				WinMove, ahk_id %aHwnd%,, %aHwnd%_X, %aHwnd%_Y, %aHwnd%_W, %aHwnd%_H
+				IfWinExist, ahk_id %aHwnd%
+				{
+					title(2, aHwnd)
+				}
 			}
+			%aHwnd%_Tag := ""
+			%aHwnd%_X := ""
+			%aHwnd%_Y := ""
+			%aHwnd%_W := ""
+			%aHwnd%_H := ""
 		}
 		return mode
 	}
@@ -110,14 +123,15 @@ winFind(mon, id){
 	return 0
 }
 
-windowObj(id, mon = 0){
+windowObj(id, mon = 0, pos = 0){
 	global
 	
 	if(mon = 0){
 		mon := mon(id)
 	}
 	%id%_Tag := Mon%mon%.Workspace
-	Mon%mon%.add(id)
+	WinGetPos, %id%_X, %id%_Y, %id%_W, %id%_H
+	Mon%mon%.add(id, pos)
 	if(titleAway = 1){
 		title(1, id)
 	}
@@ -164,14 +178,14 @@ DeathToTheScript:
 }
 
 removeAll(id){
-	global
-	
-	Loop, %monNum%
- 	{
-		mon := A_Index
-		Mon%mon%.remove(id)
-	}
-	return
+        global
+        
+        Loop, %monNum%
+         {
+                mon := A_Index
+                Mon%mon%.remove(id)
+        }
+        return
 }
 
 config(){
@@ -188,6 +202,7 @@ config(){
 	kSpeed := 10
 	tbRatio := 3
 	lrRatio := 3
+	workspaceNum := 9
 	exclusion("BlackboxClass,bbSlit,bbLeanBar,bbIconBox,Progman,Shell_TrayWnd,DV2ControlHost,Button")
 	
 	SysGet, monNum, MonitorCount
@@ -295,6 +310,13 @@ stack(temp){
 	return [tbRatio, lrRatio]
 }
 
+workspace(temp){
+	global
+	
+	workspaceNum := temp
+	return workspaceNum
+}
+
 exclude(id){
 	global
 	
@@ -350,12 +372,6 @@ updatePos(mon){
 	return
 }
 
-#A::
-{
-	mode("monocle")
-	return
-}
-
 monocle(mon, id){
 	global
 	
@@ -363,9 +379,14 @@ monocle(mon, id){
 	return
 }
 
-#Q::
-{
-	mode("lStack")
+float(mon, id){
+	global
+	if(%id%_X >= Mon%mon%.L && %id%_X < Mon%mon%.R && %id%_Y < Mon%mon%.B && %id%_Y > Mon%mon%.T){
+		WinMove, ahk_id %id%,, (%id%_X), (%id%_Y), (%id%_W), (%id%_H)
+	} else {
+		WinMove, ahk_id %id%,, (Mon%mon%.L), (Mon%mon%.T), (500), (250)
+		WinGetPos, %id%_X, %id%_Y, %id%_W, %id%_H, ahk_id %id%
+	}
 	return
 }
 
@@ -391,12 +412,6 @@ lStack(mon, id){
 	return
 }
 
-#P::
-{
-	mode("rStack")
-	return
-}
-
 rStack(mon, id){
 	global
 	local num, pos, panelW, panelH
@@ -416,12 +431,6 @@ rStack(mon, id){
 	} else {
 		WinMove, ahk_id %id%,, (Mon%mon%.L + Mon%mon%.LBound + Mon%mon%.UW - panelW), (Mon%mon%.T + Mon%mon%.TBound + ((pos - 2) * (panelH + vBor))), (panelW), (panelH)
 	}
-	return
-}
-
-#F::
-{
-	mode("tStack")
 	return
 }
 
@@ -447,12 +456,6 @@ tStack(mon, id){
 	return
 }
 
-#W::
-{
-	mode("bStack")
-	return
-}
-
 bStack(mon, id){
 	global
 	local num, pos, panelW, panelH
@@ -472,60 +475,6 @@ bStack(mon, id){
 	} else {
 		WinMove, ahk_id %id%,, (Mon%mon%.L + Mon%mon%.LBound + ((pos - 2) * (panelW + hBor))), (Mon%mon%.T + Mon%mon%.TBound + Mon%mon%.UH - panelH), (panelW), (panelH)
 	}
-	return
-}
-
-#1::
-{
-	work(1)
-	return
-}
-
-#2::
-{
-	work(2)
-	return
-}
-
-#3::
-{
-	work(3)
-	return
-}
-
-#4::
-{
-	work(4)
-	return
-}
-
-#5::
-{
-	work(5)
-	return
-}
-
-#6::
-{
-	work(6)
-	return
-}
-
-#7::
-{
-	work(7)
-	return
-}
-
-#8::
-{
-	work(8)
-	return
-}
-
-#9::
-{
-	work(9)
 	return
 }
 
@@ -560,13 +509,119 @@ varExist(ByRef v){
 	return &v = &n ? 0 : v = "" ? 2 : 1
 }
 
-#Z::
-{
+genericAdd(pos = 0){
+	global
+	
 	idtemp := WinExist("A")
 	mon := mon()
 	if(winFind(mon, idtemp) = 0 && exclude(idtemp) = 1){
-		windowObj(idtemp, mon)
+		windowObj(idtemp, mon, pos)
 	}
+	return
+}
+
+#Q::
+{
+	mode("monocle")
+	return
+}
+
+#W::
+{
+	mode("float")
+	return
+}
+
+#A::
+{
+	mode("lStack")
+	return
+}
+
+#T::
+{
+	mode("rStack")
+	return
+}
+
+#S::
+{
+	mode("tStack")
+	return
+}
+
+#R::
+{
+	mode("bStack")
+	return
+}
+
+#1::
+{
+	work(1)
+	return
+}
+
+#If, 2 <= workspaceNum
+#2::
+{
+	work(2)
+	return
+}
+
+#If, 3 <= workspaceNum
+#3::
+{
+	work(3)
+	return
+}
+
+#If, 4 <= workspaceNum
+#4::
+{
+	work(4)
+	return
+}
+
+#If, 5 <= workspaceNum
+#5::
+{
+	work(5)
+	return
+}
+
+#If, 6 <= workspaceNum
+#6::
+{
+	work(6)
+	return
+}
+
+#If, 7 <= workspaceNum
+#7::
+{
+	work(7)
+	return
+}
+
+#If, 8 <= workspaceNum
+#8::
+{
+	work(8)
+	return
+}
+
+#If, 9 <= workspaceNum
+#9::
+{
+	work(9)
+	return
+}
+#If
+
+#Z::
+{
+	genericAdd()
 	return
 }
 
@@ -580,5 +635,6 @@ varExist(ByRef v){
 
 #include Plugins\Mouse\Mouse.ahk
 #include Plugins\Split\SplitColemak.ahk
+#include Plugins\Navigation\NavigationColemak.ahk
 #include Plugins\Taskbar\Fnt.ahk
 #include Plugins\Taskbar\Taskbar.ahk

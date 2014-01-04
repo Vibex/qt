@@ -11,7 +11,7 @@ Install
 
 To install add the following line of code to the bottom of Main.ahk.
 
-#include Plugins\\Media\\Media.ahk
+-   #include Plugins\\Media\\Media.ahk
 
 
 

@@ -11,13 +11,13 @@ Install
 
 To install add the following lines of code to the bottom of Main.ahk.
 
-#include Plugins\\Split\\Split.ahk
+-   #include Plugins\\Split\\Split.ahk
 
 
 
 Hotkeys
 -------
 
--   # + S: Change to vSplit layout.
+-   # + E: Change to vSplit layout.
 
--   # + D: Change to hSplit layout.
+-   # + R: Change to hSplit layout.

@@ -12,9 +12,9 @@ To install add the following lines of code to the bottom of Main.ahk. Make sure
 to put the second line beneath all the other plugins (It may cause bugs
 otherwise).
 
-#include Plugins\\Taskbar\\Fnt.ahk
+-   #include Plugins\\Taskbar\\Fnt.ahk
 
-#include Plugins\\Taskbar\\Taskbar.ahk
+-   #include Plugins\\Taskbar\\Taskbar.ahk
 
 After that add these two commands to your config file in that order.
 taskEnable() taskActivate()

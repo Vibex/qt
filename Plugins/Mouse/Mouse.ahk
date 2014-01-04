@@ -1,35 +1,51 @@
-;This script is from http://www.autohotkey.com/docs/scripts/EasyWindowDrag_%28KDE%29.htm
-;In the future I will slim down these scripts and make them more efficient.
+;This script is a heavily modified version of http://www.autohotkey.com/docs/scripts/EasyWindowDrag_%28KDE%29.htm
 
 #LButton::
 {
 	SetWinDelay, -1
 	SetBatchLines, -1
 	
-	MouseGetPos,KDE_X1,KDE_Y1,KDE_id
-	WinActivate, ahk_id %KDE_id%
-	WinGetPos,KDE_WinXStart,KDE_WinYStart,,,ahk_id %KDE_id%
-	KDE_WinX1 := KDE_WinXStart
-	KDE_WinY1 := KDE_WinYStart
+	MouseGetPos, X1, Y1, id
+	tiled := 0
+	Loop, %monNum%
+	{
+		if(winFind(A_Index, id) != 0){
+			tiled := A_Index
+			break
+		}
+	}
+	WinActivate, ahk_id %id%
+	WinGetPos, winXStart, winYStart,winWStart,winHStart, ahk_id %id%
+	WinGetPos, WinX1, WinY1,,, ahk_id %id%
 	Loop{
-		GetKeyState,KDE_Button,LButton,P
-		If KDE_Button = U
+		GetKeyState,Button,LButton,P
+		If Button = U
 		{
-			removeAll(KDE_id)
+			if(Mon%tiled%.Mode[Mon%tiled%.Workspace] = "float"){
+				WinGetPos, %id%_X, %id%_Y, %id%_W, %id%_H, ahk_id %id%
+			}
+			if(tiled != 0 && tiled = mon()){
+				updatePos(tiled)
+			} else if(tiled != 0){
+				removeAll(id)
+				genericAdd()
+			} else {
+				removeAll(id)
+			}
 			break
 		}
-		GetKeyState, KDE_EscapeState, Escape, P
-		If KDE_EscapeState = D
+		GetKeyState, EscapeState, Escape, P
+		If EscapeState = D
 		{
-			WinMove, ahk_id %KDE_id%,, %KDE_WinXStart%, %KDE_WinYStart%
+			WinMove, ahk_id %id%,, %winXStart%, %winYStart%, %winWStart%, %winHStart%
 			break
 		}
-		MouseGetPos,KDE_X2,KDE_Y2
-		KDE_X2 -= KDE_X1
-		KDE_Y2 -= KDE_Y1
-		KDE_WinX2 := (KDE_WinX1 + KDE_X2)
-		KDE_WinY2 := (KDE_WinY1 + KDE_Y2)
-		WinMove,ahk_id %KDE_id%,,%KDE_WinX2%,%KDE_WinY2%
+		MouseGetPos,X2,Y2
+		X2 -= X1
+		Y2 -= Y1
+		WinX2 := (WinX1 + X2)
+		WinY2 := (WinY1 + Y2)
+		WinMove,ahk_id %id%,,%WinX2%,%WinY2%
 	}
 	return
 }
@@ -39,46 +55,54 @@
 	SetWinDelay, -1
 	SetBatchLines, -1
 	
-	MouseGetPos,KDE_X1,KDE_Y1,KDE_id
-	WinActivate, ahk_id %KDE_id%
-	WinGetPos,KDE_WinXStart,KDE_WinYStart,KDE_WinWStart,KDE_WinHStart,ahk_id %KDE_id%
-	KDE_WinX1 := KDE_WinXStart
-	KDE_WinY1 := KDE_WinYStart
-	KDE_WinW := KDE_WinWStart
-	KDE_WinH := KDE_WinHStart
-	If (KDE_X1 < KDE_WinX1 + KDE_WinW / 2)
+	MouseGetPos, X1, Y1, id
+	WinActivate, ahk_id %id%
+	Loop, %monNum%
 	{
-		KDE_WinLeft := 1
-	} else {
-		KDE_WinLeft := -1
+		if(winFind(A_Index, id) != 0 && Mon%A_Index%.Mode[Mon%A_Index%.Workspace] != "float"){
+			return
+		}
 	}
-	If (KDE_Y1 < KDE_WinY1 + KDE_WinH / 2)
+	WinGetPos, WinXStart, WinYStart, WinWStart, WinHStart, ahk_id %id%
+	WinGetPos, WinX1, WinY1, WinW, WinH, ahk_id %id%
+	If (X1 < WinX1 + WinW / 2)
 	{
-		KDE_WinUp := 1
+		WinLeft := 1
 	} else {
-		KDE_WinUp := -1
+		WinLeft := -1
+	}
+	If (Y1 < WinY1 + WinH / 2)
+	{
+		WinUp := 1
+	} else {
+		WinUp := -1
 	}
 	Loop
 	{
-		GetKeyState,KDE_Button, RButton, P
-		If KDE_Button = U
+		GetKeyState,Button, RButton, P
+		If Button = U
 		{
-			removeAll(KDE_id)
+			Loop, %monNum%
+			{
+				if(winFind(A_Index, id) != 0){
+					WinGetPos, %id%_X, %id%_Y, %id%_W, %id%_H, ahk_id %id%
+				}
+			}
 			break
 		}
-		GetKeyState, KDE_EscapeState, Escape, P
-		if KDE_EscapeState = D
+		GetKeyState, EscapeState, Escape, P
+		if EscapeState = D
 		{
-			WinMove, ahk_id %KDE_id%,, %KDE_WinXStart%, %KDE_WinYStart%, %KDE_WinWStart%, %KDE_WinHStart%
+			WinMove, ahk_id %id%,, %WinXStart%, %WinYStart%, %WinWStart%, %WinHStart%
 			break
 		}
-		MouseGetPos,KDE_X2,KDE_Y2
-		WinGetPos,KDE_WinX1,KDE_WinY1,KDE_WinW,KDE_WinH,ahk_id %KDE_id%
-		KDE_X2 -= KDE_X1
-		KDE_Y2 -= KDE_Y1
-		WinMove,ahk_id %KDE_id%,, KDE_WinX1 + (KDE_WinLeft+1)/2*KDE_X2 , KDE_WinY1 +  (KDE_WinUp+1)/2*KDE_Y2 , KDE_WinW - KDE_WinLeft *KDE_X2, KDE_WinH - KDE_WinUp *KDE_Y2
-		KDE_X1 := (KDE_X2 + KDE_X1)
-		KDE_Y1 := (KDE_Y2 + KDE_Y1)
+		MouseGetPos,X2,Y2
+		WinGetPos,WinX1,WinY1,WinW,WinH,ahk_id %id%
+		X2 -= X1
+		Y2 -= Y1
+		WinMove,ahk_id %id%,, WinX1 + (WinLeft+1)/2*X2 , WinY1 +  (WinUp+1)/2*Y2 , WinW - WinLeft *X2, WinH - WinUp *Y2
+		X1 := (X2 + X1)
+		Y1 := (Y2 + Y1)
 	}
 	return
 }

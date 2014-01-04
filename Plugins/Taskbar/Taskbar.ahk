@@ -27,7 +27,7 @@ initializeBar(mon, w, h, x, y){
 	return
 }
 
-visibility(hide = 0, switch = 1, clip := 0){
+visibility(hide = 0, switch = 1, clip = 0){
 	global
 	local visible
 	
@@ -35,12 +35,12 @@ visibility(hide = 0, switch = 1, clip := 0){
 	if(visible = 1 || hide = 1){
 		toggleItems("hide")
 	} else {
-		toggleItems("show")
+		toggleItems("show", clip)
 	}
 	return
 }
 
-toggleItems(mode){
+toggleItems(mode, clip = 0){
 	global
 	local temp
 	
@@ -98,16 +98,9 @@ Enter::
 	isRun := null
 	isOther := null
 	StringMid, isCommand, arrtemp1, 1, 1
-	if (isCommand = command)
-	{
-		if(arrtemp1 = command . "qt.pi"){
+	if (isCommand = command){
+		if(arrtemp1 = "qt.pi" || arrtemp1 = command . "qt"){
 			isRun := "https://github.com/Vibex/qt.pi"
-		} else if(arrtemp1 = command . "google" || arrtemp1 = command . "g"){
-			StringReplace, part2, part2, %A_Space%, +, 1
-			isRun := "https://www.google.com/search?q=" . part2
-		} else if(arrtemp1 = command . "duckduckgo" || arrtemp1 = command . "d"){
-			StringReplace, part2, part2, %A_Space%, +, 1
-			isRun := "https://duckduckgo.com/?q=" . part2
 		} else if(arrtemp1 = command . "hummingbird" || arrtemp1 = command . "h"){
 			StringReplace, part2, part2, %A_Space%, +, 1
 			isRun := "http://hummingbird.me/search?query=" . part2
@@ -262,7 +255,7 @@ determine(mon, w, h, x, y, pos, repeat){
 
 clockT(mon, w, h, x, y, pos, input){
 	global
-	local size, size2, temp, temp2
+	local size, temp, temp2
 	
 	if(pos != "center"){
 		size := Fnt_GetStringWidth(font, "00.00")
@@ -277,7 +270,7 @@ clockT(mon, w, h, x, y, pos, input){
 		temp := left_%mon% + center_%mon%
 	}
 	Gui, bar%mon%:Add, Text, vClock%mon% x%temp% y%downShift% h%h% w%size% Center, 00.00
-	%pos%_%mon% += size + size2
+	%pos%_%mon% += size + itemGap
 	bar%mon%_0 += 1
 	temp2 := bar%mon%_0
 	bar%mon%_%temp2% := "Clock" . mon
@@ -305,7 +298,7 @@ calT(mon, w, h, x, y, pos, input){
 		temp := left_%mon% + center_%mon%
 	}
 	Gui, bar%mon%:Add, Text, vDate%mon% x%temp% y%downShift% h%h% w%size% Center, 000, 000 00
-	%pos%_%mon% += size
+	%pos%_%mon% += size + itemGap
 	bar%mon%_0 += 1
 	temp2 := bar%mon%_0
 	bar%mon%_%temp2% := "Date" . mon
@@ -336,14 +329,19 @@ UpdateClock:
 
 workT(mon, w, h, x, y, pos, input){
 	global
-	local size, temp, temp2, work
+	local size, temp, temp2, temp3, work
 	
 	if(input = "full"){
 		work%mon%Mode := "full"
-		size := Fnt_GetStringWidth(font, " 1 2 3 4 5 6 7 8 9")
+		temp3 := ""
+		Loop, %workspaceNum%
+		{
+			temp3 := temp3 . "00"
+		}
+		size := Fnt_GetStringWidth(font, temp3)
 	} else {
 		work%mon%Mode := "single"
-		size := Fnt_GetStringWidth(font, " 0 ")
+		size := Fnt_GetStringWidth(font, " 0")
 	}
 	if(pos != "center"){
 		if(pos = "left"){
@@ -356,11 +354,11 @@ workT(mon, w, h, x, y, pos, input){
 		temp := left_%mon% + center_%mon%
 	}
 	if(work%mon%Mode = "full"){
-		Gui, bar%mon%:Add, Text, vWork%mon% x%temp% y%downShift% w%size% h%h% Center, # 2 3 4 5 6 7 8 9
+		Gui, bar%mon%:Add, Text, vWork%mon% x%temp% y%downShift% w%size% h%h% Center, % temp3
 	} else {
 		Gui, bar%mon%:Add, Text, vWork%mon% x%temp% y%downShift% w%size% h%h% Center, 1
 	}
-	%pos%_%mon% += size
+	%pos%_%mon% += size + itemGap
 	bar%mon%_0 += 1
 	temp2 := bar%mon%_0
 	bar%mon%_%temp2% := "Work" . mon
@@ -381,7 +379,7 @@ UpdateWork:
 		GuiControlGet, work, bar%mon%:, work%mon%, Text
 		if(work%mon%Mode = "full"){
 			temp := A_Space
-			Loop, 9
+			Loop, %workspaceNum%
 			{
 				if(A_Index = Mon%mon%.Workspace){
 					temp := temp . "#"
@@ -395,6 +393,47 @@ UpdateWork:
 			}
 		} else {
 			
+		}
+	}
+	return
+}
+
+modeT(mon, w, h, x, y, pos, input){
+	global
+	local size, temp, temp2
+	
+	if(pos != "center"){
+		size := Fnt_GetStringWidth(font, 000000000)
+		if(pos = "left"){
+			temp := %pos%_%mon%
+		} else if(pos = "right"){
+			temp := w - %pos%_%mon% - size
+		}
+	} else {
+		size := (w - left_%mon% - right_%mon%) / center0
+		temp := left_%mon% + center_%mon%
+	}
+	Gui, bar%mon%:Add, Text, vMode%mon% x%temp% y%downShift% w%size% h%h% Center, 000000000
+	%pos%_%mon% += size + itemGap
+	bar%mon%_0 += 1
+	temp2 := bar%mon%_0
+	bar%mon%_%temp2% := "Mode" . mon
+	
+	if(modeOn = 0){
+		SetTimer, UpdateMode, %updateRate%
+		Gosub, UpdateMode
+	}
+	return
+}
+
+UpdateMode:
+{	
+	modeOn := 1
+	Loop, %monNum%
+	{
+		GuiControlGet, mode, bar%A_Index%:, mode%A_Index%, Text
+		if(mode != "[" . Mon%A_Index%.Mode[Mon%A_Index%.Workspace] . "]"){
+			GuiControl, bar%A_Index%:, Mode%A_Index%, % "[" . Mon%A_Index%.Mode[Mon%A_Index%.Workspace] . "]"
 		}
 	}
 	return
@@ -416,7 +455,7 @@ textT(mon, w, h, x, y, pos, input){
 		temp := left_%mon% + center_%mon%
 	}
 	Gui, bar%mon%:Add, Text, vText%mon% x%temp% y%downShift% w%size% h%h% Center, % input
-	%pos%_%mon% += size
+	%pos%_%mon% += size + itemGap
 	bar%mon%_0 += 1
 	temp2 := bar%mon%_0
 	bar%mon%_%temp2% := "Text" . mon
@@ -431,11 +470,14 @@ taskEnable(temp){
 	
 	clockOn := 0
 	workOn := 0
+	modeOn := 0
 	updateRate := 100
+	itemGap := 0
 	
-	font := "uushi"
+	font := "Yet Another Bitmap"
 	fontSize := 6
 	fontColour := "000000"
+	monoSize := 9
 	
 	barheight := 15
 	downShift := 0
@@ -450,7 +492,7 @@ taskEnable(temp){
 	command := "/"
 	defSearch := 1
 	progloc := "C:"
-	return
+	return 1
 }
 
 taskFont(temp){
@@ -460,7 +502,7 @@ taskFont(temp){
 	font := temp1
 	fontSize := temp2
 	fontColour := temp3
-	return
+	return [font, fontSize, fontColour]
 }
 
 taskOption(temp){
@@ -470,7 +512,7 @@ taskOption(temp){
 	barheight := temp1
 	downShift := temp2
 	taskColour := temp3
-	return
+	return [barheight, downShift, taskColour]
 }
 
 taskLayout(temp){
@@ -478,7 +520,7 @@ taskLayout(temp){
 	
 	StringSplit, temp, temp ,`,
 	barLayout%temp1% := temp2
-	return
+	return barLayout%temp1%
 }
 
 taskCommand(temp){
@@ -488,7 +530,7 @@ taskCommand(temp){
 	command := temp1
 	defSearch := temp2
 	progloc := temp3
-	return
+	return [command, defSearch, progLoc]
 }
 
 taskRun(temp){
@@ -496,6 +538,13 @@ taskRun(temp){
 	
 	StringSplit, otherexe, temp ,`,
 	return
+}
+
+taskMono(temp){
+	global
+	
+	monoSize := temp
+	return monoSize
 }
 
 taskActivate(temp){
@@ -507,5 +556,5 @@ taskActivate(temp){
 		initializeBar(A_Index, monRight - monLeft, barheight, monLeft, monTop)
 		tTask%A_Index% += barheight
 	}
-	return
+	return 1
 }
