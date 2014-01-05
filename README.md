@@ -1,13 +1,14 @@
 qt 
 ===
 
-qt.pi (or qt for short) is a simple WM built in Auto Hot Key (AHK). I tried to
-keep it as minimal as possible (currently under 700 lines) while still being
-simple to use and easy to expand on. By default it has five layouts, top stack,
-bottom stack, left stack, right stack, and monocle. More layouts can easily be
-added if you ave a basic understanding of AHK.
+qt is a simple WM built in Auto Hot Key (AHK). I tried to keep it as minimal as
+possible (currently under 700 lines) while still being simple to use and easy to
+expand on. By default it has six layouts, top stack, bottom stack, left stack,
+right stack, monocle, and float. More layouts can easily be added if you have a
+basic understanding of AHK.
 
-If you need help in development please read over the Plugins tutorial.
+If you need help in development please read over the Plugins tutorial (not yet
+written).
 
 Colemak layout uses the keys that corespond position wise to QWERTY.
 
@@ -16,8 +17,8 @@ Colemak layout uses the keys that corespond position wise to QWERTY.
 Hotkeys 
 --------
 
-qt has 17 default hotkeys, though more can be added with plugins. The default
-hotkeys are (# = The Windows Key):
+qt has 17 default hotkeys, and more are added via plugins. # means  the Windows
+Key.
 
 -   # + A: Activates Left Stack Layout.
 
@@ -58,26 +59,25 @@ hotkeys are (# = The Windows Key):
 Config
 ------
 
-Config file editing. To change your qt settings you must edit the config.txt
-file in the Data folder. qt uses commands to change settings which makes it easy
-for plugins to add options but isn't the most intuitive for beginers. The
-default commands are (To use a command simply type the cmd(X1,X2,X3,...,Xn)
-where cmd is the name of the command and x are the parameters).
-
-You can also add comments to your config file via ";" if you feel the need to.
+To change your qt settings you must edit the config.txt file in the Data folder.
+qt uses commands to change settings which makes it easy for plugins to add
+options but isn't the most intuitive for beginers (A GUI config is planned, but
+not yet in development). To use a command simply type the cmd(X1,X2,X3,...,Xn)
+where cmd is the name of the command and x are the parameters. You can also add
+comments to your config file via ";" if you feel the need to.
 
 
 
 ### Border
 
 -   border(Vertical Border, Horizontal Border, Extra Vertical Border, Extra
-    Horizontal Border): border() Controls the borders between windows. The first
+    Horizontal Border): border() controls the borders between windows. The first
     two parameters determine the distance between windows. The last two
     parameters determine the gap between the window edges and the monitor edge.
     \*Note The gap between the window and the monitor edges is added to the
     regular border.
 
--   border(Vertical and Horizontal Border, Extra Vertical and Horizontal
+-   border(Vertical and Horizontal Border, Extra Vertical and Extra Horizontal
     Border): Combines the first two and last two parameters in the command above
     into 2 parameters.
 
@@ -85,11 +85,11 @@ You can also add comments to your config file via ";" if you feel the need to.
 
 ### Taskbar
 
--   taskbar(Monitor,Top Taskbar, Bottom Taskbar, Left taskbar, Right Taskbar):
+-   taskbar(Monitor, Top Taskbar, Bottom Taskbar, Left taskbar, Right Taskbar):
     taskbar() allows you to tell qt that you have a taskbar on your monitor and
-    that it should not place windows ove it. The first parameter is the monitor
-    you are going to define taskbars for. The next 4 parameters are the height
-    of your taskbar at different locations on your monitor.
+    that it should not place windows over them. The first parameter is the
+    monitor you are going to define taskbars for. The next 4 parameters are the
+    height of your taskbar at different locations on your monitor.
 
 
 
@@ -113,12 +113,12 @@ You can also add comments to your config file via ";" if you feel the need to.
 
 -   speed(Batch Speed, Window Speed, Key Speed): speed() effects the delay of
     things in the script. The first parameter determines how often the script
-    takes a break (Batch Speed). If this parameter does not include the "ms"
-    ending to define it as milliseconds, the script will interpret it as lines
-    instead of milliseconds. This can severely slow down qt. The Second
-    parameter sets the delay when moving windows (Win Delay). The Third
-    parameter is the delay when clicking keys (Key Delay). The last two
-    parameters do not require the "ms" ending.
+    takes a break. If this parameter does not include the "ms" ending to define
+    it as milliseconds, the script will interpret it as lines instead of
+    milliseconds. This can severely slow down qt. The Second parameter sets the
+    delay when moving windows. The Third parameter is the delay when using
+    hotkeys. Make sure not to include the "ms" ending on the last two
+    parameters.
 
 
 
@@ -135,8 +135,15 @@ You can also add comments to your config file via ";" if you feel the need to.
 -   negBorder(Window Borders): negBorder() is a replacement to border().
     negBorder only receives 1 parameter and it is the width of your window
     borders. negBorder() will make it so that your window borders overlap in
-    such a way that the become half the size. negBorder() only looks good with
-    windows classic and certain Custom Visual Styles(VS).
+    such a way that they become half the size. negBorder() only looks good with
+    windows classic and certain Custom Visual Styles.
+
+
+
+### Workspace
+
+-   workspace(Number of Workspaces): workspace() sets the number of workspaces
+    qt keeps track of. This can be a number between 1 and 9.
 
 
 
@@ -145,7 +152,11 @@ Todo List
 
 -   Add Dvorak Layout.
 
--   Add proper floating window management.
+-   Add Plugin Development documentation.
+
+-   Add GUI config editor.
+
+-   Add Fibonacci spiral and Dwindle layout (Fibonacci Plugin).
 
 -   Add Foobar2000 Support (Taskbar Plugin)
 
@@ -155,6 +166,16 @@ Todo List
 
 Change Log
 ----------
+
+
+
+### 0.2.1
+
+-   Improved documentation.
+
+-   Fixed minimized window tiling.
+
+
 
 ### 0.2.0
 

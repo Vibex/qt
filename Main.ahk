@@ -6,7 +6,7 @@ CoordMode, Mouse, Screen
 DetectHiddenWindows, On
 OnExit, DeathToTheScript
 	
-qtVer := "0.2.0"
+qtVer := "0.2.1"
 
 config()
 SetBatchLines, %bspeed%
@@ -367,6 +367,7 @@ updatePos(mon){
 	Loop, %temp%
 	{
 		idtemp := Mon%mon%.Window[Mon%mon%.Workspace, A_Index]
+		WinRestore, ahk_id %idtemp%
 		%cmd%(mon, idtemp)
 	}
 	return
@@ -384,7 +385,7 @@ float(mon, id){
 	if(%id%_X >= Mon%mon%.L && %id%_X < Mon%mon%.R && %id%_Y < Mon%mon%.B && %id%_Y > Mon%mon%.T){
 		WinMove, ahk_id %id%,, (%id%_X), (%id%_Y), (%id%_W), (%id%_H)
 	} else {
-		WinMove, ahk_id %id%,, (Mon%mon%.L), (Mon%mon%.T), (500), (250)
+		WinMove, ahk_id %id%,, (Mon%mon%.L + lTask%mon%), (Mon%mon%.T + tTask%mon%), (Mon%mon%.W / 4), (Mon%mon%.H / 6)
 		WinGetPos, %id%_X, %id%_Y, %id%_W, %id%_H, ahk_id %id%
 	}
 	return
