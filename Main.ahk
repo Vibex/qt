@@ -632,7 +632,7 @@ genericAdd(pos = 0){
 	Mon%mon%.remove(idtemp)
 	return
 }
-1
+
 #include Plugins\Mouse\Mouse.ahk
 #include Plugins\Split\Split.ahk
 #include Plugins\Navigation\NavigationArrow.ahk
